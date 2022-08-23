@@ -1,0 +1,1008 @@
+definitions:
+  entities.Dashboard:
+    properties:
+      alias:
+        type: string
+      created_at:
+        type: integer
+      dashboard_id:
+        type: integer
+      dashboard_name:
+        type: string
+      deleted_at:
+        type: integer
+      description:
+        type: string
+      instance_id:
+        type: integer
+      menu_id:
+        type: integer
+      roles:
+        items:
+          $ref: '#/definitions/entities.Role'
+        type: array
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Group:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      group_id:
+        type: integer
+      group_name:
+        type: string
+      groupMember:
+        items:
+          $ref: '#/definitions/entities.GroupMember'
+        type: array
+      updated_at:
+        type: integer
+    type: object
+  entities.GroupMember:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      email:
+        type: string
+      group_id:
+        type: integer
+      member_id:
+        type: integer
+      member_name:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Instance:
+    properties:
+      auth:
+        type: boolean
+      created_at:
+        type: integer
+      dashboards:
+        items:
+          $ref: '#/definitions/entities.Dashboard'
+        type: array
+      deleted_at:
+        type: integer
+      instance_id:
+        type: integer
+      ip:
+        type: string
+      name:
+        type: string
+      pass:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: integer
+      user:
+        type: string
+    type: object
+  entities.Menu:
+    properties:
+      dashboards:
+        items:
+          $ref: '#/definitions/entities.Dashboard'
+        type: array
+      menu_id:
+        type: integer
+      menu_name:
+        type: string
+      sort:
+        type: integer
+    type: object
+  entities.Report:
+    properties:
+      created_at:
+        type: integer
+      dashboard:
+        type: string
+      datasource:
+        type: string
+      deleted_at:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Role:
+    properties:
+      created_at:
+        type: integer
+      dashboards:
+        items:
+          $ref: '#/definitions/entities.Dashboard'
+        type: array
+      deleted_at:
+        type: integer
+      role_id:
+        type: integer
+      role_name:
+        type: string
+      updated_at:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/entities.User'
+        type: array
+    type: object
+  entities.User:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      roles:
+        items:
+          $ref: '#/definitions/entities.Role'
+        type: array
+      updated_at:
+        type: integer
+      user_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+  models.Dashboard:
+    properties:
+      alias:
+        type: string
+      dashboard_id:
+        type: integer
+      dashboard_name:
+        type: string
+      description:
+        type: string
+      instance_id:
+        type: integer
+      instance_name:
+        type: string
+      menu_id:
+        type: integer
+      menu_name:
+        type: string
+      uid:
+        type: string
+    type: object
+  models.DashboardMenu:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/models.DashboardMenu'
+        type: array
+      id:
+        type: integer
+      parent_id:
+        type: integer
+      router_path:
+        type: string
+      sort:
+        type: integer
+      title:
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      msg:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.Role:
+    properties:
+      dashboards:
+        items:
+          $ref: '#/definitions/models.Dashboard'
+        type: array
+      role_id:
+        type: integer
+      role_name:
+        type: string
+    type: object
+  models.UpdateDashboard:
+    properties:
+      new_dashboard_id:
+        type: integer
+      old_dashboard_id:
+        type: integer
+    type: object
+host: localhost:8005
+info:
+  contact:
+    email: support@swagger.io
+    name: Jessie
+  description: Golang API 專案描述
+  termsOfService: http://swagger.io/terms/
+  title: Golang API - WarRoom
+  version: "1.0"
+paths:
+  /api/v1/Group/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new group
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Group
+      tags:
+      - Group
+  /api/v1/Group/CreateMember:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new member
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.GroupMember'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Member
+      tags:
+      - Group
+  /api/v1/Group/DeleteMember/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Member
+      tags:
+      - Group
+  /api/v1/Group/DeleteMemberbyName/{name}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete MemberbyName
+      tags:
+      - Group
+  /api/v1/Group/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.GroupMember'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Group
+      tags:
+      - Group
+  /api/v1/Instance/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new instance
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Instance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Instance
+      tags:
+      - Instance
+  /api/v1/Instance/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Instance
+      tags:
+      - Instance
+  /api/v1/Instance/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Instance
+      tags:
+      - Instance
+  /api/v1/Instance/GetDashboards/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Dashboard'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Dashboard of server by Instance ID
+      tags:
+      - Instance
+  /api/v1/Instance/Update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Instance'
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Instance
+      tags:
+      - Instance
+  /api/v1/Instance/Verify:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new instance
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Instance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Verify Instance
+      tags:
+      - Instance
+  /api/v1/Menu/AddDashboard/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new dashboards
+        in: body
+        name: dashboards
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Dashboard'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Dashboard to Menu
+      tags:
+      - Menu
+  /api/v1/Menu/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new menu
+        in: body
+        name: menu
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Menu'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Menu
+      tags:
+      - Menu
+  /api/v1/Menu/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Menu By Id
+      tags:
+      - Menu
+  /api/v1/Menu/DeleteDashboard/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: menu id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: dashboard_id
+        in: query
+        name: dashboard_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Dashboard from Menu
+      tags:
+      - Menu
+  /api/v1/Menu/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Menu'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Menu
+      tags:
+      - Menu
+  /api/v1/Menu/GetDashboardMenu:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.DashboardMenu'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Dashboard Menu By User ID
+      tags:
+      - Menu
+  /api/v1/Menu/GetDashboards/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Menu'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Dashboard of Menu by Menu ID
+      tags:
+      - Menu
+  /api/v1/Menu/Update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: update menu info without dashboards
+        in: body
+        name: menu
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Menu'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Menu
+      tags:
+      - Menu
+  /api/v1/Menu/UpdateDashboard/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: update dashboard
+        in: body
+        name: dashboard
+        required: true
+        schema:
+          $ref: '#/definitions/models.Dashboard'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Dashboard Under Menu
+      tags:
+      - Menu
+  /api/v1/Report/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new report
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Report
+      tags:
+      - Report
+  /api/v1/Report/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Report'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Report
+      tags:
+      - Report
+  /api/v1/Role/AddDashboard/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: dashboard_id
+        in: query
+        name: dashboard_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Dashboard to Role ID
+      tags:
+      - Role
+  /api/v1/Role/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new role
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Role
+      tags:
+      - Role
+  /api/v1/Role/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Role By Id
+      tags:
+      - Role
+  /api/v1/Role/DeleteDashboard/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: dashboard_id
+        in: query
+        name: dashboard_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Dashboard from Role
+      tags:
+      - Role
+  /api/v1/Role/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Role'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Role
+      tags:
+      - Role
+  /api/v1/Role/Update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update role info
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Role By ID
+      tags:
+      - Role
+  /api/v1/Role/UpdateDashboard/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: old & new dashboard id
+        in: body
+        name: update
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateDashboard'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Dashboard By Role Id
+      tags:
+      - Role
+  /api/v1/User/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Create User
+      tags:
+      - User
+  /api/v1/User/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete User By ID
+      tags:
+      - User
+  /api/v1/User/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All User
+      tags:
+      - User
+  /api/v1/User/GetAllFromSSO:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All User From SSO
+      tags:
+      - User
+  /api/v1/User/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update User By ID
+      tags:
+      - User
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
