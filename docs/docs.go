@@ -1102,6 +1102,71 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Schedule/Create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Create Schedule",
+                "parameters": [
+                    {
+                        "description": "new schedule",
+                        "name": "instance",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Schedule/GetAll": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get All Schedule",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/User/Create": {
             "post": {
                 "security": [
@@ -1485,6 +1550,44 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entities.User"
                     }
+                }
+            }
+        },
+        "entities.Schedule": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "generate-report": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "recipients": {
+                    "type": "string"
+                },
+                "reports": {
+                    "type": "string"
+                },
+                "schedule_name": {
+                    "type": "string"
+                },
+                "send_report": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
                 }
             }
         },

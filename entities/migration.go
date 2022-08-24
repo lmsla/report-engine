@@ -20,6 +20,7 @@ func InitTable() {
 		Group{},
 		GroupMember{},
 		Report{},
+		Schedule{},
 		"users_roles",
 		"dashboards_roles",
 		"menus_dashboards",
@@ -38,6 +39,7 @@ func InitTable() {
 		Group{},
 		GroupMember{},
 		Report{},
+		Schedule{},
 	)
 
 	if err != nil {

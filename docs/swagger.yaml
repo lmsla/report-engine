@@ -142,6 +142,31 @@ definitions:
           $ref: '#/definitions/entities.User'
         type: array
     type: object
+  entities.Schedule:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      description:
+        type: string
+      generate-report:
+        type: string
+      id:
+        type: integer
+      recipients:
+        type: string
+      reports:
+        type: string
+      schedule_name:
+        type: string
+      send_report:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: integer
+    type: object
   entities.User:
     properties:
       created_at:
@@ -898,6 +923,45 @@ paths:
       summary: Update Dashboard By Role Id
       tags:
       - Role
+  /api/v1/Schedule/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new schedule
+        in: body
+        name: instance
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Schedule
+      tags:
+      - Schedule
+  /api/v1/Schedule/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Schedule'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Schedule
+      tags:
+      - Schedule
   /api/v1/User/Create:
     post:
       consumes:

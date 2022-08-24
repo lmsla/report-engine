@@ -77,5 +77,11 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("Report/GetAll", GetAllReport)
 	}
 
+
+	{
+		apiv1.POST("Schedule/Create", CreateSchedule)
+		apiv1.GET("Schedule/GetAll", GetAllSchedule)
+	}
+
 	return router
 }
