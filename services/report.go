@@ -33,3 +33,16 @@ func GetAllReport() ([]entities.Report, error) {
 	}
 	return instancies, nil
 }
+
+
+// 查單一Instance
+func GetInstanceByReportID(reportID int) (entities.Report, error) {
+
+	var instance entities.Report
+	instance.ReportID = reportID
+	err := global.Mysql.First(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
+}

@@ -83,5 +83,9 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("Schedule/GetAll", GetAllSchedule)
 	}
 
+	{
+		apiv1.POST("Screenshot/Create", GetScreenShot)
+	}
+
 	return router
 }

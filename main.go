@@ -6,6 +6,7 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
+	// "report-backend-golang/screenshot"
 )
 
 // @title Golang API - WarRoom
@@ -44,3 +45,15 @@ func main() {
 	r.Run(global.EnvConfig.Server.Port)
 
 }
+
+// func main() {
+// 	utils.LoadEnvironment()
+// 	databases.LoadDatabase()
+// 	mysql, _ := global.Mysql.DB()
+// 	defer mysql.Close()
+
+// 	screenshot.GetAllDashboard()
+// 	screenshot.GetUID()
+// 	screenshot.Test()
+// 	screenshot.Screenshot()
+// }

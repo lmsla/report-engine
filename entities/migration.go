@@ -21,6 +21,8 @@ func InitTable() {
 		GroupMember{},
 		Report{},
 		Schedule{},
+		RInstance{},
+		RDashboard{},
 		"users_roles",
 		"dashboards_roles",
 		"menus_dashboards",
@@ -40,6 +42,8 @@ func InitTable() {
 		GroupMember{},
 		Report{},
 		Schedule{},
+		RInstance{},
+		RDashboard{},
 	)
 
 	if err != nil {

@@ -100,21 +100,62 @@ definitions:
       sort:
         type: integer
     type: object
+  entities.RDashboard:
+    properties:
+      created_at:
+        type: integer
+      dashboard_name:
+        description: Instance []RInstance `gorm:"many2many:ins_and_dash;"`
+        type: string
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      report_id:
+        type: integer
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.RInstance:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance_name:
+        type: string
+      report_id:
+        type: integer
+      updated_at:
+        type: integer
+    type: object
   entities.Report:
     properties:
       created_at:
         type: integer
-      dashboard:
-        type: string
-      datasource:
-        type: string
+      dashboards:
+        items:
+          $ref: '#/definitions/entities.RDashboard'
+        type: array
       deleted_at:
         type: integer
       description:
         type: string
-      id:
-        type: integer
+      from:
+        type: string
+      instances:
+        items:
+          $ref: '#/definitions/entities.RInstance'
+        type: array
       name:
+        type: string
+      report_id:
+        type: integer
+      to:
         type: string
       type:
         type: string
@@ -962,6 +1003,22 @@ paths:
       summary: Get All Schedule
       tags:
       - Schedule
+  /api/v1/Screenshot/Create:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get ScreenShot
+      tags:
+      - ScreenShot
   /api/v1/User/Create:
     post:
       consumes:

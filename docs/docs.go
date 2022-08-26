@@ -1167,6 +1167,33 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Screenshot/Create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ScreenShot"
+                ],
+                "summary": "Get ScreenShot",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/User/Create": {
             "post": {
                 "security": [
@@ -1489,17 +1516,67 @@ const docTemplate = `{
                 }
             }
         },
+        "entities.RDashboard": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "dashboard_name": {
+                    "description": "Instance []RInstance ` + "`" + `gorm:\"many2many:ins_and_dash;\"` + "`" + `",
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "report_id": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.RInstance": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instance_name": {
+                    "type": "string"
+                },
+                "report_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
         "entities.Report": {
             "type": "object",
             "properties": {
                 "created_at": {
                     "type": "integer"
                 },
-                "dashboard": {
-                    "type": "string"
-                },
-                "datasource": {
-                    "type": "string"
+                "dashboards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.RDashboard"
+                    }
                 },
                 "deleted_at": {
                     "type": "integer"
@@ -1507,10 +1584,22 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
+                "from": {
+                    "type": "string"
+                },
+                "instances": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.RInstance"
+                    }
                 },
                 "name": {
+                    "type": "string"
+                },
+                "report_id": {
+                    "type": "integer"
+                },
+                "to": {
                     "type": "string"
                 },
                 "type": {
