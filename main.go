@@ -2,7 +2,7 @@ package main
 
 import (
 	databases "report-backend-golang/database"
-	"report-backend-golang/entities"
+	// "report-backend-golang/entities"
 	"report-backend-golang/global"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
@@ -34,9 +34,10 @@ func main() {
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	if global.EnvConfig.Other.Migration {
-		entities.InitTable()
-	}
+	// ///自動產table
+	// if global.EnvConfig.Other.Migration {
+	// 	entities.InitTable()
+	// }
 
 	// utils.LoadCrontab()
 	// authorize.LoadCasbin()
@@ -54,6 +55,6 @@ func main() {
 
 // 	screenshot.GetAllDashboard()
 // 	screenshot.GetUID()
-// 	screenshot.Test()
-// 	screenshot.Screenshot()
+// 	// screenshot.Test()
+// 	screenshot.ScreenshotWithAuth()
 // }

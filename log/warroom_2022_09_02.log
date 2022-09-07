@@ -1,0 +1,5 @@
+2022/09/02 19:08:05 Method="GET" URL="/api/v1/Report/GetReport/2" msg="error to get inventory details"
+2022/09/02 19:29:56 Method="GET" URL="/api/v1/Report/GetDashboard/1" msg="error to get inventory details"
+2022/09/02 19:32:24 Method="GET" URL="/api/v1/Report/GetDashboard/1" msg="error to get inventory details"
+2022/09/02 19:32:25 Method="GET" URL="/api/v1/Report/GetDashboard/1" msg="error to get inventory details"
+2022/09/02 19:32:27 Method="GET" URL="/api/v1/Report/GetDashboard/1" msg="error to get inventory details"

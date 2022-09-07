@@ -1,0 +1,4 @@
+2022/08/30 13:54:59 Method="POST" URL="/api/v1/Menu/AddDashboard/2" msg="json: cannot unmarshal string into Go struct field Role.roles.dashboards of type entities.Dashboard"
+2022/08/30 13:55:05 Method="POST" URL="/api/v1/Menu/AddDashboard/1" msg="json: cannot unmarshal string into Go struct field Role.roles.dashboards of type entities.Dashboard"
+2022/08/30 13:55:05 Method="POST" URL="/api/v1/Menu/AddDashboard/1" msg="json: cannot unmarshal string into Go struct field Role.roles.dashboards of type entities.Dashboard"
+2022/08/30 13:55:29 Method="POST" URL="/api/v1/Menu/AddDashboard/2" msg="Error when check menu ID, error: record not found"

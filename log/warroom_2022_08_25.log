@@ -1,2 +1,0 @@
-2022/08/25 12:34:22 Method="POST" URL="/api/v1/Report/Create" msg="json: cannot unmarshal string into Go struct field RDashboard.dashboards.report_id of type int"
-2022/08/25 12:35:03 Method="POST" URL="/api/v1/Report/Create" msg="json: cannot unmarshal string into Go struct field RInstance.instances.report_id of type int"

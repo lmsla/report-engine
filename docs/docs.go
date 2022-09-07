@@ -195,6 +195,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Html/Create/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ScreenShot"
+                ],
+                "summary": "Create Html",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Instance/Create": {
             "post": {
                 "security": [
@@ -825,6 +861,186 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Report/GetDashboard/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get dashboard of report by report ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.RDashboard"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Report/GetDashboardOfInstance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get report of instance by instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.RDashboard"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Report/GetInstance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get Instance of report by Instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Instance"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Report/GetInstanceOfReport/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get Instance of report by report ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.RInstance"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Report/GetReport/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get report by Report ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Report"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Role/AddDashboard/{id}": {
             "post": {
                 "security": [
@@ -1167,7 +1383,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/Screenshot/Create": {
+        "/api/v1/Screenshot/Create/{id}": {
             "post": {
                 "security": [
                     {
@@ -1184,6 +1400,15 @@ const docTemplate = `{
                     "ScreenShot"
                 ],
                 "summary": "Get ScreenShot",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1522,6 +1747,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "integer"
                 },
+                "dashboard_id": {
+                    "type": "integer"
+                },
                 "dashboard_name": {
                     "description": "Instance []RInstance ` + "`" + `gorm:\"many2many:ins_and_dash;\"` + "`" + `",
                     "type": "string"
@@ -1529,7 +1757,7 @@ const docTemplate = `{
                 "deleted_at": {
                     "type": "integer"
                 },
-                "id": {
+                "instance_id": {
                     "type": "integer"
                 },
                 "report_id": {
@@ -1549,17 +1777,29 @@ const docTemplate = `{
                 "created_at": {
                     "type": "integer"
                 },
+                "dashboard": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.RDashboard"
+                    }
+                },
                 "deleted_at": {
                     "type": "integer"
                 },
-                "id": {
+                "instance_id": {
                     "type": "integer"
                 },
                 "instance_name": {
                     "type": "string"
                 },
+                "ip": {
+                    "type": "string"
+                },
                 "report_id": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"
@@ -1587,7 +1827,7 @@ const docTemplate = `{
                 "from": {
                     "type": "string"
                 },
-                "instances": {
+                "instance": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.RInstance"

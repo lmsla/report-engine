@@ -104,12 +104,14 @@ definitions:
     properties:
       created_at:
         type: integer
+      dashboard_id:
+        type: integer
       dashboard_name:
         description: Instance []RInstance `gorm:"many2many:ins_and_dash;"`
         type: string
       deleted_at:
         type: integer
-      id:
+      instance_id:
         type: integer
       report_id:
         type: integer
@@ -122,14 +124,22 @@ definitions:
     properties:
       created_at:
         type: integer
+      dashboard:
+        items:
+          $ref: '#/definitions/entities.RDashboard'
+        type: array
       deleted_at:
         type: integer
-      id:
+      instance_id:
         type: integer
       instance_name:
         type: string
+      ip:
+        type: string
       report_id:
         type: integer
+      type:
+        type: string
       updated_at:
         type: integer
     type: object
@@ -147,7 +157,7 @@ definitions:
         type: string
       from:
         type: string
-      instances:
+      instance:
         items:
           $ref: '#/definitions/entities.RInstance'
         type: array
@@ -408,6 +418,28 @@ paths:
       summary: Get All Group
       tags:
       - Group
+  /api/v1/Html/Create/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Html
+      tags:
+      - ScreenShot
   /api/v1/Instance/Create:
     post:
       consumes:
@@ -793,6 +825,116 @@ paths:
       summary: Get All Report
       tags:
       - Report
+  /api/v1/Report/GetDashboard/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.RDashboard'
+      security:
+      - ApiKeyAuth: []
+      summary: Get dashboard of report by report ID
+      tags:
+      - Report
+  /api/v1/Report/GetDashboardOfInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.RDashboard'
+      security:
+      - ApiKeyAuth: []
+      summary: Get report of instance by instance ID
+      tags:
+      - Report
+  /api/v1/Report/GetInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Instance of report by Instance ID
+      tags:
+      - Report
+  /api/v1/Report/GetInstanceOfReport/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.RInstance'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Instance of report by report ID
+      tags:
+      - Report
+  /api/v1/Report/GetReport/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Report'
+      security:
+      - ApiKeyAuth: []
+      summary: Get report by Report ID
+      tags:
+      - Report
   /api/v1/Role/AddDashboard/{id}:
     post:
       consumes:
@@ -1003,10 +1145,16 @@ paths:
       summary: Get All Schedule
       tags:
       - Schedule
-  /api/v1/Screenshot/Create:
+  /api/v1/Screenshot/Create/{id}:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

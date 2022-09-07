@@ -3,15 +3,14 @@ package controller
 import (
 	// "fmt"
 	"net/http"
-	// "strconv"
 	"report-backend-golang/entities"
 	"report-backend-golang/handler"
+	"report-backend-golang/screenshot"
 	"report-backend-golang/services"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
-
 
 // @Summary Create Report
 // @Tags Report
@@ -58,6 +57,199 @@ func GetAllReport(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, r)
 }
+
+
+// @Summary Get report by Report ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Report
+// @Router /api/v1/Report/GetReport/{id} [get]
+// @Security ApiKeyAuth
+func GetReportByReportID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetReportByReportID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+// @Summary Get Instance of report by Instance ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Instance
+// @Router /api/v1/Report/GetInstance/{id} [get]
+// @Security ApiKeyAuth
+func GetInstanceByInstanceID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := screenshot.GetInstanceTypeAndIP(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+// @Summary Get dashboard of report by report ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.RDashboard
+// @Router /api/v1/Report/GetDashboard/{id} [get]
+// @Security ApiKeyAuth
+func GetDashboardOfReportbyReportID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetDashboardInReport(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+// @Summary Get Instance of report by report ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.RInstance
+// @Router /api/v1/Report/GetInstanceOfReport/{id} [get]
+// @Security ApiKeyAuth
+func GetInstanceOfReportbyReportID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetInstanceInReportbyReportID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+// @Summary Get report of instance by instance ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.RDashboard
+// @Router /api/v1/Report/GetDashboardOfInstance/{id} [get]
+// @Security ApiKeyAuth
+func GetDashboardOfInstanceByInstanceID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetDashboardOfInstanceByInstanceID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+
+// // @Summary Get ReportDashboard of server by Report ID
+// // @Tags Report
+// // @Accept  json
+// // @Produce  json
+// // @Param id path int true "report id"
+// // @Success 200 {object} entities.Report
+// // @Router /api/v1/Report/GetDashboards/{id} [get]
+// // @Security ApiKeyAuth
+// func GetReportDashboardByInstanceID(c *gin.Context) {
+
+// 	ReportID, err := strconv.Atoi(c.Param("id"))
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, "instance ID should be int")
+// 		handler.WriteErrorLog(c, "instance ID should be integer")
+// 		return
+// 	}
+
+// 	inventory, err := services.GetInstanceByID(ReportID)
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, "error to get inventory details")
+// 		handler.WriteErrorLog(c, "error to get inventory details")
+// 		return
+// 	}
+
+// 	switch inventory.Type {
+// 	case "grafana":
+// 		r, err := services.GetAllGrafanaDashboardTitle(inventory)
+// 		if err != nil {
+// 			c.JSON(http.StatusBadRequest, err.Error())
+// 			handler.WriteErrorLog(c, err.Error())
+// 			return
+// 		}
+// 		c.JSON(http.StatusOK, r)
+// 	case "kibana":
+// 		r, err := services.GetALLKibanaDashboardTitle(inventory)
+// 		if err != nil {
+// 			c.JSON(http.StatusBadRequest, err.Error())
+// 			// handler.WriteErrorLog(c, err.Error())
+// 			return
+// 		}
+// 		c.JSON(http.StatusOK, r)
+// 	default:
+// 		c.JSON(http.StatusBadRequest, "instance type unknown")
+// 	}
+// }
+
+
+
+
+
 
 
 
