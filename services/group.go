@@ -91,3 +91,50 @@ func DeleteMemberbyName(memberName string) models.Response {
 	res.Success = true
 	return res
 }
+
+
+// // 查 group mamber by groupID
+// func GetMemberByGroupID(GroupID int) ([]entities.GroupMember, error) {
+
+// 	var instancies []entities.GroupMember
+// 	instancies.GroupID = GroupID
+// 	err := global.Mysql.Preload("GroupMember").Find(&instancies).Error
+// 	// err := global.Mysql.First(&instance).Error
+
+// 	if err != nil {
+// 		return instancies, err
+// 	}
+// 	return instancies, nil
+// }
+
+
+// 查 group member by groupID
+func GetMemberByGroupID(groupID int) ([]entities.GroupMember, error){
+	// var IPType []map[string]int
+	instance := entities.Group{}
+	instance.GroupID = groupID
+	// err := global.Mysql.Find(&instance).Error
+	err := global.Mysql.Preload("GroupMember").Where("group_id = ?", groupID).Find(&instance).Error
+	if err != nil {
+		return nil, err
+	}
+	return instance.GroupMember, nil
+
+}
+
+// 查 group member by groupName
+func GetMemberByGroupName(groupName string) ([]entities.GroupMember, error){
+	// var IPType []map[string]int
+	instance := entities.Group{}
+	instance.Name = groupName
+	// err := global.Mysql.Find(&instance).Error
+	err := global.Mysql.Preload("GroupMember").Where("name = ?", groupName).Find(&instance).Error
+	if err != nil {
+		return nil, err
+	}
+	return instance.GroupMember, nil
+
+}
+
+
+

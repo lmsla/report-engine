@@ -195,6 +195,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Group/GetMember/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Get member by Group ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.GroupMember"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Html/Create/{id}": {
             "post": {
                 "security": [
@@ -1320,11 +1356,6 @@ const docTemplate = `{
         },
         "/api/v1/Schedule/Create": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -1378,6 +1409,78 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Schedule/GetSchedule/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get schedule by Schedule ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Schedule/ReportCreate/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Create Report by ScheduleID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -1897,14 +2000,14 @@ const docTemplate = `{
                 "generate-report": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
                 "recipients": {
                     "type": "string"
                 },
                 "reports": {
                     "type": "string"
+                },
+                "schedule_id": {
+                    "type": "integer"
                 },
                 "schedule_name": {
                     "type": "string"

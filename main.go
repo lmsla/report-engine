@@ -34,6 +34,8 @@ func main() {
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
+	utils.LoadCrontab()
+
 	// ///自動產table
 	// if global.EnvConfig.Other.Migration {
 	// 	entities.InitTable()

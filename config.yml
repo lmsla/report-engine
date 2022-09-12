@@ -23,3 +23,18 @@ cors:
   allow:
     headers: "Content-type Access-Control-Allow-Origin Authorization Refresh-token"
   default_allow_url: "http://localhost:8080"
+
+
+reportengine:
+  picturePath: /Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/pics
+  htmlPath: "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/html"
+  pdfPath: "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/pdf_file"
+  logPath: "/Users/chen/Documents/gitlab/git-out/product/report-backend/log/schedule.log"
+
+
+email:
+  user: "rabot6201@gmail.com"
+  password: "mohptlqcqeiisshx"
+  host: "smtp.gmail.com"
+  port: "587"
+  subject: ""

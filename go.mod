@@ -19,7 +19,11 @@ require (
 	gorm.io/gorm v1.23.8
 )
 
-require github.com/adrg/go-wkhtmltopdf v0.3.0
+require (
+	github.com/adrg/go-wkhtmltopdf v0.3.0
+	github.com/robfig/cron/v3 v3.0.1
+	github.com/timberio/go-datemath v0.1.0
+)
 
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect

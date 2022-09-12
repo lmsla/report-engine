@@ -1,10 +1,12 @@
 package structs
 
 type EnviromentModel struct {
-	Database database
-	Server   server
-	Cors     corsModel
-	Other    other
+	Database     database
+	Server       server
+	Cors         corsModel
+	Other        other
+	Reportengine reportengine
+	Email        email
 }
 
 type other struct {
@@ -37,4 +39,19 @@ type database struct {
 	Params      string
 	Port        string
 	LogEnable   int
+}
+
+type reportengine struct {
+	PicturePath string
+	HtmlPath    string
+	PdfPath     string
+	LogPath     string
+}
+
+type email struct {
+	User     string
+	Password string
+	Host     string
+	Port     string
+	Subject  string
 }

@@ -1,0 +1,92 @@
+package schedule
+
+import (
+	"fmt"
+	"report-backend-golang/global"
+	"report-backend-golang/pdf"
+	"report-backend-golang/screenshot"
+	"report-backend-golang/services"
+
+	"report-backend-golang/log"
+)
+
+func FuncAddToCron(scheduleID int) {
+	inventory,err := services.GetScheduleBysSheduleID(scheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	inventory1,err := services.GetReportByReportName(inventory.Report)
+
+
+	// _,err = global.Crontab.AddFunc(inventory.GenerateReport,func(){
+	// 	screenshot.Screenshot(inventory1.ReportID)
+	// 	pdf.CreateHtml(inventory1.ReportID)
+	// }) 
+
+	screenshot.Screenshot(inventory1.ReportID)
+	
+	pdf.CreateHtml(inventory1.ReportID)
+
+	services.Sendmail(inventory.Recipient)
+
+}
+
+
+
+
+// 執行Schedule by ScheduleID
+func ExecuteShedulePDF(scheduleID int) {
+	inventory,err := services.GetScheduleBysSheduleID(scheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// inventory1,err := services.GetReportByReportName(inventory.Report)
+
+	_,err = global.Crontab.AddFunc(inventory.GenerateReport,func(){
+		FuncAddToCron(scheduleID)
+
+	}) 
+	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
+	if err != nil {
+		fmt.Println("crontab PDF 初始化失敗")
+		log.Logrecord("排程 ","PDF排程 初始化失敗")
+		fmt.Println(err.Error())
+		log.Logrecord("ERROR ",err.Error())
+	} else {
+		fmt.Println("crontab PDF 初始化成功")
+		log.Logrecord("排程 ","PDF排程 初始化成功")
+		// c.Start()
+		global.Crontab.Start()
+
+	}
+
+}
+
+
+// 執行Schedule by ScheduleID
+func ExecuteSheduleSendMail(scheduleID int) {
+	inventory,err := services.GetScheduleBysSheduleID(scheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// inventory1,err := services.GetReportByReportName(inventory.Report)
+
+	_,err = global.Crontab.AddFunc(inventory.SendReport,func(){
+		services.Sendmail(inventory.Recipient)
+
+	}) 
+	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
+	if err != nil {
+		fmt.Println("crontab xdr 初始化失敗")
+		log.Logrecord("排程 ","xdr排程 初始化失敗")
+		fmt.Println(err.Error())
+		log.Logrecord("ERROR ",err.Error())
+	} else {
+		fmt.Println("crontab xdr 初始化成功")
+		log.Logrecord("排程 ","xdr排程 初始化成功")
+		// c.Start()
+		global.Crontab.Start()
+
+	}
+
+}

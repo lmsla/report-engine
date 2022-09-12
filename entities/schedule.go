@@ -1,7 +1,8 @@
 package entities
 
 type Schedule struct {
-	Common1
+	Common
+	ScheduleID     int    `json:"schedule_id" form:"schedule_id" gorm:"primaryKey"`
 	Name           string `json:"schedule_name" form:"schedule_name"`
 	Description    string `json:"description" form:"description"`
 	Report         string `json:"reports" form:"reports"`

@@ -203,12 +203,12 @@ definitions:
         type: string
       generate-report:
         type: string
-      id:
-        type: integer
       recipients:
         type: string
       reports:
         type: string
+      schedule_id:
+        type: integer
       schedule_name:
         type: string
       send_report:
@@ -416,6 +416,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get All Group
+      tags:
+      - Group
+  /api/v1/Group/GetMember/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.GroupMember'
+      security:
+      - ApiKeyAuth: []
+      summary: Get member by Group ID
       tags:
       - Group
   /api/v1/Html/Create/{id}:
@@ -1124,8 +1146,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
       summary: Create Schedule
       tags:
       - Schedule
@@ -1143,6 +1163,50 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get All Schedule
+      tags:
+      - Schedule
+  /api/v1/Schedule/GetSchedule/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Schedule'
+      security:
+      - ApiKeyAuth: []
+      summary: Get schedule by Schedule ID
+      tags:
+      - Schedule
+  /api/v1/Schedule/ReportCreate/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Report by ScheduleID
       tags:
       - Schedule
   /api/v1/Screenshot/Create/{id}:

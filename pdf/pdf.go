@@ -5,9 +5,12 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"os"
-	"report-backend-golang/services"
 	"log"
+	"os"
+	"report-backend-golang/global"
+	"report-backend-golang/services"
+
+	// "strings"
 	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 )
@@ -52,12 +55,24 @@ func CreateHtml(ReportID int) {
 
 	for _, dashboards := range dashboardData {
 		uu := new(Dashboard)
-		uu.Img = fmt.Sprintf("pics/%s.png", dashboards.UID)
+		uu.Img = fmt.Sprintf("%s/%s.png",global.EnvConfig.Reportengine.PicturePath,dashboards.UID)
 		uu.Name = fmt.Sprintf(dashboards.DashboardName)
 		data1 = append(data1, *uu)
 	}
 	fmt.Println(data1)
-	
+
+	//	用 ReportID 取出 Report 的相關資料 
+	inventory, err := services.GetReportByReportID(ReportID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(inventory.Name)
+
+	fromtimeconverted := services.Timeconverter(inventory.From+"+8h")
+	totimeconverted := services.Timeconverter(inventory.To+"+8h")
+	str1 := fromtimeconverted[0:19] 
+	str2 := totimeconverted[0:19]
+
 
 	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
 
@@ -72,23 +87,26 @@ func CreateHtml(ReportID int) {
 	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
 		fmt.Println(err.Error())
 	}
-
-	outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
+	outputPath := fmt.Sprintf("%s/%s %s~%s.html",global.EnvConfig.Reportengine.HtmlPath,inventory.Name,str1,str2)
+	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
 	f, _ := os.Create(outputPath)
 	w := bufio.NewWriter(f)
 	w.WriteString(string(processed.Bytes()))
 	w.Flush()
-
-	GeneratePDF()
+	// pdf的名稱
+	pdfname := fmt.Sprintf("%s/%s %s~%s.pdf",global.EnvConfig.Reportengine.PdfPath,inventory.Name,str1,str2)
+	// 執行產出pdf的程式
+	GeneratePDF(outputPath,pdfname)
 }
 
-func GeneratePDF() {
+func GeneratePDF(htmlpath string,pdfname string) {
 
 	pdf.Init()
 	defer pdf.Destroy()
 
 	// Create object from file.
-	object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
+	// object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
+	object, err := pdf.NewObject(htmlpath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -118,7 +136,7 @@ func GeneratePDF() {
 	converter.MarginRight = "10mm"
 
 	// Convert objects and save the output PDF document.
-	outFile, err := os.Create("out.pdf")
+	outFile, err := os.Create(pdfname)
 	if err != nil {
 		log.Fatal(err)
 	}

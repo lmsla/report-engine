@@ -47,6 +47,19 @@ func GetReportByReportID(reportID int) (entities.Report, error) {
 	return instance, nil
 }
 
+// 藉由report name查report
+func GetReportByReportName(reportName string) (entities.Report, error) {
+
+	var instance entities.Report
+	instance.Name = reportName
+	err := global.Mysql.First(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
+}
+
+
 // 查report中有哪些instance
 func GetInstanceInReportbyReportID(reportID int)([]entities.RInstance,error) {
 	instance := entities.Report{}

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"report-backend-golang/global"
 	"report-backend-golang/services"
+
 	// "time"
 	"github.com/chromedp/chromedp"
 	// "github.com/chromedp/cdproto/page"
@@ -19,7 +21,7 @@ func Screenshot(ReportID int) {
 	// 	// chromedp.WithDebugf(log.Printf),
 	// )
 	// defer cancel()
-	
+
 	// 先取得 report 中包含的 instance
 	data,err := services.GetInstanceInReportbyReportID(ReportID)
 	if err != nil {
@@ -56,7 +58,7 @@ func Screenshot(ReportID int) {
 					log.Fatal(err)
 				}
 				// 寫到指定路徑，暫定以 dashboard UID 命名
-				file := fmt.Sprintf("/Users/chen/Documents/gitlab/git-out/product/report-backend/dashboardshot/%s.png",data2.UID)
+				file := fmt.Sprintf("%s/%s.png",global.EnvConfig.Reportengine.PicturePath,data2.UID)
 				if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 					log.Fatal(err)
 				}
@@ -88,17 +90,18 @@ func Screenshot(ReportID int) {
 					log.Fatal(err)
 				}
 				// 寫到指定路徑，暫定以 dashboard UID 命名
-				file := fmt.Sprintf("/Users/chen/Documents/gitlab/git-out/product/report-backend/dashboardshot/%s.png",data2.UID)
+				file := fmt.Sprintf("%s/%s.png",global.EnvConfig.Reportengine.PicturePath,data2.UID)
 				if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 					log.Fatal(err)
 				}
+				
 			}
-
+			
 		}
 
 	}
 	
-
+}
 
 	// capture screenshot of an element
 	// var buf []byte
@@ -153,7 +156,7 @@ func Screenshot(ReportID int) {
 	// }
 	// log.Printf("wrote elementScreenshot.png and fullScreenshot.png and elementScreenshot.pdf")
 
-}
+
 
 
 // kibana url

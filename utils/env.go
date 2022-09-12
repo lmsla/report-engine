@@ -51,6 +51,15 @@ func viperConfigToModel() {
 
 	config.Other.Backend = viper.GetString("other.backend")
 	config.Other.Migration = viper.GetBool("other.migration")
+	config.Reportengine.HtmlPath = viper.GetString("reportengine.htmlPath")
+	config.Reportengine.PicturePath = viper.GetString("reportengine.picturePath")
+	config.Reportengine.PdfPath = viper.GetString("reportengine.pdfPath")
+	config.Reportengine.LogPath = viper.GetString("reportengine.logpath")
+	config.Email.User = viper.GetString("email.user")
+	config.Email.Password = viper.GetString("email.password")
+	config.Email.Port = viper.GetString("email.port")
+	config.Email.Host = viper.GetString("email.host")
+	config.Email.Subject = viper.GetString("email.subject") 
 
 	global.EnvConfig = &config
 }
