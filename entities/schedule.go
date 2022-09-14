@@ -11,3 +11,12 @@ type Schedule struct {
 	Recipient      string `json:"recipients" form:"recipients"`
 	Status         string `json:"status" form:"status"`
 }
+
+type FileHistory struct {
+	Common
+	FileID     int    `json:"file_id" form:"file_id" gorm:"primaryKey"`
+	ScheduleID int    `json:"schedule_id" form:"schedule_id"`
+	HtmlName   string `json:"html_name" form:"html_name"`
+	PdfName    string `json:"pdf_name" form:"pdf_name"`
+	Filetype   string `json:"file_type" form:"file_type"`
+}

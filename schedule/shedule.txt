@@ -3,7 +3,6 @@ package schedule
 import (
 	"fmt"
 	"report-backend-golang/global"
-	"report-backend-golang/pdf"
 	"report-backend-golang/screenshot"
 	"report-backend-golang/services"
 
@@ -25,7 +24,7 @@ func FuncAddToCron(scheduleID int) {
 
 	screenshot.Screenshot(inventory1.ReportID)
 	
-	pdf.CreateHtml(inventory1.ReportID)
+	services.CreateHtml(inventory1.ReportID)
 
 	services.Sendmail(inventory.Recipient)
 

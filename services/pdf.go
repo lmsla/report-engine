@@ -1,4 +1,4 @@
-package pdf
+package services
 
 import (
 	"bufio"
@@ -8,7 +8,9 @@ import (
 	"log"
 	"os"
 	"report-backend-golang/global"
-	"report-backend-golang/services"
+	// "report-backend-golang/services"
+	// "report-backend-golang/models"
+	"report-backend-golang/entities"
 
 	// "strings"
 	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
@@ -38,7 +40,7 @@ func list(e ...float64) []float64 {
 	return e
 }
 
-func CreateHtml(ReportID int) {
+func CreateHtml(ScheduleID int, ReportID int) {
 
 	// data := []Product{
 	// 	{"pics/RlgkWFg4k.png", "strawberries", "$2.00", 4.0, 251, "Lorem ipsum dolor sit amet, consectetur adipiscing elit."},
@@ -47,7 +49,7 @@ func CreateHtml(ReportID int) {
 	// }
 	// fmt.Println(data)
 
-	dashboardData, err := services.GetDashboardInReport(ReportID)
+	dashboardData, err := GetDashboardInReport(ReportID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -55,24 +57,23 @@ func CreateHtml(ReportID int) {
 
 	for _, dashboards := range dashboardData {
 		uu := new(Dashboard)
-		uu.Img = fmt.Sprintf("%s/%s.png",global.EnvConfig.Reportengine.PicturePath,dashboards.UID)
+		uu.Img = fmt.Sprintf("%s/%s.png", global.EnvConfig.Reportengine.PicturePath, dashboards.UID)
 		uu.Name = fmt.Sprintf(dashboards.DashboardName)
 		data1 = append(data1, *uu)
 	}
 	fmt.Println(data1)
 
-	//	用 ReportID 取出 Report 的相關資料 
-	inventory, err := services.GetReportByReportID(ReportID)
+	//	用 ReportID 取出 Report 的相關資料
+	inventory, err := GetReportByReportID(ReportID)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println(inventory.Name)
 
-	fromtimeconverted := services.Timeconverter(inventory.From+"+8h")
-	totimeconverted := services.Timeconverter(inventory.To+"+8h")
-	str1 := fromtimeconverted[0:19] 
-	str2 := totimeconverted[0:19]
-
+	fromtimeconverted := Timeconverter(inventory.From + "+8h")
+	totimeconverted := Timeconverter(inventory.To + "+8h")
+	str1 := fromtimeconverted[0:16]
+	str2 := totimeconverted[0:16]
 
 	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
 
@@ -87,19 +88,40 @@ func CreateHtml(ReportID int) {
 	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
 		fmt.Println(err.Error())
 	}
-	outputPath := fmt.Sprintf("%s/%s %s~%s.html",global.EnvConfig.Reportengine.HtmlPath,inventory.Name,str1,str2)
+	outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Reportengine.HtmlPath, inventory.Name, str1, str2)
+	htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
 	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
+
+	// 新增 html history
+	Htmlfile := entities.FileHistory{ScheduleID:ScheduleID, HtmlName: htmlName,Filetype: "html"}
+	global.Mysql.Create(&Htmlfile)
+
 	f, _ := os.Create(outputPath)
 	w := bufio.NewWriter(f)
 	w.WriteString(string(processed.Bytes()))
 	w.Flush()
+
 	// pdf的名稱
-	pdfname := fmt.Sprintf("%s/%s %s~%s.pdf",global.EnvConfig.Reportengine.PdfPath,inventory.Name,str1,str2)
+	pdfname := fmt.Sprintf("%s/%s_%s~%s.pdf", global.EnvConfig.Reportengine.PdfPath, inventory.Name, str1, str2)
+	pdfshortname := fmt.Sprintf("%s",htmlName)
+
 	// 執行產出pdf的程式
-	GeneratePDF(outputPath,pdfname)
+	GeneratePDF(outputPath, pdfname)
+
+	// 新增 pdf history
+	file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
+	global.Mysql.Create(&file)
+
 }
 
-func GeneratePDF(htmlpath string,pdfname string) {
+// 新增 history
+func CreateFileHistory() {
+	// res := models.Response{}
+	file := entities.FileHistory{ScheduleID: 1}
+	global.Mysql.Create(&file)
+}
+
+func GeneratePDF(htmlpath string, pdfname string) {
 
 	pdf.Init()
 	defer pdf.Destroy()
@@ -129,7 +151,8 @@ func GeneratePDF(htmlpath string,pdfname string) {
 	// Set converter options.
 	converter.Title = "Sample document"
 	converter.PaperSize = pdf.A4
-	converter.Orientation = pdf.Landscape
+	//橫向展示
+	// converter.Orientation = pdf.Landscape
 	converter.MarginTop = "1cm"
 	converter.MarginBottom = "1cm"
 	converter.MarginLeft = "10mm"

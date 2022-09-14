@@ -440,28 +440,6 @@ paths:
       summary: Get member by Group ID
       tags:
       - Group
-  /api/v1/Html/Create/{id}:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Create Html
-      tags:
-      - ScreenShot
   /api/v1/Instance/Create:
     post:
       consumes:

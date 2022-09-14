@@ -94,7 +94,7 @@ func LoadRouter() *gin.Engine {
 
 	{
 		apiv1.POST("Screenshot/Create/:id", GetScreenShot)
-		apiv1.POST("Html/Create/:id", CreateHtml)
+		// apiv1.POST("Html/Create/:id", CreateHtml)
 
 	}
 

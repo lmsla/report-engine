@@ -23,6 +23,7 @@ func InitTable() {
 		Schedule{},
 		RInstance{},
 		RDashboard{},
+		FileHistory{},
 		"users_roles",
 		"dashboards_roles",
 		"menus_dashboards",
@@ -44,6 +45,7 @@ func InitTable() {
 		Schedule{},
 		RInstance{},
 		RDashboard{},
+		FileHistory{},
 	)
 
 	if err != nil {

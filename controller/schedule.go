@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"report-backend-golang/entities"
 	"report-backend-golang/handler"
-	"report-backend-golang/schedule"
+	// "report-backend-golang/schedule"
 	"report-backend-golang/services"
 	"strconv"
 
@@ -100,12 +100,12 @@ func CreateReportbySchedule(c *gin.Context) {
 
 	ScheduleID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "report ID should be int")
-		handler.WriteErrorLog(c, "report ID should be integer")
+		c.JSON(http.StatusBadRequest, "Schedule ID should be int")
+		handler.WriteErrorLog(c, "Schedule ID should be integer")
 		return
 	}
 
-	schedule.ExecuteShedulePDF(ScheduleID)
+	services.ExecuteShedulePDF(ScheduleID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, err.Error())
 	// 	handler.WriteErrorLog(c, err.Error())

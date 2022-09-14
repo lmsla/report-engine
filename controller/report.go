@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"report-backend-golang/entities"
 	"report-backend-golang/handler"
-	"report-backend-golang/screenshot"
+	// "report-backend-golang/screenshot"
 	"report-backend-golang/services"
 	"strconv"
 
@@ -105,7 +105,7 @@ func GetInstanceByInstanceID(c *gin.Context) {
 	}
 
 	// inventory, err := screenshot.GetInstanceByID(id)
-	inventory, err := screenshot.GetInstanceTypeAndIP(id)
+	inventory, err := services.GetInstanceTypeAndIP(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error to get inventory details")
 		handler.WriteErrorLog(c, "error to get inventory details")

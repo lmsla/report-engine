@@ -7,11 +7,11 @@ import (
 	"io/ioutil"
 	"log"
 	"mime"
+	"net/smtp"
+	"report-backend-golang/entities"
+	"report-backend-golang/global"
 	"strings"
 	"time"
-	"net/smtp"
-	"report-backend-golang/global"
-
 )
 
 // define email interface, and implemented auth and send method
@@ -45,6 +45,7 @@ type Message struct {
     attachment  Attachment
 }
 
+// 用 group name 取出群組中的 member
 func GetMemberList(groupName string) ([]string) {
 	inventory,err := GetMemberByGroupName(groupName)
 	if err != nil {
@@ -58,31 +59,73 @@ func GetMemberList(groupName string) ([]string) {
 
 }
 
-func Sendmail(groupName string) {
+
+// 取出filename by schedule ID 
+func GetFilenameByscheduleID(scheduleID int) (entities.FileHistory, error){
+    var instance entities.FileHistory
+	instance.ScheduleID = scheduleID
+	err := global.Mysql.Where("schedule_id= ? AND filetype = ?",scheduleID,"pdf" ).First(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
+}
+
+
+
+func Sendmail(scheduleID int ,groupName string) {
     // user := "rabot6201@gmail.com"
     // password := "mohptlqcqeiisshx"
     // host := "smtp.gmail.com"
     // port := "587"
 
     memberlist := GetMemberList(groupName)
-
     fmt.Println(memberlist)
-
 	user := global.EnvConfig.Email.User
     password := global.EnvConfig.Email.Password
     host := global.EnvConfig.Email.Host
     port := global.EnvConfig.Email.Port
 
-    fmt.Println(user)
-    fmt.Println(password)
-    fmt.Println(host)
-    fmt.Println(port)
+    // fmt.Println(user)
+    // fmt.Println(password)
+    // fmt.Println(host)
+    // fmt.Println(port)
+
+    // //用 ScheduleID 取出 Schedule 的相關資料
+    // inventory,err := GetScheduleBysSheduleID(scheduleID)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+    // //用 ReportName 取出 ReportID
+    // inventory1,err := GetReportByReportName(inventory.Report)
+    // 	if err != nil {
+	// 	fmt.Println(err)
+	// }
+    // //用 ReportID 取出 Report 的相關資料 
+	// inventory2, err := GetReportByReportID(inventory1.ReportID)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(inventory.Name)
+
+	// fromtimeconverted := Timeconverter(inventory2.From+"+8h")
+	// totimeconverted := Timeconverter(inventory2.To+"+8h")
+	// str1 := fromtimeconverted[0:16] 
+	// str2 := totimeconverted[0:16]
+    // pdfPath := fmt.Sprintf("%s/%s %s~%s.pdf",global.EnvConfig.Reportengine.PdfPath,inventory1.Name,str1,str2)
+    pdfName,err := GetFilenameByscheduleID(scheduleID)
+    if err != nil {
+		fmt.Println(err)
+	}
+    pdfPath := fmt.Sprintf("%s/%s.pdf", global.EnvConfig.Reportengine.PdfPath, pdfName.PdfName)
+    fmt.Println(scheduleID)
+    fmt.Println(pdfName.PdfName)
 
     var mail Mail
     mail = &SendMail{user: user, password: password, host: host, port: port}
     message := Message{from: user,
-        to:          []string{"russell.chen@bimap.co"},
-        // to:          memberlist,
+        // to:          []string{"russell.chen@bimap.co"},
+        to:          memberlist,
         // cc:          []string{},
         // bcc:         []string{},
         subject:     "HELLO WORLD",
@@ -94,18 +137,24 @@ func Sendmail(groupName string) {
         //     withFile:    true,
         // },
         attachment: Attachment{
-            name:        "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/pdf_file/report01 2022-09-07 08:00:00~2022-09-07 16:24:25.pdf",
+            // name:        "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/pdf_file/report01 2022-09-07 08:00:00~2022-09-07 16:24:25.pdf",
+            name: pdfPath,
             contentType: "application/octet-stream",
             withFile:    true,
         },
     }
-    err := mail.Send(message)
+    err = newFunction(mail, message)
     if err != nil {
         fmt.Println("Send mail error!")
         fmt.Println(err)
     } else {
         fmt.Println("Send mail success!")
     }
+}
+
+func newFunction(mail Mail, message Message) error {
+	err := mail.Send(message)
+	return err
 }
 
 func (mail *SendMail) Auth() {

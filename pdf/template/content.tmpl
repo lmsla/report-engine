@@ -3,7 +3,7 @@
    <h3 class="title"> report </h3>
    <div class="products-container">
 {{range $index, $item :=.}}
-      <div class="dashboard" data-name="p-{{$index}}">
+      <div class="dashboard" data-name="p-{{$index}} style="display:block; clear:both; page-break-after:auto;page-break-inside:avoid;">
          <h3>{{$item.Name}}</h3>
          <div class="price">{{$item.Price}}</div>
          <img src="{{$item.Img}}" alt="">        
