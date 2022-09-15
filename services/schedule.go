@@ -84,9 +84,9 @@ func ExecuteShedulePDF(scheduleID int) {
 	}
 	// inventory1,err := services.GetReportByReportName(inventory.Report)
 
+	
 	_,err = global.Crontab.AddFunc(inventory.GenerateReport,func(){
 		FuncAddToCron(scheduleID)
-
 	}) 
 	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
 	if err != nil {
