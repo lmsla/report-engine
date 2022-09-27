@@ -59,6 +59,43 @@ func GetAllSchedule(c *gin.Context) {
 }
 
 
+// @Summary Update Schedule
+// @Tags Schedule
+// @Accept  json
+// @Produce  json
+// @Param schedule body entities.Schedule true "instance"
+// @Param id path int true "schedule id"
+// @Success 200 {object} models.Response
+// @Router /api/v1/Schedule/Update/{id} [put]
+// @Security ApiKeyAuth
+func UpdateSchedule(c *gin.Context) {
+
+	scheduleID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "schedule id should be int")
+		handler.WriteErrorLog(c, "schedule id should be integer")
+		return
+	}
+
+	body := new(entities.Schedule)
+	err = c.Bind(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		// handler.WriteErrorLog(c, err.Error())
+	}
+
+	// Update DB
+	r := services.UpdateSchedule(scheduleID, *body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, r)
+}
+
+
+
 // @Summary Get schedule by Schedule ID
 // @Tags Schedule
 // @Accept  json

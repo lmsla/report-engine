@@ -33,6 +33,41 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 
 }
 
+
+// 更新Schedule
+func UpdateSchedule(scheduleID int, instance entities.Schedule) models.Response {
+
+	res := models.Response{}
+
+	temp := entities.Schedule{}
+	// temp := entities.Status{}
+	DBresponse := global.Mysql.Where("schedule_id = ?", scheduleID).First(&temp)
+
+	if DBresponse.RowsAffected == 0 {
+		res.Success = false
+		res.Msg = "schedule id does not exist"
+		return res
+	}
+
+	instance.CreatedAt = temp.CreatedAt
+	// 註：.Select("*") 會導致 struct 中沒更新的欄位(沒填值)直接消失，此處只需更新 Status，故拿掉 .Select("*") ，API 送進去的 struct 可以只更新 status 
+	// err := global.Mysql.Select("*").Where("schedule_id = ?", scheduleID).Updates(&instance).Error
+	err := global.Mysql.Where("schedule_id = ?", scheduleID).Updates(&instance).Error
+	if err != nil {
+		res.Success = false
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Success = true
+	res.Msg = fmt.Sprintf("schedule ID %v Updated Success", scheduleID)
+	return res
+}
+
+
+
+
+
 // 查詢All schedule
 func GetAllSchedule() ([]entities.Schedule, error) {
 
@@ -127,7 +162,10 @@ func ExecuteSheduleSendMail(scheduleID int) {
 		fmt.Println("crontab xdr 初始化成功")
 		log.Logrecord("排程 ","xdr排程 初始化成功")
 		// c.Start()
-		global.Crontab.Start()
+		if inventory.Status == "run" {
+			global.Crontab.Start()
+		}
+		// global.Crontab.Start()
 
 	}
 

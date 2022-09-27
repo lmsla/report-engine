@@ -1187,6 +1187,34 @@ paths:
       summary: Create Report by ScheduleID
       tags:
       - Schedule
+  /api/v1/Schedule/Update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      - description: schedule id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Schedule
+      tags:
+      - Schedule
   /api/v1/Screenshot/Create/{id}:
     post:
       consumes:

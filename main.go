@@ -2,7 +2,7 @@ package main
 
 import (
 	databases "report-backend-golang/database"
-	// "report-backend-golang/entities"
+	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
@@ -36,11 +36,12 @@ func main() {
 
 	utils.LoadCrontab()
 
-	// ///自動產table
-	// if global.EnvConfig.Other.Migration {
-	// 	entities.InitTable()
-	// }
-
+	///自動產table
+	if global.EnvConfig.Migration.Controller == "true" {
+		if global.EnvConfig.Other.Migration {
+			entities.InitTable()
+		}
+	}
 	// utils.LoadCrontab()
 	// authorize.LoadCasbin()
 

@@ -1,0 +1,4 @@
+2022/09/19 16:26:47 Method="PUT" URL="/api/v1/Schedule/Update/3" msg="json: cannot unmarshal object into Go value of type string"
+2022/09/19 16:30:12 Method="PUT" URL="/api/v1/Schedule/Update/2" msg="json: cannot unmarshal object into Go value of type string"
+2022/09/19 16:30:44 Method="PUT" URL="/api/v1/Schedule/Update/2" msg="json: cannot unmarshal object into Go value of type string"
+2022/09/19 16:33:00 Method="PUT" URL="/api/v1/Schedule/Update/2" msg="json: cannot unmarshal object into Go value of type string"

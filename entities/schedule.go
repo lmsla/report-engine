@@ -10,6 +10,11 @@ type Schedule struct {
 	SendReport     string `json:"send_report" form:"send_report"`
 	Recipient      string `json:"recipients" form:"recipients"`
 	Status         string `json:"status" form:"status"`
+
+}
+
+type Status struct {
+	Status string `json:"status" form:"status"`
 }
 
 type FileHistory struct {

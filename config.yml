@@ -38,3 +38,6 @@ email:
   host: "smtp.gmail.com"
   port: "587"
   subject: ""
+
+migration:
+  controller: "true"
