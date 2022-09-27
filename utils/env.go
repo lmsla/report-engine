@@ -60,7 +60,6 @@ func viperConfigToModel() {
 	config.Email.Port = viper.GetString("email.port")
 	config.Email.Host = viper.GetString("email.host")
 	config.Email.Subject = viper.GetString("email.subject")
-	config.Migration.Controller = viper.GetString("migration.controller")
 
 	global.EnvConfig = &config
 }

@@ -17,7 +17,7 @@ server:
 
 other:
   backend: "localhost:3002"
-  migration: true
+  migration: false
 
 cors:
   allow:
@@ -38,6 +38,3 @@ email:
   host: "smtp.gmail.com"
   port: "587"
   subject: ""
-
-migration:
-  controller: "true"

@@ -37,10 +37,9 @@ func main() {
 	utils.LoadCrontab()
 
 	///自動產table
-	if global.EnvConfig.Migration.Controller == "true" {
-		if global.EnvConfig.Other.Migration {
-			entities.InitTable()
-		}
+
+	if global.EnvConfig.Other.Migration {
+		entities.InitTable()
 	}
 	// utils.LoadCrontab()
 	// authorize.LoadCasbin()

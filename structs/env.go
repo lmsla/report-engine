@@ -7,7 +7,6 @@ type EnviromentModel struct {
 	Other        other
 	Reportengine reportengine
 	Email        email
-	Migration    migration
 }
 
 type other struct {
@@ -57,6 +56,3 @@ type email struct {
 	Subject  string
 }
 
-type migration struct {
-	Controller string
-}
