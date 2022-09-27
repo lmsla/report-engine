@@ -198,6 +198,35 @@ func GetDashboardOfInstanceByInstanceID(c *gin.Context) {
 	c.JSON(http.StatusOK, inventory)
 }
 
+// @Summary Delete Report
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "report id"
+// @Success 200 {object} models.Response
+// @Router /api/v1/Report/Delete/{id} [delete]
+// @Security ApiKeyAuth
+func DeleteReport(c *gin.Context) {
+
+	reportID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "report id should be int")
+		handler.WriteErrorLog(c, "report id should be integer")
+		return
+	}
+
+	// Update DB
+	r := services.DeleteInstance(reportID)
+	if !r.Success {
+		c.JSON(http.StatusBadRequest, r.Msg)
+		handler.WriteErrorLog(c, r.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, r)
+}
+
+
+
 
 
 // // @Summary Get ReportDashboard of server by Report ID

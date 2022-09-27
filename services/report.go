@@ -88,6 +88,28 @@ func GetDashboardInReport(reportID int) ([]entities.RDashboard, error){
 }
 
 
+// 刪除Report
+func DeleteReport(reportID int) models.Response {
+
+	res := models.Response{}
+	DBresponse := global.Mysql.Where("report_id = ?", reportID).Delete(&entities.Report{})
+
+	if DBresponse.RowsAffected == 0 {
+		res.Msg = fmt.Sprintf("Report ID %v does not exist", reportID)
+		res.Success = false
+		return res
+	}
+	if DBresponse.Error != nil {
+		res.Msg = fmt.Sprintf("Error: %v", DBresponse.Error)
+		res.Success = false
+		return res
+	}
+	res.Msg = fmt.Sprintf("Report ID %v Deleted", reportID)
+	res.Success = true
+	return res
+}
+
+
 // 取出dashboard by instance ID 
 func GetDashboardOfInstanceByInstanceID(instanceID int) ([]entities.RDashboard, error){
 	instance := entities.RInstance{}
@@ -99,6 +121,9 @@ func GetDashboardOfInstanceByInstanceID(instanceID int) ([]entities.RDashboard, 
 	return instance.Dashboard, nil
 
 }
+
+
+
 
 // 取出 report中的dashboard (未定)
 func GetDashboardInReport1(reportID int) ([]map[string]interface{}, error){
