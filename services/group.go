@@ -50,6 +50,48 @@ func CreateMember(group entities.GroupMember) models.Response {
 	return res
 }
 
+// add dashboard to menu
+func AddMemberToGroup(GroupID int, member entities.GroupMember) models.Response {
+
+	res := models.Response{}
+
+	// // 確認dashboard是否已存在DB中，若沒有則新增並加入Admin可以看的清單中
+	// check := CheckDashboard(GroupID, member)
+	// if !check.Success {
+	// 	res.Msg = check.Msg
+	// 	res.Success = false
+	// 	return res
+	// }
+
+	// 新增 Dashboard (of the menuID)
+	// member.GroupID = groupID
+	err := global.Mysql.Create(&member).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("error when creating dashboard to db, err: %v", err)
+		res.Success = false
+		return res
+	}
+
+	// // 新增 Dashboard to Admin
+	// var dashboardID int
+	// global.Mysql.Table("dashboards").Where("uid = ? AND menu_id = ?", dashboard.UID, menuID).Select("dashboard_id").Scan(&dashboardID)
+	// err = global.Mysql.Table("dashboards_roles").Create(map[string]interface{}{"dashboard_id": dashboardID, "role_id": 1}).Error
+	// if err != nil {
+	// 	res.Msg = fmt.Sprintf("error when creating dashboards_roles, err: %v", err)
+	// 	res.Success = false
+	// 	return res
+	// }
+
+	res.Msg = "add member successfully"
+	res.Success = true
+	return res
+}
+
+
+
+
+
+
 // 刪除 member by id
 func DeleteMember(memberID int) models.Response {
 
@@ -134,6 +176,22 @@ func GetMemberByGroupName(groupName string) ([]entities.GroupMember, error){
 	}
 	return instance.GroupMember, nil
 
+}
+
+// Check Group by id
+func CheckGroupID(id int) models.Response {
+	res := models.Response{}
+
+	err := global.Mysql.Where("group_id = ?", id).First(&entities.Group{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when check group ID, error: %s", err.Error())
+		res.Success = false
+		return res
+	}
+
+	res.Msg = "ok"
+	res.Success = true
+	return res
 }
 
 

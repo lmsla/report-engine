@@ -71,6 +71,7 @@ func LoadRouter() *gin.Engine {
 		apiv1.DELETE("Group/DeleteMember/:id", DeleteMember)
 		apiv1.DELETE("Group/DeleteMemberbyName/:name", DeleteMemberbyName)
 		apiv1.GET("Group/GetMember/:id",GetMemberByGroupID)
+		apiv1.POST("Group/AddGroupMember/:id",AddMemberToGroup)
 	}
 
 	{
@@ -81,7 +82,7 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("Report/GetDashboard/:id",GetDashboardOfReportbyReportID)
 		apiv1.GET("Report/GetInstanceOfReport/:id",GetInstanceOfReportbyReportID)
 		apiv1.GET("Report/GetDashboardOfInstance/:id",GetDashboardOfInstanceByInstanceID)
-		apiv1.GET("Report/Delete/:id",DeleteReport)
+		apiv1.DELETE("Report/Delete/:id",DeleteReport)
 	}
 
 

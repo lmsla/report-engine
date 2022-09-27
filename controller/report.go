@@ -216,7 +216,7 @@ func DeleteReport(c *gin.Context) {
 	}
 
 	// Update DB
-	r := services.DeleteInstance(reportID)
+	r := services.DeleteReport(reportID)
 	if !r.Success {
 		c.JSON(http.StatusBadRequest, r.Msg)
 		handler.WriteErrorLog(c, r.Msg)

@@ -85,6 +85,53 @@ func CreateMember(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
+
+// @Summary Add Group Member to Group
+// @Tags Group
+// @Accept  json
+// @Produce  json
+// @Param groupmember body entities.GroupMember true "new member"
+// @Param id path int true "id"
+// @Success 200 {object} models.Response
+// @Router /api/v1/Group/AddGroupMember/{id} [post]
+// @Security ApiKeyAuth
+func AddMemberToGroup(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	body := new(entities.GroupMember)
+	err = c.Bind(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// check point (check group id)
+	res := services.CheckGroupID(id)
+	if !res.Success {
+		c.JSON(http.StatusBadRequest, res.Msg)
+		handler.WriteErrorLog(c, res.Msg)
+		return
+	}
+
+	// add dashboard to menu in db
+	res = services.AddMemberToGroup(id, *body)
+	if !res.Success {
+		c.JSON(http.StatusBadRequest, res.Msg)
+		handler.WriteErrorLog(c, res.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, res)
+}
+
+
+
 // @Summary Delete Member
 // @Tags Group
 // @Accept  json

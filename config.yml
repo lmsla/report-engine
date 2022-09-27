@@ -17,7 +17,7 @@ server:
 
 other:
   backend: "localhost:3002"
-  migration: false
+  migration: true
 
 cors:
   allow:

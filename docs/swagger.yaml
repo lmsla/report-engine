@@ -312,6 +312,34 @@ info:
   title: Golang API - WarRoom
   version: "1.0"
 paths:
+  /api/v1/Group/AddGroupMember/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new member
+        in: body
+        name: groupmember
+        required: true
+        schema:
+          $ref: '#/definitions/entities.GroupMember'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Group Member to Group
+      tags:
+      - Group
   /api/v1/Group/Create:
     post:
       consumes:
@@ -807,6 +835,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Report
+      tags:
+      - Report
+  /api/v1/Report/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Report
       tags:
       - Report
   /api/v1/Report/GetAll:
