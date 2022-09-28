@@ -72,6 +72,9 @@ func LoadRouter() *gin.Engine {
 		apiv1.DELETE("Group/DeleteMemberbyName/:name", DeleteMemberbyName)
 		apiv1.GET("Group/GetMember/:id",GetMemberByGroupID)
 		apiv1.POST("Group/AddGroupMember/:id",AddMemberToGroup)
+		apiv1.DELETE("Group/DeleteGroup/:id",DeleteGroup)
+		apiv1.PUT("Group/Update/",UpdateGroup)
+		apiv1.PUT("GroupMember/Update",UpdateMember)
 	}
 
 	{
@@ -89,9 +92,10 @@ func LoadRouter() *gin.Engine {
 	{
 		apiv1.POST("Schedule/Create", CreateSchedule)
 		apiv1.GET("Schedule/GetAll", GetAllSchedule)
-		apiv1.PUT("Schedule/Update/:id",UpdateSchedule)
+		apiv1.PUT("Schedule/Update",UpdateSchedule)
 		apiv1.GET("Schedule/GetSchedule/:id",GetScheduleByScheduleID)
 		apiv1.POST("Schedule/ReportCreate/:id",CreateReportbySchedule)
+		apiv1.DELETE("Schedule/DeleteSchedule/:id",DeleteSchedule)
 	}
 
 	{

@@ -63,29 +63,29 @@ func GetAllSchedule(c *gin.Context) {
 // @Tags Schedule
 // @Accept  json
 // @Produce  json
-// @Param schedule body entities.Schedule true "instance"
-// @Param id path int true "schedule id"
+// @Param schedule body entities.Schedule true "schedule"
 // @Success 200 {object} models.Response
-// @Router /api/v1/Schedule/Update/{id} [put]
+// @Router /api/v1/Schedule/Update [put]
 // @Security ApiKeyAuth
 func UpdateSchedule(c *gin.Context) {
 
-	scheduleID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "schedule id should be int")
-		handler.WriteErrorLog(c, "schedule id should be integer")
-		return
-	}
+	// 接 ID 進來
+	// scheduleID, err := strconv.Atoi(c.Param("id"))
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, "schedule id should be int")
+	// 	handler.WriteErrorLog(c, "schedule id should be integer")
+	// 	return
+	// }
 
 	body := new(entities.Schedule)
-	err = c.Bind(&body)
+	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		// handler.WriteErrorLog(c, err.Error())
 	}
-
+	// id := body.ScheduleID
 	// Update DB
-	r := services.UpdateSchedule(scheduleID, *body)
+	r := services.UpdateSchedule(*body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		handler.WriteErrorLog(c, err.Error())
@@ -121,6 +121,34 @@ func GetScheduleByScheduleID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, inventory)
+}
+
+
+// @Summary Delete Schedule
+// @Tags Schedule
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} models.Response
+// @Router /api/v1/Schedule/DeleteSchedule/{id} [delete]
+// @Security ApiKeyAuth
+func DeleteSchedule(c *gin.Context) {
+
+	schedule_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "schedule id should be int")
+		handler.WriteErrorLog(c, "schedule id should be integer")
+		return
+	}
+
+	// Update DB
+	r := services.DeleteSchedule(schedule_id)
+	if !r.Success {
+		c.JSON(http.StatusBadRequest, r.Msg)
+		handler.WriteErrorLog(c, r.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, r)
 }
 
 

@@ -35,7 +35,7 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 
 
 // 更新Schedule
-func UpdateSchedule(scheduleID int, instance entities.Schedule) models.Response {
+func UpdateSchedule1(scheduleID int, instance entities.Schedule) models.Response {
 
 	res := models.Response{}
 
@@ -64,6 +64,36 @@ func UpdateSchedule(scheduleID int, instance entities.Schedule) models.Response 
 	return res
 }
 
+
+// 更新Schedule
+func UpdateSchedule(schedule entities.Schedule) models.Response {
+
+	res := models.Response{}
+
+	temp := entities.Schedule{}
+	// temp := entities.Status{}
+	DBresponse := global.Mysql.Where("schedule_id = ?", schedule.ScheduleID).First(&temp)
+
+	if DBresponse.RowsAffected == 0 {
+		res.Success = false
+		res.Msg = "schedule id does not exist"
+		return res
+	}
+
+	schedule.CreatedAt = temp.CreatedAt
+	// 註：.Select("*") 會導致 struct 中沒更新的欄位(沒填值)直接消失，此處只需更新 Status，故拿掉 .Select("*") ，API 送進去的 struct 可以只更新 status 
+	// err := global.Mysql.Select("*").Where("schedule_id = ?", scheduleID).Updates(&instance).Error
+	err := global.Mysql.Where("schedule_id = ?", schedule.ScheduleID).Updates(&schedule).Error
+	if err != nil {
+		res.Success = false
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Success = true
+	res.Msg = fmt.Sprintf("schedule ID %v Updated Success", schedule.ScheduleID)
+	return res
+}
 
 
 
@@ -100,7 +130,7 @@ func FuncAddToCron(scheduleID int) {
 	}
 	inventory1,err := GetReportByReportName(inventory.Report)
 
-	Screenshot(inventory1.ReportID)
+	ScreenshotDocker(inventory1.ReportID)
 	
 	CreateHtml(scheduleID,inventory1.ReportID)
 
@@ -169,4 +199,25 @@ func ExecuteSheduleSendMail(scheduleID int) {
 
 	}
 
+}
+
+// 刪除 Schedule by id
+func DeleteSchedule(scheduleID int) models.Response {
+
+	res := models.Response{}
+	DBresponse := global.Mysql.Where("schedule_id = ?", scheduleID).Delete(&entities.Schedule{})
+
+	if DBresponse.RowsAffected == 0 {
+		res.Msg = fmt.Sprintf("scheduleID %v does not exist", scheduleID)
+		res.Success = false
+		return res
+	}
+	if DBresponse.Error != nil {
+		res.Msg = fmt.Sprintf("Error: %v", DBresponse.Error)
+		res.Success = false
+		return res
+	}
+	res.Msg = fmt.Sprintf("scheduleID %v Deleted", scheduleID)
+	res.Success = true
+	return res
 }

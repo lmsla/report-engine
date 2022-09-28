@@ -19,7 +19,7 @@ import (
 func ScreenshotDocker(ReportID int) {
 
 
-	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.138:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
+	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.120:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
 	// ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.138:9222/devtools/page")
 	defer cancel()
 

@@ -141,6 +141,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Group/DeleteGroup/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Delete Group",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Group/DeleteMember/{id}": {
             "delete": {
                 "security": [
@@ -271,6 +307,82 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.GroupMember"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Group/Update": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Update Group",
+                "parameters": [
+                    {
+                        "description": "group",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/GroupMember/Update": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Update Member",
+                "parameters": [
+                    {
+                        "description": "group",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.GroupMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -1432,6 +1544,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Schedule/DeleteSchedule/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Delete Schedule",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Schedule/GetAll": {
             "get": {
                 "security": [
@@ -1531,7 +1679,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/Schedule/Update/{id}": {
+        "/api/v1/Schedule/Update": {
             "put": {
                 "security": [
                     {
@@ -1550,20 +1698,13 @@ const docTemplate = `{
                 "summary": "Update Schedule",
                 "parameters": [
                     {
-                        "description": "instance",
+                        "description": "schedule",
                         "name": "schedule",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/entities.Schedule"
                         }
-                    },
-                    {
-                        "type": "integer",
-                        "description": "schedule id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {

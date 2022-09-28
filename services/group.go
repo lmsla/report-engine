@@ -34,6 +34,130 @@ func GetAllGroup() ([]entities.Group, error) {
 	return instancies, nil
 }
 
+// 確認 ID 是否存在
+func GetGroupByID(id int) ([]entities.Group, error) {
+	columns := []entities.Group{}
+	err := global.Mysql.Where("group_id = ?", id).Find(&columns).Error
+	if err != nil {
+		return nil, err
+	}
+	return columns, nil
+}
+
+
+// 確認 Name 是否重複
+func GetGroupByName(name string) ([]entities.Group, error) {
+	columns := []entities.Group{}
+
+	err := global.Mysql.Where("name = ?", name).Find(&columns).Error
+	if err != nil {
+		return nil, err
+	}
+	return columns, nil
+}
+// 確認 Member ID 是否存在
+func GetMemberByID(id int) ([]entities.GroupMember, error) {
+	columns := []entities.GroupMember{}
+	err := global.Mysql.Where("member_id = ?", id).Find(&columns).Error
+	if err != nil {
+		return nil, err
+	}
+	return columns, nil
+}
+
+
+// 確認 MemberName 是否重複
+func GetMemberByName(name string) ([]entities.GroupMember, error) {
+	columns := []entities.GroupMember{}
+
+	err := global.Mysql.Where("member_name = ?", name).Find(&columns).Error
+	if err != nil {
+		return nil, err
+	}
+	return columns, nil
+}
+
+
+// 更新group
+func UpdateGroup(r entities.Group) models.Response {
+	res := models.Response{}
+
+	// var member entities.GroupMember
+	temp := entities.Group{}
+	DBresponse := global.Mysql.Where("group_id = ?", r.GroupID).First(&temp)
+
+	if DBresponse.RowsAffected == 0 {
+		res.Success = false
+		res.Msg = "Group id does not exist"
+		return res
+	}
+
+	r.CreatedAt = temp.CreatedAt
+
+	err := global.Mysql.Select("*").Where("group_id = ?", r.GroupID).Updates(&r).Error
+	if err != nil {
+		res.Success = false
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Success = true
+	res.Msg = fmt.Sprintf("Group ID %v Updated Success",  r.GroupID)
+	return res
+}
+
+
+// 更新 member
+func UpdateMember1(r entities.GroupMember) models.Response {
+	res := models.Response{}
+
+	// 1. Update users table
+	var member entities.GroupMember
+	member.MemberID = r.MemberID
+	member.MemberName = r.MemberName
+	err1 := global.Mysql.Where("member_id = ?", r.MemberID).Updates(&member).Error 
+	if err1 != nil {
+		res.Msg = fmt.Sprintf("Error: %v", err1)
+		res.Success = false
+		return res
+	}
+
+	res.Msg = "Update Success"
+	res.Success = true
+	return res
+}
+
+
+// 更新member
+func UpdateMember(r entities.GroupMember) models.Response {
+	res := models.Response{}
+	// var member entities.GroupMember
+	temp := entities.GroupMember{}
+	DBresponse := global.Mysql.Where("member_id = ?", r.MemberID).First(&temp)
+
+	if DBresponse.RowsAffected == 0 {
+		res.Success = false
+		res.Msg = "Member id does not exist"
+		return res
+	}
+
+	r.CreatedAt = temp.CreatedAt
+
+	err := global.Mysql.Select("*").Where("member_id = ?", r.MemberID).Updates(&r).Error
+	if err != nil {
+		res.Success = false
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Success = true
+	res.Msg = fmt.Sprintf("Member ID %v Updated Success",  r.MemberID)
+	return res
+}
+
+
+
+
 // 新增 member
 func CreateMember(group entities.GroupMember) models.Response {
 
@@ -88,8 +212,26 @@ func AddMemberToGroup(GroupID int, member entities.GroupMember) models.Response 
 }
 
 
+// 刪除 Group by id
+func DeleteGroup(groupID int) models.Response {
 
+	res := models.Response{}
+	DBresponse := global.Mysql.Where("group_id = ?", groupID).Delete(&entities.Group{})
 
+	if DBresponse.RowsAffected == 0 {
+		res.Msg = fmt.Sprintf("groupID %v does not exist", groupID)
+		res.Success = false
+		return res
+	}
+	if DBresponse.Error != nil {
+		res.Msg = fmt.Sprintf("Error: %v", DBresponse.Error)
+		res.Success = false
+		return res
+	}
+	res.Msg = fmt.Sprintf("groupID %v Deleted", groupID)
+	res.Success = true
+	return res
+}
 
 
 // 刪除 member by id

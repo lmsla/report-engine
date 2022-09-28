@@ -386,6 +386,28 @@ paths:
       summary: Create Member
       tags:
       - Group
+  /api/v1/Group/DeleteGroup/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Group
+      tags:
+      - Group
   /api/v1/Group/DeleteMember/{id}:
     delete:
       consumes:
@@ -466,6 +488,52 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get member by Group ID
+      tags:
+      - Group
+  /api/v1/Group/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: group
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Group
+      tags:
+      - Group
+  /api/v1/GroupMember/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: group
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.GroupMember'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Member
       tags:
       - Group
   /api/v1/Instance/Create:
@@ -1177,6 +1245,28 @@ paths:
       summary: Create Schedule
       tags:
       - Schedule
+  /api/v1/Schedule/DeleteSchedule/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Schedule
+      tags:
+      - Schedule
   /api/v1/Schedule/GetAll:
     get:
       consumes:
@@ -1237,22 +1327,17 @@ paths:
       summary: Create Report by ScheduleID
       tags:
       - Schedule
-  /api/v1/Schedule/Update/{id}:
+  /api/v1/Schedule/Update:
     put:
       consumes:
       - application/json
       parameters:
-      - description: instance
+      - description: schedule
         in: body
         name: schedule
         required: true
         schema:
           $ref: '#/definitions/entities.Schedule'
-      - description: schedule id
-        in: path
-        name: id
-        required: true
-        type: integer
       produces:
       - application/json
       responses:
