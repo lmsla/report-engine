@@ -107,25 +107,25 @@ func UpdateGroup(r entities.Group) models.Response {
 }
 
 
-// 更新 member
-func UpdateMember1(r entities.GroupMember) models.Response {
-	res := models.Response{}
+// // 更新 member
+// func UpdateMember1(r entities.GroupMember) models.Response {
+// 	res := models.Response{}
 
-	// 1. Update users table
-	var member entities.GroupMember
-	member.MemberID = r.MemberID
-	member.MemberName = r.MemberName
-	err1 := global.Mysql.Where("member_id = ?", r.MemberID).Updates(&member).Error 
-	if err1 != nil {
-		res.Msg = fmt.Sprintf("Error: %v", err1)
-		res.Success = false
-		return res
-	}
+// 	// 1. Update users table
+// 	var member entities.GroupMember
+// 	member.MemberID = r.MemberID
+// 	member.MemberName = r.MemberName
+// 	err1 := global.Mysql.Where("member_id = ?", r.MemberID).Updates(&member).Error 
+// 	if err1 != nil {
+// 		res.Msg = fmt.Sprintf("Error: %v", err1)
+// 		res.Success = false
+// 		return res
+// 	}
 
-	res.Msg = "Update Success"
-	res.Success = true
-	return res
-}
+// 	res.Msg = "Update Success"
+// 	res.Success = true
+// 	return res
+// }
 
 
 // 更新member
@@ -143,7 +143,7 @@ func UpdateMember(r entities.GroupMember) models.Response {
 
 	r.CreatedAt = temp.CreatedAt
 
-	err := global.Mysql.Select("*").Where("member_id = ?", r.MemberID).Updates(&r).Error
+	err := global.Mysql.Where("member_id = ?", r.MemberID).Updates(&r).Error
 	if err != nil {
 		res.Success = false
 		res.Msg = err.Error()

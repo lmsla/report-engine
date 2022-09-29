@@ -196,7 +196,7 @@ func UpdateMember(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		handler.WriteErrorLog(c, err.Error())
 	}
-	id := body.GroupID
+	id := body.MemberID
 	name := body.MemberName
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "id should be int")
