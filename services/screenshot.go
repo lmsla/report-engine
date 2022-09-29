@@ -20,11 +20,12 @@ func ScreenshotDocker(ReportID int) {
 
 
 	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.120:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
+	// ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://127.0.0.1:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
 	// ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.138:9222/devtools/page")
 	defer cancel()
 
 	ctx, cancel = chromedp.NewContext(ctx,
-		chromedp.WithDebugf(log.Printf),
+		// chromedp.WithDebugf(log.Printf),
 	)
 	defer cancel()
 
@@ -167,7 +168,8 @@ func Screenshot(ReportID int) {
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(data1.InstanceID)
+			fmt.Println("instance id :",data1.InstanceID)
+			
 			for _,data2 := range dashboard {
 				// create context 截圖程式碼，擺著就好勿動
 				ctx, cancel := chromedp.NewContext(
@@ -199,7 +201,7 @@ func Screenshot(ReportID int) {
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(data1.InstanceID)
+			fmt.Println("instance id :",data1.InstanceID)
 			for _,data2 := range dashboard {
 				// create context 截圖程式碼，擺著就好勿動
 				ctx, cancel := chromedp.NewContext(

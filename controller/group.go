@@ -186,7 +186,7 @@ func UpdateGroup(c *gin.Context) {
 // @Produce  json
 // @Param user body entities.GroupMember true "group"
 // @Success 200 {object} models.Response
-// @Router /api/v1/GroupMember/Update [put]
+// @Router /api/v1/Group/MemberUpdate [put]
 // @Security ApiKeyAuth
 func UpdateMember(c *gin.Context) {
 

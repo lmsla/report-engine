@@ -10,7 +10,7 @@ import (
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
-	"github.com/chromedp/chromedp/device"
+	// "github.com/chromedp/chromedp/device"
 )
 
 // elementScreenshot takes a screenshot of a specific element.
@@ -61,7 +61,7 @@ func kibanaElementScreenshotWithAuth(loginUrl, username,password,sel string, res
 		chromedp.WaitVisible(`div.dashboardViewport`),
 		chromedp.Sleep(20 * time.Second),
 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
-		chromedp.Emulate(device.Reset),
+		// chromedp.Emulate(device.Reset),
 	}
 }
 
@@ -91,7 +91,7 @@ func grafanaElementScreenshotWithAuth(loginUrl, username,password,sel string, re
 		chromedp.WaitVisible(`div.scrollbar-view`),
 		chromedp.Sleep(20 * time.Second),
 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
-		chromedp.Emulate(device.Reset),
+		// chromedp.Emulate(device.Reset),
 	}
 }
 

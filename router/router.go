@@ -73,8 +73,8 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("Group/GetMember/:id",GetMemberByGroupID)
 		apiv1.POST("Group/AddGroupMember/:id",AddMemberToGroup)
 		apiv1.DELETE("Group/DeleteGroup/:id",DeleteGroup)
-		apiv1.PUT("Group/Update/",UpdateGroup)
-		apiv1.PUT("GroupMember/Update",UpdateMember)
+		apiv1.PUT("Group/Update",UpdateGroup)
+		apiv1.PUT("Group/MemberUpdate",UpdateMember)
 	}
 
 	{

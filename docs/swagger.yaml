@@ -490,6 +490,29 @@ paths:
       summary: Get member by Group ID
       tags:
       - Group
+  /api/v1/Group/MemberUpdate:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: group
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.GroupMember'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Member
+      tags:
+      - Group
   /api/v1/Group/Update:
     put:
       consumes:
@@ -511,29 +534,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update Group
-      tags:
-      - Group
-  /api/v1/GroupMember/Update:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: group
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/entities.GroupMember'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Member
       tags:
       - Group
   /api/v1/Instance/Create:
