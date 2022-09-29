@@ -1,2 +1,0 @@
-2022/09/27 16:47:01 Method="DELETE" URL="/api/v1/Report/Delete/1" msg="Report ID 1 does not exist"
-2022/09/27 17:08:36 Method="POST" URL="/api/v1/Group/AddGroupMember/3" msg="Error when check group ID, error: record not found"

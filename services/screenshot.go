@@ -11,13 +11,13 @@ import (
 	// "report-backend-golang/services"
 
 	// "time"
+	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	// "github.com/chromedp/cdproto/page"
 )
 
 
 func ScreenshotDocker(ReportID int) {
-
 
 	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://10.99.1.120:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
 	// ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://127.0.0.1:3003/devtools/page/BROWSERLESSGDV8E5H4386JYCYGVRBAQ")
@@ -70,7 +70,7 @@ func ScreenshotDocker(ReportID int) {
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(data1.InstanceID)
+			fmt.Println("remote browser,instance ID:",data1.InstanceID)
 			for _,data2 := range dashboard {
 				// create context 截圖程式碼，擺著就好勿動
 				// ctx, cancel := chromedp.NewContext(
@@ -88,7 +88,7 @@ func ScreenshotDocker(ReportID int) {
 				// 將取出來的個參數帶入網址中以便截圖
 				url := fmt.Sprintf("%s/app/dashboards#/view/%s?_g=(time:(from:%s,to:%s))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)",auth["IP"],data2.UID,reportinfo.From,reportinfo.To)
 				// 帶入 url,instance 的 username 、 password 帶入截圖的 function
-				if err := chromedp.Run(ctx,kibanaElementScreenshotWithAuth(url, auth["user"],auth["password"],`div.dashboardViewport`,&buf)); err != nil {
+				if err := chromedp.Run(ctx,kibanaElementScreenshotWithAuth(url, auth["user"],auth["password"],`div.dashboardViewport`,&buf),network.ClearBrowserCookies()); err != nil {
 					log.Fatal(err)
 				}
 				// 寫到指定路徑，暫定以 dashboard UID 命名
@@ -96,14 +96,16 @@ func ScreenshotDocker(ReportID int) {
 				if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 					log.Fatal(err)
 				}
+				fmt.Println("remote browser,dashboard download success:",data2.UID)
 			}	
 		}else if data1.Type == "grafana" {
 			dashboard,err := GetDashboardOfInstanceByInstanceID(data1.InstanceID)
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(data1.InstanceID)
+			fmt.Println("remote browser,instance ID:",data1.InstanceID)
 			for _,data2 := range dashboard {
+				fmt.Println(data2)
 				// create context 截圖程式碼，擺著就好勿動
 				// ctx, cancel := chromedp.NewContext(
 				// 	context.Background(),
@@ -120,7 +122,7 @@ func ScreenshotDocker(ReportID int) {
 				// 將取出來的個參數帶入網址中以便截圖
 				url := fmt.Sprintf("%s/grafana_iframe/d/%s/?from=%s/d&to=%s&orgId=1",auth["IP"],data2.UID,reportinfo.From,reportinfo.To)
 				// 帶入 url,instance 的 username 、 password 帶入截圖的 function
-				if err := chromedp.Run(ctx,grafanaElementScreenshotWithAuth(url, auth["user"],auth["password"],`div.scrollbar-view`,&buf)); err != nil {
+				if err := chromedp.Run(ctx,grafanaElementScreenshotWithAuth(url, auth["user"],auth["password"],`div.scrollbar-view`,&buf),network.ClearBrowserCookies()); err != nil {
 					log.Fatal(err)
 				}
 				// 寫到指定路徑，暫定以 dashboard UID 命名
@@ -128,6 +130,7 @@ func ScreenshotDocker(ReportID int) {
 				if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 					log.Fatal(err)
 				}
+				fmt.Println("remote browser,dashboard download success:",data2.UID)
 				
 			}
 			

@@ -29,7 +29,7 @@ func GetScreenShot(c *gin.Context) {
 		return
 	}
 
-	services.Screenshot(ReportID)
+	services.ScreenshotDocker(ReportID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, err.Error())
 	// 	handler.WriteErrorLog(c, err.Error())

@@ -14,7 +14,7 @@ func WriteErrorLog(c *gin.Context, msg string) {
 
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		log.Fatalf("error opening file: %v", err)
+		log.Printf("error opening file: %v", err)
 	}
 
 	defer f.Close()
