@@ -27,7 +27,8 @@ func CreateReport(report entities.Report) models.Response {
 func GetAllReport() ([]entities.Report, error) {
 
 	var instancies []entities.Report
-	err := global.Mysql.Find(&instancies).Error
+	err := global.Mysql.Preload("Dashboard").Preload("Instance").Find(&instancies).Error
+	// err := global.Mysql.Find(&instancies).Error
 	if err != nil {
 		return nil, err
 	}
