@@ -12,7 +12,7 @@ func CreateInstance(instance entities.Instance) models.Response {
 
 	res := models.Response{}
 	// err := global.Mysql.Create(&instance).Error
-	err := global.Mysql.Omit("Dashboards").Create(&instance).Error
+	err := global.Mysql.Create(&instance).Error
 
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error: %v", err)
@@ -28,7 +28,7 @@ func CreateInstance(instance entities.Instance) models.Response {
 func GetAllInstance() ([]entities.Instance, error) {
 
 	var instancies []entities.Instance
-	err := global.Mysql.Preload("Dashboards").Find(&instancies).Error
+	err := global.Mysql.Find(&instancies).Error
 	if err != nil {
 		return nil, err
 	}

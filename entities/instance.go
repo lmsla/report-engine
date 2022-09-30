@@ -11,7 +11,7 @@ type Instance struct {
 	User         string      `json:"user" form:"user"`
 	Pass         string      `json:"pass" form:"pass"`
 	Auth         bool        `json:"auth" form:"auth"`
-	Dashboards   []Dashboard `gorm:"foreignKey:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Dashboards   []Dashboard `gorm:"foreignKey:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"dashboards,omitempty"`
 }
 
 type Dashboard struct {
