@@ -6,7 +6,7 @@ database:
   user: "root"
   password: "bimap1234"
   host: "localhost"
-  name: "warroom"
+  name: "report"
   port: "3306"
   params: "charset=utf8mb4&parseTime=True&loc=Asia%2fTaipei"
   log_enable: 0
@@ -17,7 +17,7 @@ server:
 
 other:
   backend: "localhost:3002"
-  migration: false
+  migration: true
 
 cors:
   allow:
