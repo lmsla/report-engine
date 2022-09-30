@@ -11,7 +11,8 @@ import (
 func CreateInstance(instance entities.Instance) models.Response {
 
 	res := models.Response{}
-	err := global.Mysql.Create(&instance).Error
+	// err := global.Mysql.Create(&instance).Error
+	err := global.Mysql.Omit("Dashboards").Create(&instance).Error
 
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error: %v", err)
