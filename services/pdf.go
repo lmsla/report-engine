@@ -40,6 +40,88 @@ func list(e ...float64) []float64 {
 	return e
 }
 
+
+func CreateHtml1(ScheduleID int, report []entities.Report) {
+
+	// data := []Product{
+	// 	{"pics/RlgkWFg4k.png", "strawberries", "$2.00", 4.0, 251, "Lorem ipsum dolor sit amet, consectetur adipiscing elit."},
+	// 	{"pics/AuBDTJ6nz.png", "onions", "$2.80", 5.0, 123, "Morbi sit amet erat vitae purus consequat vehicula nec sit amet purus."},
+	// 	{"pics/7adfa750-4c81-11e8-b3d7-01146121b73d.png", "tomatoes", "$3.10", 4.5, 235, "Curabitur tristique odio et nibh auctor, ut sollicitudin justo condimentum."},
+	// }
+	// fmt.Println(data)
+	for _,reportdata := range report {
+		fmt.Println(reportdata.ReportID)
+	
+	dashboardData, err := GetDashboardInReport(reportdata.ReportID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	data1 := []Dashboard{}
+
+	for _, dashboards := range dashboardData {
+		uu := new(Dashboard)
+		uu.Img = fmt.Sprintf("%s/%s.png", global.EnvConfig.Reportengine.PicturePath, dashboards.UID)
+		uu.Name = fmt.Sprintf(dashboards.DashboardName)
+		data1 = append(data1, *uu)
+	}
+	fmt.Println(data1)
+
+	//	用 ReportID 取出 Report 的相關資料
+	inventory, err := GetReportByReportID(reportdata.ReportID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(inventory.Name)
+
+	fromtimeconverted := Timeconverter(inventory.From + "+8h")
+	totimeconverted := Timeconverter(inventory.To + "+8h")
+	str1 := fromtimeconverted[0:16]
+	str2 := totimeconverted[0:16]
+
+	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
+
+	var allPaths []string
+	for _, tmpl := range allFiles {
+		allPaths = append(allPaths, "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/template/"+tmpl)
+	}
+
+	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))
+
+	var processed bytes.Buffer
+	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
+		fmt.Println(err.Error())
+	}
+	outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Reportengine.HtmlPath, inventory.Name, str1, str2)
+	htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
+	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
+
+	// 新增 html history
+	Htmlfile := entities.FileHistory{ScheduleID:ScheduleID, HtmlName: htmlName,Filetype: "html"}
+	global.Mysql.Create(&Htmlfile)
+
+	f, _ := os.Create(outputPath)
+	w := bufio.NewWriter(f)
+	w.WriteString(string(processed.Bytes()))
+	w.Flush()
+
+	// pdf的名稱
+	pdfname := fmt.Sprintf("%s/%s_%s~%s.pdf", global.EnvConfig.Reportengine.PdfPath, inventory.Name, str1, str2)
+	pdfshortname := fmt.Sprintf("%s",htmlName)
+
+	// 執行產出pdf的程式
+	GeneratePDF(outputPath, pdfname)
+
+	// 新增 pdf history
+	file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
+	global.Mysql.Create(&file)
+
+}
+}
+
+
+
+
+
 func CreateHtml(ScheduleID int, ReportID int) {
 
 	// data := []Product{
@@ -168,4 +250,6 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	if err := converter.Run(outFile); err != nil {
 		log.Fatal(err)
 	}
+
+
 }

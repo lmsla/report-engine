@@ -2229,13 +2229,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "generate-report": {
+                    "description": "Report         string ` + "`" + `json:\"reports\" form:\"reports\"` + "`" + `",
                     "type": "string"
                 },
                 "recipients": {
                     "type": "string"
                 },
-                "reports": {
-                    "type": "string"
+                "report": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Report"
+                    }
                 },
                 "schedule_id": {
                     "type": "integer"

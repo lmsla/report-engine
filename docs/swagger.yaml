@@ -202,11 +202,14 @@ definitions:
       description:
         type: string
       generate-report:
+        description: Report         string `json:"reports" form:"reports"`
         type: string
       recipients:
         type: string
-      reports:
-        type: string
+      report:
+        items:
+          $ref: '#/definitions/entities.Report'
+        type: array
       schedule_id:
         type: integer
       schedule_name:

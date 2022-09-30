@@ -130,9 +130,9 @@ func FuncAddToCron(scheduleID int) {
 	}
 	inventory1,err := GetReportByReportName(inventory.Report)
 
-	ScreenshotDocker(inventory1.ReportID)
+	ScreenshotDocker1(inventory1)
 	
-	CreateHtml(scheduleID,inventory1.ReportID)
+	CreateHtml1(scheduleID,inventory1)
 
 	// Sendmail(scheduleID,inventory.Recipient)
 
