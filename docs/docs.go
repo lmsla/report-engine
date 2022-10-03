@@ -2232,8 +2232,11 @@ const docTemplate = `{
                     "description": "Report         string ` + "`" + `json:\"reports\" form:\"reports\"` + "`" + `",
                     "type": "string"
                 },
-                "recipients": {
-                    "type": "string"
+                "group": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Group"
+                    }
                 },
                 "report": {
                     "type": "array",

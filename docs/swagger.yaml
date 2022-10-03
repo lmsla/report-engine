@@ -204,8 +204,10 @@ definitions:
       generate-report:
         description: Report         string `json:"reports" form:"reports"`
         type: string
-      recipients:
-        type: string
+      group:
+        items:
+          $ref: '#/definitions/entities.Group'
+        type: array
       report:
         items:
           $ref: '#/definitions/entities.Report'

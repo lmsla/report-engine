@@ -73,13 +73,15 @@ func GetFilenameByscheduleID(scheduleID int) (entities.FileHistory, error){
 
 
 
-func Sendmail(scheduleID int ,groupName string) {
+func Sendmail(scheduleID int ,group []entities.Group) {
     // user := "rabot6201@gmail.com"
     // password := "mohptlqcqeiisshx"
     // host := "smtp.gmail.com"
     // port := "587"
-
-    memberlist := GetMemberList(groupName)
+    for _,group := range group {
+        fmt.Println(group.Name)
+    
+    memberlist := GetMemberList(group.Name)
     fmt.Println(memberlist)
 	user := global.EnvConfig.Email.User
     password := global.EnvConfig.Email.Password
@@ -150,6 +152,7 @@ func Sendmail(scheduleID int ,groupName string) {
     } else {
         fmt.Println("Send mail success!")
     }
+}
 }
 
 func newFunction(mail Mail, message Message) error {

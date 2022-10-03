@@ -179,7 +179,7 @@ func ExecuteSheduleSendMail(scheduleID int) {
 	// inventory1,err := services.GetReportByReportName(inventory.Report)
 
 	_,err = global.Crontab.AddFunc(inventory.SendReport,func(){
-		Sendmail(scheduleID,inventory.Recipient)
+		Sendmail(scheduleID,inventory.Gropup)
 
 	}) 
 	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
