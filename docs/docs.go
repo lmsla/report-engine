@@ -1398,10 +1398,10 @@ const docTemplate = `{
                 "instance_id": {
                     "type": "integer"
                 },
-                "ip": {
+                "instance_name": {
                     "type": "string"
                 },
-                "name": {
+                "ip": {
                     "type": "string"
                 },
                 "pass": {
@@ -1489,7 +1489,7 @@ const docTemplate = `{
                 "created_at": {
                     "type": "integer"
                 },
-                "dashboards": {
+                "dashboard": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.Dashboard"

@@ -1393,10 +1393,10 @@
                 "instance_id": {
                     "type": "integer"
                 },
-                "ip": {
+                "instance_name": {
                     "type": "string"
                 },
-                "name": {
+                "ip": {
                     "type": "string"
                 },
                 "pass": {
@@ -1484,7 +1484,7 @@
                 "created_at": {
                     "type": "integer"
                 },
-                "dashboards": {
+                "dashboard": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.Dashboard"

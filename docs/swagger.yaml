@@ -64,9 +64,9 @@ definitions:
         type: integer
       instance_id:
         type: integer
-      ip:
+      instance_name:
         type: string
-      name:
+      ip:
         type: string
       pass:
         type: string
@@ -124,7 +124,7 @@ definitions:
     properties:
       created_at:
         type: integer
-      dashboards:
+      dashboard:
         items:
           $ref: '#/definitions/entities.Dashboard'
         type: array

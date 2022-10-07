@@ -6,7 +6,7 @@ type Instance struct {
 	Common
 	InstanceID   int         `json:"instance_id" form:"instance_id" gorm:"primaryKey"`
 	IP           string      `json:"ip" form:"ip"`
-	InstanceName string      `json:"name" form:"name"`
+	InstanceName string      `json:"instance_name" form:"instance_name"`
 	Type         string      `json:"type" form:"type"`
 	User         string      `json:"user" form:"user"`
 	Pass         string      `json:"pass" form:"pass"`
