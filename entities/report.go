@@ -1,6 +1,20 @@
 package entities
 
+
 type Report struct {
+	Common
+	ReportID    int          `json:"report_id" form:"report_id" gorm:"primaryKey"`
+	Name        string       `json:"name" form:"name"`
+	Description string       `json:"description" form:"description"`
+	From        string       `json:"from" form:"from"`
+	To          string       `json:"to" form:"to"`
+	Type        string       `json:"type" form:"type"`
+	Instance    []Instance  `gorm:"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Dashboard   []Dashboard `json:"dashboards" form:"dashboards" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+}
+
+
+type Report1 struct {
 	Common
 	ReportID    int          `json:"report_id" form:"report_id" gorm:"primaryKey"`
 	Name        string       `json:"name" form:"name"`
@@ -23,8 +37,6 @@ type ReportInstance struct {
 	InstanceID int
 }
 
-// gorm:"many2many:dashboards_roles;joinForeignKey:DashboardID;joinReferences:RoleID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;
-
 type RInstance struct {
 	Common
 	InstanceID   int          `json:"instance_id" form:"instance_id" gorm:"primaryKey"`
@@ -44,5 +56,3 @@ type RDashboard struct {
 	// Instance []RInstance `gorm:"many2many:ins_and_dash;"`
 	DashboardName string `json:"dashboard_name" form:"dashboard_name"`
 }
-
-// Dashboards  []Dashboard `json:"dashboards" form:"dashboards" gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`

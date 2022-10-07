@@ -13,16 +13,16 @@ func InitTable() {
 
 	err = global.Mysql.Migrator().DropTable(
 		User{},
-		Role{},
+		// Role{},
 		Instance{},
 		Dashboard{},
-		Menu{},
+		// Menu{},
 		Group{},
 		GroupMember{},
 		Report{},
 		Schedule{},
-		RInstance{},
-		RDashboard{},
+		// RInstance{},
+		// RDashboard{},
 		FileHistory{},
 		"users_roles",
 		"dashboards_roles",
@@ -35,16 +35,16 @@ func InitTable() {
 
 	err = global.Mysql.AutoMigrate(
 		User{},
-		Role{},
+		// Role{},
 		Instance{},
 		Dashboard{},
-		Menu{},
+		// Menu{},
 		Group{},
 		GroupMember{},
 		Report{},
 		Schedule{},
-		RInstance{},
-		RDashboard{},
+		// RInstance{},
+		// RDashboard{},
 		FileHistory{},
 	)
 
@@ -104,8 +104,8 @@ func InitTable() {
 	global.Mysql.Migrator().CreateConstraint(&User{}, "Roles")
 	global.Mysql.Migrator().CreateConstraint(&Role{}, "Users")
 	global.Mysql.Migrator().CreateConstraint(&Role{}, "Dashboards")
-	global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Roles")
-	global.Mysql.Migrator().CreateConstraint(&Menu{}, "Dashboards")
+	// global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Roles")
+	// global.Mysql.Migrator().CreateConstraint(&Menu{}, "Dashboards")
 	global.Mysql.Migrator().CreateConstraint(&Group{}, "Group")
 	global.Mysql.Migrator().CreateConstraint(&GroupMember{}, "GroupMember")
 	//global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Menus")
@@ -157,11 +157,11 @@ func InitTable() {
 // 	},
 // }
 
-var MenuData = Menu{
-	MenuName: "Single Node",
-	Sort:     0,
-	Dashboards: []Dashboard{
-		{DashboardName: "Single Node Analysis - cpu"},
-		{DashboardName: "Single Node Analysis - mem"},
-	},
-}
+// var MenuData = Menu{
+// 	MenuName: "Single Node",
+// 	Sort:     0,
+// 	Dashboards: []Dashboard{
+// 		{DashboardName: "Single Node Analysis - cpu"},
+// 		{DashboardName: "Single Node Analysis - mem"},
+// 	},
+// }

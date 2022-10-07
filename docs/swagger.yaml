@@ -1,8 +1,6 @@
 definitions:
   entities.Dashboard:
     properties:
-      alias:
-        type: string
       created_at:
         type: integer
       dashboard_id:
@@ -11,16 +9,8 @@ definitions:
         type: string
       deleted_at:
         type: integer
-      description:
-        type: string
       instance_id:
         type: integer
-      menu_id:
-        type: integer
-      roles:
-        items:
-          $ref: '#/definitions/entities.Role'
-        type: array
       uid:
         type: string
       updated_at:
@@ -87,19 +77,6 @@ definitions:
       user:
         type: string
     type: object
-  entities.Menu:
-    properties:
-      dashboards:
-        items:
-          $ref: '#/definitions/entities.Dashboard'
-        type: array
-      menu_id:
-        type: integer
-      menu_name:
-        type: string
-      sort:
-        type: integer
-    type: object
   entities.RDashboard:
     properties:
       created_at:
@@ -149,7 +126,7 @@ definitions:
         type: integer
       dashboards:
         items:
-          $ref: '#/definitions/entities.RDashboard'
+          $ref: '#/definitions/entities.Dashboard'
         type: array
       deleted_at:
         type: integer
@@ -159,7 +136,7 @@ definitions:
         type: string
       instance:
         items:
-          $ref: '#/definitions/entities.RInstance'
+          $ref: '#/definitions/entities.Instance'
         type: array
       name:
         type: string
@@ -240,72 +217,12 @@ definitions:
       user_name:
         type: string
     type: object
-  models.Dashboard:
-    properties:
-      alias:
-        type: string
-      dashboard_id:
-        type: integer
-      dashboard_name:
-        type: string
-      description:
-        type: string
-      instance_id:
-        type: integer
-      instance_name:
-        type: string
-      menu_id:
-        type: integer
-      menu_name:
-        type: string
-      uid:
-        type: string
-    type: object
-  models.DashboardMenu:
-    properties:
-      children:
-        items:
-          $ref: '#/definitions/models.DashboardMenu'
-        type: array
-      id:
-        type: integer
-      parent_id:
-        type: integer
-      router_path:
-        type: string
-      sort:
-        type: integer
-      title:
-        type: string
-      type:
-        type: string
-      uid:
-        type: string
-    type: object
   models.Response:
     properties:
       msg:
         type: string
       success:
         type: boolean
-    type: object
-  models.Role:
-    properties:
-      dashboards:
-        items:
-          $ref: '#/definitions/models.Dashboard'
-        type: array
-      role_id:
-        type: integer
-      role_name:
-        type: string
-    type: object
-  models.UpdateDashboard:
-    properties:
-      new_dashboard_id:
-        type: integer
-      old_dashboard_id:
-        type: integer
     type: object
 host: localhost:8005
 info:
@@ -675,218 +592,6 @@ paths:
       summary: Verify Instance
       tags:
       - Instance
-  /api/v1/Menu/AddDashboard/{id}:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: new dashboards
-        in: body
-        name: dashboards
-        required: true
-        schema:
-          $ref: '#/definitions/entities.Dashboard'
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Add Dashboard to Menu
-      tags:
-      - Menu
-  /api/v1/Menu/Create:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: new menu
-        in: body
-        name: menu
-        required: true
-        schema:
-          $ref: '#/definitions/entities.Menu'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Create Menu
-      tags:
-      - Menu
-  /api/v1/Menu/Delete/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Menu By Id
-      tags:
-      - Menu
-  /api/v1/Menu/DeleteDashboard/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: menu id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: dashboard_id
-        in: query
-        name: dashboard_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Dashboard from Menu
-      tags:
-      - Menu
-  /api/v1/Menu/GetAll:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entities.Menu'
-      security:
-      - ApiKeyAuth: []
-      summary: Get All Menu
-      tags:
-      - Menu
-  /api/v1/Menu/GetDashboardMenu:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.DashboardMenu'
-            type: array
-      security:
-      - ApiKeyAuth: []
-      summary: Get Dashboard Menu By User ID
-      tags:
-      - Menu
-  /api/v1/Menu/GetDashboards/{id}:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entities.Menu'
-      security:
-      - ApiKeyAuth: []
-      summary: Get Dashboard of Menu by Menu ID
-      tags:
-      - Menu
-  /api/v1/Menu/Update/{id}:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: update menu info without dashboards
-        in: body
-        name: menu
-        required: true
-        schema:
-          $ref: '#/definitions/entities.Menu'
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Menu
-      tags:
-      - Menu
-  /api/v1/Menu/UpdateDashboard/{id}:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: update dashboard
-        in: body
-        name: dashboard
-        required: true
-        schema:
-          $ref: '#/definitions/models.Dashboard'
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Dashboard Under Menu
-      tags:
-      - Menu
   /api/v1/Report/Create:
     post:
       consumes:
@@ -1058,177 +763,6 @@ paths:
       summary: Get report by Report ID
       tags:
       - Report
-  /api/v1/Role/AddDashboard/{id}:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: dashboard_id
-        in: query
-        name: dashboard_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Add Dashboard to Role ID
-      tags:
-      - Role
-  /api/v1/Role/Create:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: new role
-        in: body
-        name: role
-        required: true
-        schema:
-          $ref: '#/definitions/entities.Role'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Create Role
-      tags:
-      - Role
-  /api/v1/Role/Delete/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Role By Id
-      tags:
-      - Role
-  /api/v1/Role/DeleteDashboard/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: dashboard_id
-        in: query
-        name: dashboard_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Dashboard from Role
-      tags:
-      - Role
-  /api/v1/Role/GetAll:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Role'
-      security:
-      - ApiKeyAuth: []
-      summary: Get All Role
-      tags:
-      - Role
-  /api/v1/Role/Update/{id}:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: update role info
-        in: body
-        name: role
-        required: true
-        schema:
-          $ref: '#/definitions/entities.Role'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Role By ID
-      tags:
-      - Role
-  /api/v1/Role/UpdateDashboard/{id}:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: old & new dashboard id
-        in: body
-        name: update
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateDashboard'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Dashboard By Role Id
-      tags:
-      - Role
   /api/v1/Schedule/Create:
     post:
       consumes:

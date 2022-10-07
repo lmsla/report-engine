@@ -75,7 +75,7 @@ func GetReportByReportName1(reportName string) (entities.Report, error) {
 
 
 // 查report中有哪些instance
-func GetInstanceInReportbyReportID(reportID int)([]entities.RInstance,error) {
+func GetInstanceInReportbyReportID(reportID int)([]entities.Instance,error) {
 	instance := entities.Report{}
 	instance.ReportID = reportID
 	// err := global.Mysql.Find(&instance).Error
@@ -88,7 +88,7 @@ func GetInstanceInReportbyReportID(reportID int)([]entities.RInstance,error) {
 }
 
 // 取出 report中的dashboard
-func GetDashboardInReport(reportID int) ([]entities.RDashboard, error){
+func GetDashboardInReport(reportID int) ([]entities.Dashboard, error){
 	// var IPType []map[string]int
 	instance := entities.Report{}
 	instance.ReportID = reportID

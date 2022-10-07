@@ -22,7 +22,7 @@ func LoadRouter() *gin.Engine {
 	// swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.GET("/api/v1/Menu/GetDashboardMenu", GetDashboardMenuByID)
+	// router.GET("/api/v1/Menu/GetDashboardMenu", GetDashboardMenuByID)
 
 	apiv1 := router.Group("api/v1")
 	// apiv1.Use(CheckAdmin)
@@ -43,26 +43,26 @@ func LoadRouter() *gin.Engine {
 		apiv1.DELETE("User/Delete/:id", DeleteUserByID)
 	}
 
-	{
-		apiv1.POST("Role/Create", CreateRole)
-		apiv1.POST("Role/AddDashboard/:id", AddRoleDashboard)
-		apiv1.GET("Role/GetAll", GetAllRole)
-		apiv1.PUT("Role/Update/:id", UpdateRole)
-		apiv1.PUT("Role/UpdateDashboard/:id", UpdateRoleDashboard)
-		apiv1.DELETE("Role/Delete/:id", DeleteRoleById)
-		apiv1.DELETE("Role/DeleteDashboard/:id", DeleteRoleDashboard)
-	}
-	{
+	// {
+	// 	apiv1.POST("Role/Create", CreateRole)
+	// 	apiv1.POST("Role/AddDashboard/:id", AddRoleDashboard)
+	// 	apiv1.GET("Role/GetAll", GetAllRole)
+	// 	apiv1.PUT("Role/Update/:id", UpdateRole)
+	// 	apiv1.PUT("Role/UpdateDashboard/:id", UpdateRoleDashboard)
+	// 	apiv1.DELETE("Role/Delete/:id", DeleteRoleById)
+	// 	apiv1.DELETE("Role/DeleteDashboard/:id", DeleteRoleDashboard)
+	// }
+	// {
 
-		apiv1.POST("Menu/Create", CreateMenu)
-		apiv1.POST("Menu/AddDashboard/:id", AddMenuDashboard)
-		apiv1.GET("Menu/GetAll", GetAllMenu)
-		apiv1.GET("Menu/GetDashboards/:id", GetDashboardByMenuID)
-		apiv1.PUT("Menu/Update/:id", UpdateMenu)
-		apiv1.PUT("Menu/UpdateDashboard/:id", UpdateDashboard)
-		apiv1.DELETE("Menu/Delete/:id", DeleteMenuByID)
-		apiv1.DELETE("Menu/DeleteDashboard/:id", DeleteMenuDashboard)
-	}
+	// 	apiv1.POST("Menu/Create", CreateMenu)
+	// 	apiv1.POST("Menu/AddDashboard/:id", AddMenuDashboard)
+	// 	apiv1.GET("Menu/GetAll", GetAllMenu)
+	// 	apiv1.GET("Menu/GetDashboards/:id", GetDashboardByMenuID)
+	// 	apiv1.PUT("Menu/Update/:id", UpdateMenu)
+	// 	apiv1.PUT("Menu/UpdateDashboard/:id", UpdateDashboard)
+	// 	apiv1.DELETE("Menu/Delete/:id", DeleteMenuByID)
+	// 	apiv1.DELETE("Menu/DeleteDashboard/:id", DeleteMenuDashboard)
+	// }
 
 	{
 		apiv1.POST("Group/Create", CreateGroup)

@@ -16,6 +16,15 @@ type Instance struct {
 
 type Dashboard struct {
 	Common
+	DashboardID int    `json:"dashboard_id" form:"dashboard_id" gorm:"primaryKey"`
+	DashboardName string `json:"dashboard_name" form:"dashboard_name"`
+	InstanceID    int    `json:"instance_id" form:"instance_id"`
+	UID           string `json:"uid" form:"uid" gorm:"type:varchar(50)"`
+}
+
+
+type Dashboard1 struct {
+	Common
 	DashboardID   int    `json:"dashboard_id" form:"dashboard_id" gorm:"primaryKey"`
 	DashboardName string `json:"dashboard_name" form:"dashboard_name"`
 	Alias         string `json:"alias" form:"alias"`
@@ -23,16 +32,16 @@ type Dashboard struct {
 	UID           string `json:"uid" form:"uid" gorm:"type:varchar(50)"`
 	InstanceID    int    `json:"instance_id" form:"instance_id"`
 	MenuID        int    `json:"menu_id" form:"menu_id"`
-	Roles         []Role `json:"roles" form:"roles" gorm:"many2many:dashboards_roles;joinForeignKey:DashboardID;joinReferences:RoleID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	// Roles         []Role `json:"roles" form:"roles" gorm:"many2many:dashboards_roles;joinForeignKey:DashboardID;joinReferences:RoleID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	//Menus         []Menu `gorm:"many2many:menus_dashboards;joinForeignKey:DashboardID;joinReferences:MenuID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
-type Menu struct {
-	MenuID     int         `json:"menu_id" form:"menu_id" gorm:"primaryKey"`
-	MenuName   string      `json:"menu_name" form:"menu_name"`
-	Sort       int         `json:"sort" form:"sort"`
-	Dashboards []Dashboard `json:"dashboards" form:"dashboards" gorm:"foreignKey:MenuID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-}
+// type Menu struct {
+// 	MenuID     int         `json:"menu_id" form:"menu_id" gorm:"primaryKey"`
+// 	MenuName   string      `json:"menu_name" form:"menu_name"`
+// 	Sort       int         `json:"sort" form:"sort"`
+// 	Dashboards []Dashboard `json:"dashboards" form:"dashboards" gorm:"foreignKey:MenuID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+// }
 
 type Group struct {
 	Common

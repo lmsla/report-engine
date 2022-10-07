@@ -28,7 +28,7 @@ func CreateInstance(instance entities.Instance) models.Response {
 func GetAllInstance() ([]entities.Instance, error) {
 
 	var instancies []entities.Instance
-	err := global.Mysql.Find(&instancies).Error
+	err := global.Mysql.Omit("Dashboards").Find(&instancies).Error
 	if err != nil {
 		return nil, err
 	}
