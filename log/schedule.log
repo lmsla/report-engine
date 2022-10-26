@@ -68,3 +68,15 @@
 排程  2022/09/30 16:41:10 xdr排程 初始化成功
 排程  2022/09/30 16:41:10 PDF排程 初始化失敗
 ERROR  2022/09/30 16:41:10 expected exactly 5 fields, found 1: [string]
+排程  2022/10/25 15:17:07 xdr排程 初始化失敗
+ERROR  2022/10/25 15:17:07 expected exactly 5 fields, found 1: [f]
+排程  2022/10/25 15:17:07 PDF排程 初始化失敗
+ERROR  2022/10/25 15:17:07 empty spec string
+排程  2022/10/25 15:26:21 xdr排程 初始化失敗
+ERROR  2022/10/25 15:26:21 expected exactly 5 fields, found 1: [f]
+排程  2022/10/25 15:26:21 PDF排程 初始化失敗
+ERROR  2022/10/25 15:26:21 empty spec string
+排程  2022/10/25 15:28:12 xdr排程 初始化失敗
+ERROR  2022/10/25 15:28:12 expected exactly 5 fields, found 1: [f]
+排程  2022/10/25 15:28:12 PDF排程 初始化失敗
+ERROR  2022/10/25 15:28:12 expected exactly 5 fields, found 1: [f]

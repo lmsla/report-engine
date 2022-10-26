@@ -6,7 +6,7 @@ type Schedule struct {
 	Name        string `json:"schedule_name" form:"schedule_name"`
 	Description string `json:"description" form:"description"`
 	// Report         string `json:"reports" form:"reports"`
-	GenerateReport string   `json:"generate-report" form:"generate_report"`
+	GenerateReport string   `json:"generate_report" form:"generate_report"`
 	SendReport     string   `json:"send_report" form:"send_report"`
 	Gropup         []Group  `json:"group" form:"group" gorm:"-"`
 	Status         string   `json:"status" form:"status"`

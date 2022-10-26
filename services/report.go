@@ -75,7 +75,7 @@ func GetReportByReportName1(reportName string) (entities.Report, error) {
 
 
 // 查report中有哪些instance
-func GetInstanceInReportbyReportID(reportID int)([]entities.Instance,error) {
+func GetInstanceInReportbyReportID(reportID int)([]entities.RInstance,error) {
 	instance := entities.Report{}
 	instance.ReportID = reportID
 	// err := global.Mysql.Find(&instance).Error
@@ -88,7 +88,7 @@ func GetInstanceInReportbyReportID(reportID int)([]entities.Instance,error) {
 }
 
 // 取出 report中的dashboard
-func GetDashboardInReport(reportID int) ([]entities.Dashboard, error){
+func GetDashboardInReport(reportID int) ([]entities.RDashboard, error){
 	// var IPType []map[string]int
 	instance := entities.Report{}
 	instance.ReportID = reportID
@@ -139,24 +139,24 @@ func GetDashboardOfInstanceByInstanceID(instanceID int) ([]entities.RDashboard, 
 
 
 
-// 取出 report中的dashboard (未定)
-func GetDashboardInReport1(reportID int) ([]map[string]interface{}, error){
-	// var IPType []map[string]int
-	var instance entities.RDashboard
-	instance.ReportID = reportID
-	err := global.Mysql.First(&instance).Error
+// // 取出 report中的dashboard (未定)
+// func GetDashboardInReport1(reportID int) ([]map[string]interface{}, error){
+// 	// var IPType []map[string]int
+// 	var instance entities.RDashboard
+// 	instance.ReportID = reportID
+// 	err := global.Mysql.First(&instance).Error
 	
-	var DashboardList []map[string]interface{}
-	if err != nil {
-		// return instance, err
-		var rawdata map[string]interface{}
-		rawdata = make(map[string]interface{})
-		rawdata["UID"] = instance.UID
-		rawdata["instanceID"] = instance.InstanceID
-		rawdata["reportID"] = instance.ReportID
-		DashboardList = append(DashboardList, rawdata)
+// 	var DashboardList []map[string]interface{}
+// 	if err != nil {
+// 		// return instance, err
+// 		var rawdata map[string]interface{}
+// 		rawdata = make(map[string]interface{})
+// 		rawdata["UID"] = instance.UID
+// 		rawdata["instanceID"] = instance.InstanceID
+// 		rawdata["reportID"] = instance.ReportID
+// 		DashboardList = append(DashboardList, rawdata)
 
-	}
-	return DashboardList, nil
+// 	}
+// 	return DashboardList, nil
 
-}
+// }

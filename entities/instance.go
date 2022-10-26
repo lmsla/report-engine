@@ -11,17 +11,18 @@ type Instance struct {
 	User         string      `json:"user" form:"user"`
 	Pass         string      `json:"pass" form:"pass"`
 	Auth         bool        `json:"auth" form:"auth"`
+	// Reports      []Report    `gorm:"many2many:Report_Instances;"`
 	Dashboards   []Dashboard `gorm:"foreignKey:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"dashboards,omitempty"`
 }
 
 type Dashboard struct {
 	Common
-	DashboardID int    `json:"dashboard_id" form:"dashboard_id" gorm:"primaryKey"`
-	DashboardName string `json:"dashboard_name" form:"dashboard_name"`
-	InstanceID    int    `json:"instance_id" form:"instance_id"`
-	UID           string `json:"uid" form:"uid" gorm:"type:varchar(50)"`
+	DashboardID   int      `json:"dashboard_id" form:"dashboard_id" gorm:"primaryKey"`
+	DashboardName string   `json:"dashboard_name" form:"dashboard_name"`
+	InstanceID    int      `json:"instance_id" form:"instance_id"`
+	UID           string   `json:"uid" form:"uid" gorm:"type:varchar(50)"`
+	// Reports       []Report `gorm:"many2many:Report_Dashboards;"`
 }
-
 
 type Dashboard1 struct {
 	Common

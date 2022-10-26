@@ -57,6 +57,7 @@ definitions:
       created_at:
         type: integer
       dashboards:
+        description: Reports      []Report    `gorm:"many2many:Report_Instances;"`
         items:
           $ref: '#/definitions/entities.Dashboard'
         type: array
@@ -90,9 +91,8 @@ definitions:
         type: integer
       instance_id:
         type: integer
-      report_id:
-        type: integer
       uid:
+        description: ReportID    int    `json:"report_id" form:"report_id"`
         type: string
       updated_at:
         type: integer
@@ -113,12 +113,16 @@ definitions:
         type: string
       ip:
         type: string
+      pass:
+        type: string
       report_id:
         type: integer
       type:
         type: string
       updated_at:
         type: integer
+      user:
+        type: string
     type: object
   entities.Report:
     properties:
@@ -126,7 +130,7 @@ definitions:
         type: integer
       dashboard:
         items:
-          $ref: '#/definitions/entities.Dashboard'
+          $ref: '#/definitions/entities.RDashboard'
         type: array
       deleted_at:
         type: integer
@@ -136,7 +140,7 @@ definitions:
         type: string
       instance:
         items:
-          $ref: '#/definitions/entities.Instance'
+          $ref: '#/definitions/entities.RInstance'
         type: array
       name:
         type: string
@@ -178,7 +182,7 @@ definitions:
         type: integer
       description:
         type: string
-      generate-report:
+      generate_report:
         description: Report         string `json:"reports" form:"reports"`
         type: string
       group:

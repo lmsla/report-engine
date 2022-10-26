@@ -1387,6 +1387,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "dashboards": {
+                    "description": "Reports      []Report    ` + "`" + `gorm:\"many2many:Report_Instances;\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.Dashboard"
@@ -1437,10 +1438,8 @@ const docTemplate = `{
                 "instance_id": {
                     "type": "integer"
                 },
-                "report_id": {
-                    "type": "integer"
-                },
                 "uid": {
+                    "description": "ReportID    int    ` + "`" + `json:\"report_id\" form:\"report_id\"` + "`" + `",
                     "type": "string"
                 },
                 "updated_at": {
@@ -1472,6 +1471,9 @@ const docTemplate = `{
                 "ip": {
                     "type": "string"
                 },
+                "pass": {
+                    "type": "string"
+                },
                 "report_id": {
                     "type": "integer"
                 },
@@ -1480,6 +1482,9 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "integer"
+                },
+                "user": {
+                    "type": "string"
                 }
             }
         },
@@ -1492,7 +1497,7 @@ const docTemplate = `{
                 "dashboard": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entities.Dashboard"
+                        "$ref": "#/definitions/entities.RDashboard"
                     }
                 },
                 "deleted_at": {
@@ -1507,7 +1512,7 @@ const docTemplate = `{
                 "instance": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entities.Instance"
+                        "$ref": "#/definitions/entities.RInstance"
                     }
                 },
                 "name": {
@@ -1571,7 +1576,7 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "generate-report": {
+                "generate_report": {
                     "description": "Report         string ` + "`" + `json:\"reports\" form:\"reports\"` + "`" + `",
                     "type": "string"
                 },
