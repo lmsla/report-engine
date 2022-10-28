@@ -101,6 +101,35 @@ func GetDashboardInReport(reportID int) ([]entities.RDashboard, error){
 
 }
 
+// 更新 Report
+func UpdateReport(report entities.Report) models.Response {
+	res := models.Response{}
+
+	// var member entities.GroupMember
+	temp := entities.Report{}
+	DBresponse := global.Mysql.Where("report_id = ?", report.ReportID).First(&temp)
+
+	if DBresponse.RowsAffected == 0 {
+		res.Success = false
+		res.Msg = "Report id does not exist"
+		return res
+	}
+
+	report.CreatedAt = temp.CreatedAt
+
+	err := global.Mysql.Select("*").Where("report_id = ?", report.ReportID).Updates(&report).Error
+	if err != nil {
+		res.Success = false
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Success = true
+	res.Msg = fmt.Sprintf("Report ID %v Updated Success",  report.ReportID)
+	return res
+}
+
+
 
 // 刪除Report
 func DeleteReport(reportID int) models.Response {

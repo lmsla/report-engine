@@ -91,8 +91,9 @@ definitions:
         type: integer
       instance_id:
         type: integer
+      report_id:
+        type: integer
       uid:
-        description: ReportID    int    `json:"report_id" form:"report_id"`
         type: string
       updated_at:
         type: integer
@@ -139,6 +140,9 @@ definitions:
       from:
         type: string
       instance:
+        description: |-
+          Instance    []RInstance  `gorm:"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+          Dashboard   []RDashboard `json:"dashboard" form:"dashboard" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
         items:
           $ref: '#/definitions/entities.RInstance'
         type: array
@@ -765,6 +769,29 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get report by Report ID
+      tags:
+      - Report
+  /api/v1/Report/ReportUpdate:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: report
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Report
       tags:
       - Report
   /api/v1/Schedule/Create:

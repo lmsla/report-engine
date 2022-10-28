@@ -889,6 +889,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/Report/ReportUpdate": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Update Report",
+                "parameters": [
+                    {
+                        "description": "report",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Report"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/Schedule/Create": {
             "post": {
                 "consumes": [
@@ -1438,8 +1476,10 @@ const docTemplate = `{
                 "instance_id": {
                     "type": "integer"
                 },
+                "report_id": {
+                    "type": "integer"
+                },
                 "uid": {
-                    "description": "ReportID    int    ` + "`" + `json:\"report_id\" form:\"report_id\"` + "`" + `",
                     "type": "string"
                 },
                 "updated_at": {
@@ -1510,6 +1550,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "instance": {
+                    "description": "Instance    []RInstance  ` + "`" + `gorm:\"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE\"` + "`" + `\nDashboard   []RDashboard ` + "`" + `json:\"dashboard\" form:\"dashboard\" gorm:\"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.RInstance"

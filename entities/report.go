@@ -8,8 +8,10 @@ type Report struct {
 	From        string      `json:"from" form:"from"`
 	To          string      `json:"to" form:"to"`
 	Type        string      `json:"type" form:"type"`
-	Instance    []RInstance  `gorm:"many2many:Report_Instances;"`
-	Dashboard   []RDashboard `gorm:"many2many:Report_Dashboards;"`
+	// Instance    []RInstance  `gorm:"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	// Dashboard   []RDashboard `json:"dashboard" form:"dashboard" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Instance    []RInstance  
+	Dashboard   []RDashboard 
 }
 
 // `json:"report" form:"report" gorm:"-"`
@@ -25,13 +27,14 @@ type Report1 struct {
 	Dashboard   []RDashboard `json:"dashboards" form:"dashboards" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 
-type Report_Dashboards struct {
+type ReportDashboard struct {
 	ReportID    int
 	DashboardID int
+	InstanceID int
 	// DashboardName string `json:"dashboard_name" form:"dashboard_name"`
 }
 
-type Report_Instances struct {
+type ReportInstance struct {
 	ReportID   int
 	InstanceID int
 	// InstanceName string `json:"name" form:"name"`
@@ -53,7 +56,7 @@ type RDashboard struct {
 	Common
 	DashboardID int    `json:"dashboard_id" form:"dashboard_id" gorm:"primaryKey"`
 	InstanceID  int    `json:"instance_id" form:"instance_id"`
-	// ReportID    int    `json:"report_id" form:"report_id"`
+	ReportID    int    `json:"report_id" form:"report_id"`
 	UID         string `json:"uid" form:"uid" gorm:"type:varchar(50)"`
 	// Instance []RInstance `gorm:"many2many:ins_and_dash;"`
 	DashboardName string `json:"dashboard_name" form:"dashboard_name"`

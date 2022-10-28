@@ -59,6 +59,57 @@ func GetAllReport(c *gin.Context) {
 }
 
 
+// @Summary Update Report
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param user body entities.Report true "report"
+// @Success 200 {object} models.Response
+// @Router /api/v1/Report/ReportUpdate [put]
+// @Security ApiKeyAuth
+func UpdateReport(c *gin.Context) {
+
+	body := new(entities.Report)
+	err := c.Bind(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+	}
+	// id := body.ReportID
+	// name := body.Name
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "id should be int")
+		handler.WriteErrorLog(c, "id should be int")
+		return
+	}
+
+	// // Check Point 1
+	// chk_id, _ := services.GetMemberByID(id)
+	// if len(chk_id) == 0 {
+	// 	c.JSON(http.StatusBadRequest, "ID is not existed")
+	// 	handler.WriteErrorLog(c, "ID is not existed")
+	// 	return
+	// }
+
+	// // Check Point 2
+	// chk_name, _ := services.GetMemberByName(name)
+	// if len(chk_name) != 0 && chk_name[0].MemberName != chk_id[0].MemberName {
+	// 	c.JSON(http.StatusBadRequest, "Name is already existed")
+	// 	handler.WriteErrorLog(c, "Name is already existed")
+	// 	return
+	// }
+
+	// Create DB
+	r1 := services.UpdateReport(*body)
+	if !r1.Success {
+		c.JSON(http.StatusBadRequest, r1)
+		handler.WriteErrorLog(c, r1.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, r1)
+}
+
+
 // @Summary Get report by Report ID
 // @Tags Report
 // @Accept  json

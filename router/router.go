@@ -86,6 +86,7 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("Report/GetInstanceOfReport/:id",GetInstanceOfReportbyReportID)
 		apiv1.GET("Report/GetDashboardOfInstance/:id",GetDashboardOfInstanceByInstanceID)
 		apiv1.DELETE("Report/Delete/:id",DeleteReport)
+		apiv1.PUT("Report/ReportUpdate",UpdateReport)
 	}
 
 
