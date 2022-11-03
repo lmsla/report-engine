@@ -41,7 +41,7 @@ func GetReportByReportID(reportID int) (entities.Report, error) {
 
 	var instance entities.Report
 	instance.ReportID = reportID
-	err := global.Mysql.First(&instance).Error
+	err := global.Mysql.Preload("Dashboard").Preload("Instance").Find(&instance).Error
 	if err != nil {
 		return instance, err
 	}
@@ -104,7 +104,7 @@ func GetDashboardInReport(reportID int) ([]entities.RDashboard, error){
 // 更新 Report
 func UpdateReport(report entities.Report) models.Response {
 	res := models.Response{}
-
+	// Session:= entities.Session{}
 	// var member entities.GroupMember
 	temp := entities.Report{}
 	DBresponse := global.Mysql.Where("report_id = ?", report.ReportID).First(&temp)
@@ -116,13 +116,25 @@ func UpdateReport(report entities.Report) models.Response {
 	}
 
 	report.CreatedAt = temp.CreatedAt
-
 	err := global.Mysql.Select("*").Where("report_id = ?", report.ReportID).Updates(&report).Error
 	if err != nil {
 		res.Success = false
 		res.Msg = err.Error()
 		return res
 	}
+	// err := global.Mysql.Select("*").Where("report_id = ?", report.ReportID).Updates(&report.Instance).Error
+	// if err != nil {
+	// 	res.Success = false
+	// 	res.Msg = err.Error()
+	// 	return res
+	// }
+
+	// err2 := global.Mysql.Select("*").Where("report_id = ?", report.ReportID).Updates(&report.Dashboard).Error
+	// if err2 != nil {
+	// 	res.Success = false
+	// 	res.Msg = err.Error()
+	// 	return res
+	// }
 
 	res.Success = true
 	res.Msg = fmt.Sprintf("Report ID %v Updated Success",  report.ReportID)

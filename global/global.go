@@ -11,6 +11,7 @@ import (
 var (
 	EnvConfig      *structs.EnviromentModel
 	Mysql          *gorm.DB
+	Session        *gorm.Session
 	CasbinEnforcer *casbin.Enforcer
 	Crontab        *cron.Cron
 )

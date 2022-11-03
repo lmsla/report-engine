@@ -8,11 +8,16 @@ type Report struct {
 	From        string      `json:"from" form:"from"`
 	To          string      `json:"to" form:"to"`
 	Type        string      `json:"type" form:"type"`
-	// Instance    []RInstance  `gorm:"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	// Dashboard   []RDashboard `json:"dashboard" form:"dashboard" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	// Instance    []RInstance  `json:"Instance" form:"Instance" gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	// Dashboard   []RDashboard `json:"Dashboard" form:"Dashboard" gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	// Instance    []RInstance  `gorm:"many2many:ReportInstance;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	// Dashboard   []RDashboard  `gorm:"many2many:ReportDashboard;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Instance    []RInstance  
-	Dashboard   []RDashboard 
+	Dashboard   []RDashboard
 }
+
+// joinForeignKey:RoleID;joinReferences:UserID
+
 
 // `json:"report" form:"report" gorm:"-"`
 type Report1 struct {

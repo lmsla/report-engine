@@ -21,8 +21,8 @@ func InitTable() {
 		GroupMember{},
 		Report{},
 		Schedule{},
-		ReportDashboard{},
-		ReportInstance{},
+		// ReportDashboard{},
+		// ReportInstance{},
 		RInstance{},
 		RDashboard{},
 		FileHistory{},
@@ -45,8 +45,8 @@ func InitTable() {
 		GroupMember{},
 		Report{},
 		Schedule{},
-		ReportDashboard{},
-		ReportInstance{},
+		// ReportDashboard{},
+		// ReportInstance{},
 		RInstance{},
 		RDashboard{},
 		FileHistory{},
@@ -113,6 +113,9 @@ func InitTable() {
 	global.Mysql.Migrator().CreateConstraint(&Group{}, "Group")
 	global.Mysql.Migrator().CreateConstraint(&GroupMember{}, "GroupMember")
 	//global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Menus")
+	global.Mysql.Migrator().CreateConstraint(&Report{}, "Instance")
+	global.Mysql.Migrator().CreateConstraint(&Report{}, "Dashboard")
+
 
 	color.Info.Println("[Mysql]-->初始化數據成功")
 }

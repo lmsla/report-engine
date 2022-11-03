@@ -141,8 +141,10 @@ definitions:
         type: string
       instance:
         description: |-
-          Instance    []RInstance  `gorm:"many2many:ReportInstance;joinForeignKey:ReportID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-          Dashboard   []RDashboard `json:"dashboard" form:"dashboard" gorm:"many2many:ReportDashboard;joinForeignKey:ReportID;joinReferences:DashboardID;joinReferences:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+          Instance    []RInstance  `json:"Instance" form:"Instance" gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+          Dashboard   []RDashboard `json:"Dashboard" form:"Dashboard" gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+          Instance    []RInstance  `gorm:"many2many:ReportInstance;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+          Dashboard   []RDashboard  `gorm:"many2many:ReportDashboard;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
         items:
           $ref: '#/definitions/entities.RInstance'
         type: array
