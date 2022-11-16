@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"time"
 	"report-backend-golang/global"
-	
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

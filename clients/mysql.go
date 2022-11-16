@@ -1,9 +1,10 @@
-package databases
+package clients
 
 import (
+	"errors"
 	"fmt"
-	"time"
 	"report-backend-golang/global"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -19,14 +20,17 @@ func LoadDatabase() {
 	dbname := global.EnvConfig.Database.Db
 	parameter := global.EnvConfig.Database.Params
 
-	var err error
-	fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s\n", user, password, host, port, dbname, parameter)
-	global.Mysql, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, port, dbname, parameter)), &gorm.Config{
-		DisableForeignKeyConstraintWhenMigrating: true,
-	})
-	if err != nil {
-		panic(err)
+	// var err error
+	err := errors.New("mock error")
+	for err != nil {
+		global.Mysql, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, port, dbname, parameter)), &gorm.Config{
+			DisableForeignKeyConstraintWhenMigrating: true,
+		})
+		time.Sleep(1 * time.Second)
 	}
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	sqlDB, err := global.Mysql.DB()
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.

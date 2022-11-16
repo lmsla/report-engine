@@ -8,167 +8,136 @@ import (
 )
 
 func InitTable() {
-
 	var err error
 
 	err = global.Mysql.Migrator().DropTable(
-		User{},
-		// Role{},
 		Instance{},
-		Dashboard{},
-		// Menu{},
-		Group{},
-		GroupMember{},
-		Report{},
 		Schedule{},
-		// ReportDashboard{},
-		// ReportInstance{},
-		RInstance{},
-		RDashboard{},
-		FileHistory{},
-		"users_roles",
-		"dashboards_roles",
-		"menus_dashboards",
+		Report{},
+		Element{},
+		History{},
+		"reports_schedules",
 	)
 	if err != nil {
-		color.Warn.Printf("[Mysql]-->初始化數據失敗(移除原始Tables),err: %v\n", err)
+		color.Warn.Printf("[Mysql]-->初始化數據失敗,err: %v\n", err)
 		os.Exit(0)
 	}
 
 	err = global.Mysql.AutoMigrate(
-		User{},
-		// Role{},
 		Instance{},
-		Dashboard{},
-		// Menu{},
-		Group{},
-		GroupMember{},
-		Report{},
 		Schedule{},
-		// ReportDashboard{},
-		// ReportInstance{},
-		RInstance{},
-		RDashboard{},
-		FileHistory{},
+		Report{},
+		Element{},
+		History{},
 	)
 
 	if err != nil {
-		color.Warn.Printf("[Mysql]-->初始化數據表失敗(建立Tables),err: %v\n", err)
+		color.Warn.Printf("[Mysql]-->初始化數據失敗,err: %v\n", err)
 		os.Exit(0)
 	}
 
-	// err = global.Mysql.Omit("Roles.Dashboards").Create(&UserData).Error
-	// if err != nil {
-	// 	color.Warn.Printf("[Mysql]-->初始化User數據表失敗,err: %v\n", err)
-	// 	os.Exit(0)
-	// }
+	err = global.Mysql.Create(&InstanceData).Error
+	if err != nil {
+		color.Warn.Printf("[Mysql]-->初始化數據失敗,err: %v\n", err)
+		os.Exit(0)
+	}
 
-	// err = global.Mysql.Create(&InstanceData).Error
-	// if err != nil {
-	// 	color.Warn.Printf("[Mysql]-->初始化Inventory數據表失敗,err: %v\n", err)
-	// 	os.Exit(0)
-	// }
+	err = global.Mysql.Create(&ScheduleData).Error
+	if err != nil {
+		color.Warn.Printf("[Mysql]-->初始化數據失敗,err: %v\n", err)
+		os.Exit(0)
+	}
 
-	// // 寫入Relation Table (dashboards_roles)
-	// for i := 0; i < len(UserData); i++ {
-	// 	for j := 0; j < len(UserData[i].Roles); j++ {
-	// 		for k := 0; k < len(UserData[i].Roles[j].Dashboards); k++ {
-	// 			var dashboardID, roleID int
-	// 			global.Mysql.Table("dashboards").Where("dashboard_name = ?", UserData[i].Roles[j].Dashboards[k].DashboardName).Select("dashboard_id").Scan(&dashboardID)
-	// 			global.Mysql.Table("roles").Where("role_name = ?", UserData[i].Roles[j].RoleName).Select("role_id").Scan(&roleID)
-	// 			err := global.Mysql.Table("dashboards_roles").Create(map[string]interface{}{"dashboard_id": dashboardID, "role_id": roleID}).Error
-	// 			if err != nil {
-	// 				color.Warn.Printf("[Mysql]-->初始化dashboard_roles數據表失敗,err: %v\n", err)
-	// 				os.Exit(0)
-	// 			}
-	// 		}
-
-	// 	}
-	// }
-
-	// err = global.Mysql.Omit("Dashboards").Create(&MenuData).Error
-	// if err != nil {
-	// 	color.Warn.Printf("[Mysql]-->初始化Menu數據表失敗,err: %v\n", err)
-	// 	os.Exit(0)
-	// }
-
-	// for i := 0; i < len(MenuData.Dashboards); i++ {
-	// 	var menuID int
-	// 	global.Mysql.Table("menus").Where("menu_name = ?", MenuData.MenuName).Select("menu_id").Scan(&menuID)
-	// 	//global.Mysql.Table("dashboards").Where("dashboard_name = ?", MenuData.Dashboards[i].DashboardName).Select("dashboard_id").Scan(&dashboardID)
-	// 	//err := global.Mysql.Table("menus_dashboards").Create(map[string]interface{}{"dashboard_id": dashboardID, "menu_id": menuID}).Error
-	// 	err := global.Mysql.Table("dashboards").Where("dashboard_name = ?", MenuData.Dashboards[i].DashboardName).Update("menu_id", menuID).Error
-	// 	if err != nil {
-	// 		color.Warn.Printf("[Mysql]-->初始化menus_dashboards數據表失敗,err: %v\n", err)
-	// 		os.Exit(0)
-	// 	}
-	// }
-
-	global.Mysql.Migrator().CreateConstraint(&Instance{}, "Dashboards")
-	global.Mysql.Migrator().CreateConstraint(&User{}, "Roles")
-	global.Mysql.Migrator().CreateConstraint(&Role{}, "Users")
-	global.Mysql.Migrator().CreateConstraint(&Role{}, "Dashboards")
-	// global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Roles")
-	// global.Mysql.Migrator().CreateConstraint(&Menu{}, "Dashboards")
-	global.Mysql.Migrator().CreateConstraint(&Group{}, "Group")
-	global.Mysql.Migrator().CreateConstraint(&GroupMember{}, "GroupMember")
-	//global.Mysql.Migrator().CreateConstraint(&Dashboard{}, "Menus")
-	global.Mysql.Migrator().CreateConstraint(&Report{}, "Instance")
-	global.Mysql.Migrator().CreateConstraint(&Report{}, "Dashboard")
-
+	global.Mysql.Migrator().CreateConstraint(&Report{}, "Element")
+	global.Mysql.Migrator().CreateConstraint(&Element{}, "Instance")
+	global.Mysql.Migrator().CreateConstraint(&Report{}, "Schedules")
+	global.Mysql.Migrator().CreateConstraint(&Schedule{}, "Reports")
+	global.Mysql.Migrator().CreateConstraint(&History{}, "Schedule")
+	global.Mysql.Migrator().CreateConstraint(&History{}, "Report")
 
 	color.Info.Println("[Mysql]-->初始化數據成功")
 }
 
-// var UserData = []User{
-// 	{
-// 		UserName: "jessie",
-// 		Roles: []Role{
-// 			{
-// 				RoleName: "admin",
-// 				Dashboards: []Dashboard{
-// 					{
-// 						DashboardName: "Single Node Analysis - cpu",
-// 					},
-// 					{
-// 						DashboardName: "Single Node Analysis - mem",
-// 					},
-// 				},
-// 			},
-// 		},
-// 	},
-// }
+var InstanceData = []Instance{
+	{
+		Type:     "kibana",
+		Name:     "kibana_110",
+		URL:      "http://10.99.1.110:5601/kibana_iframe",
+		User:     "elasic",
+		Password: "RnIv7YhigaVKS=l-*yz9",
+		Auth:     false,
+	},
+	{
+		Type:     "grafanc",
+		Name:     "grafana_241",
+		URL:      "http://10.99.1.241:3000",
+		User:     "admin",
+		Password: "12345678",
+		Auth:     false,
+	},
+}
 
-// var InstanceData = []Instance{
-// 	{
-// 		Auth:         false,
-// 		IP:           "http://10.99.1.240:3000",
-// 		InstanceName: "grafana-240",
-// 		Type:         "grafana",
-// 		User:         "admin",
-// 		Pass:         "12345678",
-// 		Dashboards: []Dashboard{
-// 			{
-// 				DashboardName: "Single Node Analysis - cpu",
-// 				Alias:         "Demo1",
-// 				Description:   "cpu",
-// 				UID:           "mOTd6X67k",
-// 			},
-// 			{
-// 				DashboardName: "Single Node Analysis - mem",
-// 				Alias:         "Demo2",
-// 				Description:   "mem",
-// 				UID:           "RlgkWFg4k",
-// 			},
-// 		},
-// 	},
-// }
+var ReportData = []Report{
+	{
+		Name:       "Kibana_Test",
+		TimeUnit:   "日",
+		TimePeriod: 1,
+		Elements: []Element{
+			{
+				Type:       "dashboard",
+				Name:       "cht_vsm_MD_track_dashboard",
+				UID:        "cdd23320-edf8-11ec-b4a6-b712e673cd3e",
+				RowNum:     1,
+				ColumnType: "M",
+				InstanceID: 1,
+				SpcaceName: "default",
+			},
+			{
+				Type:       "visualization",
+				Name:       "cht_apache_link",
+				UID:        "c16aa400-ef01-11ec-b4a6-b712e673cd3e",
+				RowNum:     3,
+				ColumnType: "L",
+				InstanceID: 1,
+				SpcaceName: "default",
+			},
+			{
+				Type:       "search",
+				Name:       "cht_mysql_apache_discover",
+				UID:        "60d92120-ee11-11ec-b4a6-b712e673cd3e",
+				RowNum:     2,
+				ColumnType: "M",
+				InstanceID: 1,
+				SpcaceName: "default",
+			},
+		},
+	},
+	{
+		Name:       "Grafana_Test",
+		TimeUnit:   "日",
+		TimePeriod: 1,
+		Elements: []Element{
+			{
+				Type:       "dashboard",
+				Name:       "Rack Monitor (Current)",
+				UID:        "m-OiCeDVz",
+				RowNum:     1,
+				ColumnType: "M",
+				InstanceID: 2,
+				SpcaceName: "default",
+			},
+		},
+	},
+}
 
-// var MenuData = Menu{
-// 	MenuName: "Single Node",
-// 	Sort:     0,
-// 	Dashboards: []Dashboard{
-// 		{DashboardName: "Single Node Analysis - cpu"},
-// 		{DashboardName: "Single Node Analysis - mem"},
-// 	},
-// }
+var ScheduleData = []Schedule{
+	{
+		Name:     "日報",
+		CronTime: "0 0 * * *",
+		To:       "example@gmail.com",
+		CC:       "",
+		BCC:      "",
+		CronID:   0,
+		Reports:  ReportData,
+	},
+}

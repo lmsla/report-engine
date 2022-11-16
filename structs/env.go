@@ -1,17 +1,26 @@
 package structs
 
 type EnviromentModel struct {
-	Database     database
-	Server       server
-	Cors         corsModel
-	Other        other
-	Reportengine reportengine
-	Email        email
+	Database database
+	Server   server
+	Redis    redisModel
+	Cors     corsModel
+	Email    email
+	Other    other
 }
 
+
 type other struct {
-	Backend   string
-	Migration bool
+	Backend string
+}
+
+type email struct {
+	User     string
+	Password string
+	SMTP     []string
+	Host     string
+	Sender   string
+	Auth     bool
 }
 
 type server struct {
@@ -39,20 +48,14 @@ type database struct {
 	Params      string
 	Port        string
 	LogEnable   int
+	Migration   bool
 }
 
-type reportengine struct {
-	PicturePath string
-	HtmlPath    string
-	PdfPath     string
-	LogPath     string
-}
-
-type email struct {
-	User     string
+type redisModel struct {
+	Url      string
 	Password string
-	Host     string
-	Port     string
-	Subject  string
+	Database int
+	Idle     int
+	Active   int
+	Protocol string
 }
-

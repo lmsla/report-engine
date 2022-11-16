@@ -2,9 +2,9 @@ package utils
 
 import (
 	"fmt"
-	"strings"
 	"report-backend-golang/global"
 	"report-backend-golang/structs"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -43,23 +43,28 @@ func viperConfigToModel() {
 	config.Database.Params = viper.GetString("database.params")
 	config.Database.Port = viper.GetString("database.port")
 	config.Database.LogEnable = viper.GetInt("database.log_enable")
+	config.Database.Migration = viper.GetBool("database.migration")
 
 	config.Server.Mode = viper.GetString("server.mode")
 	config.Server.Port = viper.GetString("server.port")
 
+	config.Redis.Url = viper.GetString("redis.url")
+	config.Redis.Password = viper.GetString("redis.password")
+	config.Redis.Database = viper.GetInt("redis.database")
+	config.Redis.Idle = viper.GetInt("redis.idle")
+	config.Redis.Active = viper.GetInt("redis.active")
+	config.Redis.Protocol = viper.GetString("redis.protocol")
+
 	config.Cors.Allow.Headers = viper.GetStringSlice("cors.allow.headers")
 
-	config.Other.Backend = viper.GetString("other.backend")
-	config.Other.Migration = viper.GetBool("other.migration")
-	config.Reportengine.HtmlPath = viper.GetString("reportengine.htmlPath")
-	config.Reportengine.PicturePath = viper.GetString("reportengine.picturePath")
-	config.Reportengine.PdfPath = viper.GetString("reportengine.pdfPath")
-	config.Reportengine.LogPath = viper.GetString("reportengine.logpath")
 	config.Email.User = viper.GetString("email.user")
 	config.Email.Password = viper.GetString("email.password")
-	config.Email.Port = viper.GetString("email.port")
+	config.Email.SMTP = viper.GetStringSlice("email.smtp")
 	config.Email.Host = viper.GetString("email.host")
-	config.Email.Subject = viper.GetString("email.subject")
+	config.Email.Sender = viper.GetString("email.sender")
+	config.Email.Auth = viper.GetBool("email.auth")
+
+	config.Other.Backend = viper.GetString("other.backend")
 
 	global.EnvConfig = &config
 }

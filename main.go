@@ -1,23 +1,23 @@
 package main
 
 import (
-	databases "report-backend-golang/database"
+	"report-backend-golang/clients"
 	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
-	// "report-backend-golang/screenshot"
 )
 
-// @title Golang API - WarRoom
+// @title Report Engine Golang API
 // @version 1.0
 // @description Golang API 專案描述
 // @termsOfService http://swagger.io/terms/
 
-// @contact.name Jessie
+// @contact.name Winston
 // @contact.email support@swagger.io
 
 // @host localhost:8005
+// @BasePath  /api/v1
 
 // @query.collection.format multi
 
@@ -30,33 +30,26 @@ func main() {
 
 	utils.LoadEnvironment()
 
-	databases.LoadDatabase()
+	// es.LoadElasticsearch()
+
+	clients.LoadDatabase()
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	utils.LoadCrontab()
-
-	///自動產table
-
-	if global.EnvConfig.Other.Migration {
+	if global.EnvConfig.Database.Migration {
 		entities.InitTable()
 	}
-	// utils.LoadCrontab()
-	// authorize.LoadCasbin()
+
+	clients.LoadRedis()
+	defer global.Redis.Close()
+
+	utils.LoadCrontab()
+	// // authorize.LoadCasbin()
 
 	r := router.LoadRouter()
 	r.Run(global.EnvConfig.Server.Port)
 
+	// 測試 rule
+	// services.CheckRule(2)
+
 }
-
-// func main() {
-// 	utils.LoadEnvironment()
-// 	databases.LoadDatabase()
-// 	mysql, _ := global.Mysql.DB()
-// 	defer mysql.Close()
-
-// 	screenshot.GetAllDashboard()
-// 	screenshot.GetUID()
-// 	// screenshot.Test()
-// 	screenshot.ScreenshotWithAuth()
-// }

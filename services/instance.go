@@ -7,91 +7,102 @@ import (
 	"report-backend-golang/models"
 )
 
-// 新增instance
-func CreateInstance(instance entities.Instance) models.Response {
+func GetAllInstances() models.Response {
 
 	res := models.Response{}
-	// err := global.Mysql.Create(&instance).Error
-	err := global.Mysql.Create(&instance).Error
+	res.Success = false
+	res.Body = []models.Instance{}
 
+	err := global.Mysql.Find(&res.Body).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error: %v", err)
-		res.Success = false
-		return res
-	}
-	res.Msg = "Create Success"
-	res.Success = true
-	return res
-}
-
-// 查詢All Instance
-func GetAllInstance() ([]entities.Instance, error) {
-
-	var instancies []entities.Instance
-	err := global.Mysql.Omit("Dashboards").Find(&instancies).Error
-	if err != nil {
-		return nil, err
-	}
-	return instancies, nil
-}
-
-// 查單一Instance
-func GetInstanceByID(instanceID int) (entities.Instance, error) {
-
-	var instance entities.Instance
-	instance.InstanceID = instanceID
-	err := global.Mysql.First(&instance).Error
-	if err != nil {
-		return instance, err
-	}
-	return instance, nil
-}
-
-// 更新Instance
-func UpdateInstance(instanceID int, instance entities.Instance) models.Response {
-
-	res := models.Response{}
-
-	temp := entities.Instance{}
-	DBresponse := global.Mysql.Where("instance_id = ?", instanceID).First(&temp)
-
-	if DBresponse.RowsAffected == 0 {
-		res.Success = false
-		res.Msg = "Instance id does not exist"
-		return res
-	}
-
-	instance.CreatedAt = temp.CreatedAt
-
-	err := global.Mysql.Select("*").Where("instance_id = ?", instanceID).Updates(&instance).Error
-	if err != nil {
-		res.Success = false
 		res.Msg = err.Error()
 		return res
 	}
 
 	res.Success = true
-	res.Msg = fmt.Sprintf("Instance ID %v Updated Success", instanceID)
+	res.Msg = "Get All Instance Success"
 	return res
 }
 
-// 刪除Instance
-func DeleteInstance(instanceID int) models.Response {
+func CreateInstance(instance models.Instance) models.Response {
 
 	res := models.Response{}
-	DBresponse := global.Mysql.Where("instance_id = ?", instanceID).Delete(&entities.Instance{})
+	res.Success = false
+	res.Body = []models.Instance{}
 
-	if DBresponse.RowsAffected == 0 {
-		res.Msg = fmt.Sprintf("Instacne ID %v does not exist", instanceID)
-		res.Success = false
+	result := global.Mysql.Where("name = ?", instance.Name).First(&entities.Instance{})
+	if result.RowsAffected > 0 {
+		res.Msg = "Instance Name already existed"
 		return res
 	}
-	if DBresponse.Error != nil {
-		res.Msg = fmt.Sprintf("Error: %v", DBresponse.Error)
-		res.Success = false
+
+	err := global.Mysql.Create(&instance).Error
+	if err != nil {
+		res.Msg = "Create Fail"
 		return res
 	}
-	res.Msg = fmt.Sprintf("Instacne ID %v Deleted", instanceID)
+
 	res.Success = true
+	res.Msg = "Create Success"
+	global.Mysql.Where("name = ?", instance.Name).First(&res.Body)
+
 	return res
+}
+
+func UpdateInstance(instance models.Instance) models.Response {
+
+	res := models.Response{}
+	res.Success = false
+	res.Body = []models.Instance{}
+
+	result := global.Mysql.Where("id != ? AND name = ?", instance.ID, instance.Name).First(&entities.Instance{})
+	if result.RowsAffected > 0 {
+		res.Msg = "Instance Name already existed"
+		return res
+	}
+
+	err := global.Mysql.Select("*").Where("id = ?", instance.ID).Updates(&instance).Error
+	if err != nil {
+		res.Msg = "Update Fail"
+		return res
+	}
+
+	res.Success = true
+	res.Msg = "Update Success"
+	global.Mysql.Where("id = ?", instance.ID).First(&res.Body)
+
+	return res
+
+}
+
+func DeleteInstance(id int) models.Response {
+
+	res := models.Response{}
+	res.Success = false
+	res.Body = nil
+
+	result := global.Mysql.Where("id = ?", id).First(&entities.Instance{})
+	if result.RowsAffected == 0 {
+		res.Msg = "Instance ID does not exist"
+		return res
+	}
+
+	//先刪除 element 中相應的圖表
+	err := global.Mysql.Where("instance_id = ?", id).Delete(&entities.Element{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
+		return res
+	}
+
+	err = global.Mysql.Where("id = ?", id).Delete(&entities.Instance{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting instance, err: %s", err)
+		return res
+	}
+
+	res.Success = true
+	res.Msg = "Delete Success"
+
+	return res
+
 }

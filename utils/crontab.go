@@ -7,11 +7,7 @@ import (
 )
 
 func LoadCrontab() {
-	global.Crontab = cron.New()
 
-	
-	// 撈資料
-	// 跑回圈
-	// global.Crontab.AddFunc()
-
+	global.Crontab = cron.New(cron.WithSeconds())
+	global.Crontab.Start()
 }
