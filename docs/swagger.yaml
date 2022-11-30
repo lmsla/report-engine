@@ -1,5 +1,137 @@
 basePath: /api/v1
 definitions:
+  entities.Element:
+    properties:
+      columnType:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/entities.Instance'
+      instanceID:
+        type: integer
+      name:
+        type: string
+      reportID:
+        type: integer
+      rowNum:
+        type: integer
+      spcaceName:
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Instance:
+    properties:
+      auth:
+        type: boolean
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: integer
+      url:
+        type: string
+      user:
+        type: string
+    type: object
+  entities.Report:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      elements:
+        items:
+          $ref: '#/definitions/entities.Element'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      schedules:
+        items:
+          $ref: '#/definitions/entities.Schedule'
+        type: array
+      timePeriod:
+        type: integer
+      timeUnit:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Schedule:
+    properties:
+      bcc:
+        type: string
+      cc:
+        type: string
+      created_at:
+        type: integer
+      cronID:
+        type: integer
+      cronTime:
+        type: string
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      reports:
+        items:
+          $ref: '#/definitions/entities.Report'
+        type: array
+      to:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  models.Element:
+    properties:
+      column_type:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance_id:
+        type: integer
+      name:
+        type: string
+      report_id:
+        type: integer
+      row_num:
+        type: integer
+      space_name:
+        description: Instance   Instance `json:"instance" form:"instance"`
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
   models.Instance:
     properties:
       auth:
@@ -16,6 +148,27 @@ definitions:
         type: string
       user:
         type: string
+    type: object
+  models.Report:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      elements:
+        items:
+          $ref: '#/definitions/models.Element'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      time_period:
+        type: string
+      time_unit:
+        type: integer
+      updated_at:
+        type: integer
     type: object
   models.Response:
     properties:
@@ -35,6 +188,82 @@ info:
   title: Report Engine Golang API
   version: "1.0"
 paths:
+  /Element/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: element
+        in: body
+        name: Element
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Element'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create Element
+      tags:
+      - Element
+  /Element/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete Element
+      tags:
+      - Element
+  /Element/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get Element
+      tags:
+      - Element
+  /Element/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: Instacne
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Element'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update Element
+      tags:
+      - Element
   /Instance/Create:
     post:
       consumes:
@@ -90,6 +319,50 @@ paths:
       summary: Get Instance
       tags:
       - Instance
+  /Instance/GetDashboards/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Dashboard of server by Instance ID
+      tags:
+      - Instance
+  /Instance/GetVisualizations/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Visualization of server by Instance ID
+      tags:
+      - Instance
   /Instance/Update:
     put:
       consumes:
@@ -111,6 +384,117 @@ paths:
       summary: Update Instance
       tags:
       - Instance
+  /Report/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: report
+        in: body
+        name: Report
+        required: true
+        schema:
+          $ref: '#/definitions/models.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create Report
+      tags:
+      - Report
+  /Report/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete Report
+      tags:
+      - Report
+  /Report/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get Report
+      tags:
+      - Report
+  /Report/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: report
+        in: body
+        name: Instacne
+        required: true
+        schema:
+          $ref: '#/definitions/models.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update Report
+      tags:
+      - Report
+  /Schedule/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule
+        in: body
+        name: Schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create Schedule
+      tags:
+      - Schedule
+  /Schedule/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get Schedule
+      tags:
+      - Schedule
 schemes:
 - http
 securityDefinitions:

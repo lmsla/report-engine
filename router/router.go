@@ -34,6 +34,21 @@ func LoadRouter() *gin.Engine {
 	apiv1.POST("/Instance/Create", CreateInstance)
 	apiv1.PUT("/Instance/Update", UpdateInstance)
 	apiv1.DELETE("/Instance/Delete/:id", DeleteInstance)
+	apiv1.GET("/Instance/GetDashboards/:id", GetDBDashboardByInstanceID)
+	apiv1.GET("/Instance/GetVisualizations/:id", GetDBVisualizationByInstanceID)
+
+	apiv1.GET("/Report/GetAll", GetAllReports)
+	apiv1.POST("/Report/Create",CreateReport)
+	apiv1.PUT("/Report/Update", UpdateReport)
+	apiv1.DELETE("/Report/Delete/:id",DeleteReport)
+
+	apiv1.GET("/Element/GetAll", GetAllElements)
+	apiv1.POST("/Element/Create",CreateElement)
+	apiv1.PUT("/Element/Update", UpdateElement)
+	apiv1.DELETE("/Element/Delete/:id", DeleteElement)
+
+	apiv1.GET("/Schedule/GetAll", GetAllSchedule)
+	apiv1.POST("/Schedule/Create",CreateSchedule)
 
 	return router
 }

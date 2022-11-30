@@ -20,6 +20,6 @@ type Element struct {
 	RowNum     int      `gorm:"type:int"`
 	ColumnType string   `gorm:"type:varchar(50)"`
 	InstanceID int      `gorm:"type:int"`
-	Instance   Instance `gorm:"foreignKey:InstanceID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Instance   Instance `gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	SpcaceName string   `gorm:"type:varchar(50)"`
 }

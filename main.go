@@ -2,8 +2,8 @@ package main
 
 import (
 	"report-backend-golang/clients"
-	"report-backend-golang/entities"
 	"report-backend-golang/global"
+	"report-backend-golang/migrate"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
 )
@@ -36,9 +36,11 @@ func main() {
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	if global.EnvConfig.Database.Migration {
-		entities.InitTable()
-	}
+	// if global.EnvConfig.Database.Migration {
+	// 	entities.InitTable()
+	// }
+
+	migrate.Run()
 
 	clients.LoadRedis()
 	defer global.Redis.Close()

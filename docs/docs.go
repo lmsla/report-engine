@@ -20,6 +20,125 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/Element/Create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Element"
+                ],
+                "summary": "Create Element",
+                "parameters": [
+                    {
+                        "description": "element",
+                        "name": "Element",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Element"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Element/Delete/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Element"
+                ],
+                "summary": "Delete Element",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/Element/GetAll": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Element"
+                ],
+                "summary": "Get Element",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Element/Update": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Element"
+                ],
+                "summary": "Update Element",
+                "parameters": [
+                    {
+                        "description": "instance",
+                        "name": "Instacne",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Element"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/Instance/Create": {
             "post": {
                 "consumes": [
@@ -106,6 +225,78 @@ const docTemplate = `{
                 }
             }
         },
+        "/Instance/GetDashboards/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Instance"
+                ],
+                "summary": "Get Dashboard of server by Instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "instance id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Element"
+                        }
+                    }
+                }
+            }
+        },
+        "/Instance/GetVisualizations/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Instance"
+                ],
+                "summary": "Get Visualization of server by Instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "instance id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Element"
+                        }
+                    }
+                }
+            }
+        },
         "/Instance/Update": {
             "put": {
                 "consumes": [
@@ -138,9 +329,383 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/Report/Create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Create Report",
+                "parameters": [
+                    {
+                        "description": "report",
+                        "name": "Report",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Report"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Report/Delete/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Delete Report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/Report/GetAll": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get Report",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Report/Update": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Update Report",
+                "parameters": [
+                    {
+                        "description": "report",
+                        "name": "Instacne",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Report"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/Schedule/Create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Create Schedule",
+                "parameters": [
+                    {
+                        "description": "schedule",
+                        "name": "Schedule",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Schedule/GetAll": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get Schedule",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "entities.Element": {
+            "type": "object",
+            "properties": {
+                "columnType": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instance": {
+                    "$ref": "#/definitions/entities.Instance"
+                },
+                "instanceID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "reportID": {
+                    "type": "integer"
+                },
+                "rowNum": {
+                    "type": "integer"
+                },
+                "spcaceName": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.Instance": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Report": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "elements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Element"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "schedules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Schedule"
+                    }
+                },
+                "timePeriod": {
+                    "type": "integer"
+                },
+                "timeUnit": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.Schedule": {
+            "type": "object",
+            "properties": {
+                "bcc": {
+                    "type": "string"
+                },
+                "cc": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "cronID": {
+                    "type": "integer"
+                },
+                "cronTime": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "reports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Report"
+                    }
+                },
+                "to": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Element": {
+            "type": "object",
+            "properties": {
+                "column_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instance_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "report_id": {
+                    "type": "integer"
+                },
+                "row_num": {
+                    "type": "integer"
+                },
+                "space_name": {
+                    "description": "Instance   Instance ` + "`" + `json:\"instance\" form:\"instance\"` + "`" + `",
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Instance": {
             "type": "object",
             "properties": {
@@ -164,6 +729,38 @@ const docTemplate = `{
                 },
                 "user": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Report": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "elements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Element"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "time_period": {
+                    "type": "string"
+                },
+                "time_unit": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
                 }
             }
         },

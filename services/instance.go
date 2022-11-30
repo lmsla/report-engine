@@ -24,7 +24,25 @@ func GetAllInstances() models.Response {
 	return res
 }
 
-func CreateInstance(instance models.Instance) models.Response {
+// 新增instance
+// func CreateInstance(instance entities.Instance) models.Response {
+
+// 	res := models.Response{}
+// 	// err := global.Mysql.Create(&instance).Error
+// 	err := global.Mysql.Create(&instance).Error
+
+// 	if err != nil {
+// 		res.Msg = fmt.Sprintf("Error: %v", err)
+// 		res.Success = false
+// 		return res
+// 	}
+// 	res.Msg = "Create Success"
+// 	res.Success = true
+// 	return res
+// }
+
+// 新增instance
+func CreateInstance(instance entities.Instance) models.Response {
 
 	res := models.Response{}
 	res.Success = false
@@ -47,6 +65,19 @@ func CreateInstance(instance models.Instance) models.Response {
 	global.Mysql.Where("name = ?", instance.Name).First(&res.Body)
 
 	return res
+}
+
+
+// 查單一Instance
+func GetInstanceByID(instanceID int) (models.Instance, error) {
+
+	var instance models.Instance
+	instance.ID = instanceID
+	err := global.Mysql.First(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
 }
 
 func UpdateInstance(instance models.Instance) models.Response {
@@ -75,28 +106,28 @@ func UpdateInstance(instance models.Instance) models.Response {
 
 }
 
-func DeleteInstance(id int) models.Response {
+func DeleteReport(id int) models.Response {
 
 	res := models.Response{}
 	res.Success = false
 	res.Body = nil
 
-	result := global.Mysql.Where("id = ?", id).First(&entities.Instance{})
+	result := global.Mysql.Where("id = ?", id).First(&entities.Report{})
 	if result.RowsAffected == 0 {
-		res.Msg = "Instance ID does not exist"
+		res.Msg = "Report ID does not exist"
 		return res
 	}
 
 	//先刪除 element 中相應的圖表
-	err := global.Mysql.Where("instance_id = ?", id).Delete(&entities.Element{}).Error
+	err := global.Mysql.Where("report_id = ?", id).Delete(&entities.Element{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
 		return res
 	}
 
-	err = global.Mysql.Where("id = ?", id).Delete(&entities.Instance{}).Error
+	err = global.Mysql.Where("id = ?", id).Delete(&entities.Report{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting instance, err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting report, err: %s", err)
 		return res
 	}
 

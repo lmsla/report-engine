@@ -6,8 +6,10 @@ import (
 
 	"report-backend-golang/models"
 	"report-backend-golang/services"
+	"report-backend-golang/handler"
 
 	"github.com/gin-gonic/gin"
+	"report-backend-golang/entities"
 )
 
 // @Summary Get Instance
@@ -37,7 +39,8 @@ func GetAllInstances(c *gin.Context) {
 // @Router /Instance/Create [post]
 func CreateInstance(c *gin.Context) {
 
-	body := new(models.Instance)
+	// body := new(models.Instance)
+	body := new(entities.Instance)
 
 	err := c.Bind(&body)
 	if err != nil {
@@ -102,4 +105,98 @@ func DeleteInstance(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, res.Msg)
+}
+
+
+// @Summary Get Dashboard of server by Instance ID
+// @Tags Instance
+// @Accept  json
+// @Produce  json
+// @Param id path int true "instance id"
+// @Success 200 {object} models.Element
+// @Router /Instance/GetDashboards/{id} [get]
+// @Security ApiKeyAuth
+func GetDBDashboardByInstanceID(c *gin.Context) {
+
+	instanceID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "instance ID should be int")
+		handler.WriteErrorLog(c, "instance ID should be integer")
+		return
+	}
+
+	inventory, err := services.GetInstanceByID(instanceID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+
+	switch inventory.Type {
+	case "grafana":
+		r, err := services.GetAllGrafanaDashboardTitle(inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			handler.WriteErrorLog(c, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, r)
+	case "kibana":
+		r, err := services.GetALLKibanaDashboardTitle(inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			// handler.WriteErrorLog(c, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, r)
+	default:
+		c.JSON(http.StatusBadRequest, "instance type unknown")
+	}
+}
+
+
+// @Summary Get Visualization of server by Instance ID
+// @Tags Instance
+// @Accept  json
+// @Produce  json
+// @Param id path int true "instance id"
+// @Success 200 {object} models.Element
+// @Router /Instance/GetVisualizations/{id} [get]
+// @Security ApiKeyAuth
+func GetDBVisualizationByInstanceID(c *gin.Context) {
+
+	instanceID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "instance ID should be int")
+		handler.WriteErrorLog(c, "instance ID should be integer")
+		return
+	}
+
+	inventory, err := services.GetInstanceByID(instanceID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+
+	switch inventory.Type {
+	case "grafana":
+		r, err := services.GetAllGrafanaDashboardTitle(inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			handler.WriteErrorLog(c, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, r)
+	case "kibana":
+		r, err := services.GetALLKibanaVisualizationTitle(inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			// handler.WriteErrorLog(c, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, r)
+	default:
+		c.JSON(http.StatusBadRequest, "instance type unknown")
+	}
 }
