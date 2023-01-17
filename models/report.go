@@ -4,8 +4,8 @@ type Report struct {
 	Common
 	ID         int       `json:"id" form:"id"`
 	Name       string    `json:"name" form:"name"`
-	TimeUnit   string    `json:"time_period" form:"time_period"`
-	TimePeriod int       `json:"time_unit" form:"time_unit"`
+	TimeUnit   int    `json:"time_unit" form:"time_unit"`
+	TimePeriod string       `json:"time_period" form:"time_period"`
 	Elements   []Element `json:"elements" form:"elements"`
 	// Elements   []Element `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 

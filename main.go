@@ -6,6 +6,7 @@ import (
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
+	"report-backend-golang/entities"
 )
 
 // @title Report Engine Golang API
@@ -36,9 +37,9 @@ func main() {
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	// if global.EnvConfig.Database.Migration {
-	// 	entities.InitTable()
-	// }
+	if global.EnvConfig.Database.Migration {
+		entities.InitTable()
+	}
 
 	migrate.Run()
 

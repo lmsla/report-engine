@@ -2,13 +2,13 @@ package entities
 
 type Instance struct {
 	Common
-	ID       int    `gorm:"primaryKey;index"`
-	Type     string `gorm:"type:varchar(50)"`
-	Name     string `gorm:"type:varchar(50)"`
-	URL      string `gorm:"type:varchar(50)"`
-	User     string `gorm:"type:varchar(50)"`
-	Password string `gorm:"type:varchar(50)"`
-	Auth     bool   `type:"bool;default:false"`
+	ID       int    `gorm:"primaryKey;index" json:"id" form:"id"`
+	Type     string `gorm:"type:varchar(50)" json:"type" form:"type"`
+	Name     string `gorm:"type:varchar(50)" json:"name" form:"name"`
+	URL      string `gorm:"type:varchar(50)" json:"url" form:"url"`
+	User     string `gorm:"type:varchar(50)" json:"user" form:"user"`
+	Password string `gorm:"type:varchar(50)" json:"password" form:"password"`
+	Auth     bool   `type:"bool;default:false" json:"auth" form:"auth"`
 }
 
 type Dashboard struct {

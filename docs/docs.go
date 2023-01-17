@@ -509,7 +509,7 @@ const docTemplate = `{
         "entities.Element": {
             "type": "object",
             "properties": {
-                "columnType": {
+                "column_type": {
                     "type": "string"
                 },
                 "created_at": {
@@ -524,19 +524,19 @@ const docTemplate = `{
                 "instance": {
                     "$ref": "#/definitions/entities.Instance"
                 },
-                "instanceID": {
+                "instance_id": {
                     "type": "integer"
                 },
                 "name": {
                     "type": "string"
                 },
-                "reportID": {
+                "report_id": {
                     "type": "integer"
                 },
-                "rowNum": {
+                "row_num": {
                     "type": "integer"
                 },
-                "spcaceName": {
+                "space_name": {
                     "type": "string"
                 },
                 "type": {
@@ -612,11 +612,11 @@ const docTemplate = `{
                         "$ref": "#/definitions/entities.Schedule"
                     }
                 },
-                "timePeriod": {
-                    "type": "integer"
-                },
-                "timeUnit": {
+                "time_period": {
                     "type": "string"
+                },
+                "time_unit": {
+                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "integer"
@@ -635,10 +635,10 @@ const docTemplate = `{
                 "created_at": {
                     "type": "integer"
                 },
-                "cronID": {
+                "cron_id": {
                     "type": "integer"
                 },
-                "cronTime": {
+                "cron_time": {
                     "type": "string"
                 },
                 "deleted_at": {

@@ -80,8 +80,8 @@ var InstanceData = []Instance{
 var ReportData = []Report{
 	{
 		Name:       "Kibana_Test",
-		TimeUnit:   "日",
-		TimePeriod: 1,
+		TimeUnit:   1,
+		TimePeriod: "日",
 		Elements: []Element{
 			{
 				Type:       "dashboard",
@@ -114,8 +114,8 @@ var ReportData = []Report{
 	},
 	{
 		Name:       "Grafana_Test",
-		TimeUnit:   "日",
-		TimePeriod: 1,
+		TimeUnit:   1,
+		TimePeriod: "日",
 		Elements: []Element{
 			{
 				Type:       "dashboard",
