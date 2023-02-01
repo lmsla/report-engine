@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	// "strconv"
+	"strconv"
 
 	"report-backend-golang/services"
 	// "report-backend-golang/handler"
@@ -55,4 +55,29 @@ func CreateSchedule(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, res.Body)
+}
+
+
+// @Summary Delete Schedule
+// @Tags Schedule
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} string
+// @Router /Schedule/Delete/{id} [delete]
+func DeleteSchedule(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	res := services.DeleteSchedule(id)
+
+	if !res.Success {
+		c.JSON(http.StatusBadRequest, res.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, res.Msg)
 }

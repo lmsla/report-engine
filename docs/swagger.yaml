@@ -66,10 +66,6 @@ definitions:
         type: integer
       name:
         type: string
-      schedules:
-        items:
-          $ref: '#/definitions/entities.Schedule'
-        type: array
       time_period:
         type: string
       time_unit:
@@ -479,6 +475,26 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Create Schedule
+      tags:
+      - Schedule
+  /Schedule/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete Schedule
       tags:
       - Schedule
   /Schedule/GetAll:

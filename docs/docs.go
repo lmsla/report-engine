@@ -482,6 +482,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/Schedule/Delete/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Delete Schedule",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/Schedule/GetAll": {
             "get": {
                 "consumes": [
@@ -605,12 +636,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "schedules": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entities.Schedule"
-                    }
                 },
                 "time_period": {
                     "type": "string"
