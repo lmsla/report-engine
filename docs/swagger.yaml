@@ -533,6 +533,27 @@ paths:
       summary: Get Schedule
       tags:
       - Schedule
+  /Schedule/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule
+        in: body
+        name: Schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update Schedule
+      tags:
+      - Schedule
 schemes:
 - http
 securityDefinitions:

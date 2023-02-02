@@ -90,3 +90,31 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 
 	return res
 }
+
+
+
+func UpdateSchedule(schedule entities.Schedule) models.Response {
+
+	res := models.Response{}
+	res.Success = false
+	res.Body = []entities.Schedule{}
+
+	// result := global.Mysql.Where("id != ? AND name = ?", instance.ID, instance.Name).First(&entities.Instance{})
+	// if result.RowsAffected > 0 {
+	// 	res.Msg = "Instance Name already existed"
+	// 	return res
+	// }
+
+	err := global.Mysql.Select("*").Where("id = ?", schedule.ID).Updates(&schedule).Error
+	if err != nil {
+		res.Msg = "Update Fail"
+		return res
+	}
+
+	res.Success = true
+	res.Msg = "Update Success"
+	global.Mysql.Where("id = ?", schedule.ID).First(&res.Body)
+
+	return res
+
+}

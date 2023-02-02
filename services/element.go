@@ -26,7 +26,7 @@ func GetAllElements() models.Response {
 }
 
 
-// 查單一Instance
+// 查單一 Element by ReportID
 func GetElementsByReportID(reportID int) (models.Response) {
 
 	// var element models.Element

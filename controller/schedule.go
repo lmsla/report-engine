@@ -58,6 +58,35 @@ func CreateSchedule(c *gin.Context) {
 }
 
 
+// @Summary Update Schedule
+// @Tags Schedule
+// @Accept  json
+// @Produce  json
+// @Param Schedule body entities.Schedule true "schedule"
+// @Success 200 {object} string
+// @Router /Schedule/Update [put]
+func UpdateSchedule(c *gin.Context) {
+
+	body := new(entities.Schedule)
+
+	err := c.Bind(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	res := services.UpdateSchedule(*body)
+
+	if !res.Success {
+		c.JSON(http.StatusBadRequest, res.Msg)
+		return
+	}
+	c.JSON(http.StatusOK, res.Body)
+}
+
+
+
+
 // @Summary Delete Schedule
 // @Tags Schedule
 // @Accept  json
