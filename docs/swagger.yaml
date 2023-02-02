@@ -239,6 +239,28 @@ paths:
       summary: Get Element
       tags:
       - Element
+  /Element/GetElementByReportID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Element by Report ID
+      tags:
+      - Element
   /Element/Update:
     put:
       consumes:

@@ -25,6 +25,36 @@ func GetAllElements() models.Response {
 	return res
 }
 
+
+// 查單一Instance
+func GetElementsByReportID(reportID int) (models.Response) {
+
+	// var element models.Element
+	// element.ReportID = reportID
+	// err := global.Mysql.Where("report_id = ?",reportID).First(&element).Error
+	// if err != nil {
+	// 	return element, err
+	// }
+	// return element, nil
+
+	res := models.Response{}
+	res.Success = false
+	var body = []entities.Element{}
+	err := global.Mysql.Debug().Where("report_id = ?",reportID).Find(&body).Error
+	if err != nil {
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Body = body
+	res.Success = true
+	res.Msg = "Get Selected Report Success"
+	return res
+
+
+}
+
+
 // 新增element
 func CreateElement(element entities.Element) models.Response {
 
