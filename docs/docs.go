@@ -773,6 +773,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "instance": {
+                    "$ref": "#/definitions/models.Instance"
+                },
                 "instance_id": {
                     "type": "integer"
                 },
@@ -786,7 +789,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "space_name": {
-                    "description": "Instance   Instance ` + "`" + `json:\"instance\" form:\"instance\"` + "`" + `",
                     "type": "string"
                 },
                 "type": {
@@ -848,10 +850,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "time_period": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "time_unit": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"

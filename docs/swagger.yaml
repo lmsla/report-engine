@@ -110,6 +110,8 @@ definitions:
         type: integer
       id:
         type: integer
+      instance:
+        $ref: '#/definitions/models.Instance'
       instance_id:
         type: integer
       name:
@@ -119,7 +121,6 @@ definitions:
       row_num:
         type: integer
       space_name:
-        description: Instance   Instance `json:"instance" form:"instance"`
         type: string
       type:
         type: string
@@ -160,9 +161,9 @@ definitions:
       name:
         type: string
       time_period:
-        type: string
-      time_unit:
         type: integer
+      time_unit:
+        type: string
       updated_at:
         type: integer
     type: object
