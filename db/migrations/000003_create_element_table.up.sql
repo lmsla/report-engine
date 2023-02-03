@@ -10,7 +10,7 @@ CREATE TABLE `elements` (
   `row_num` bigint DEFAULT NULL,
   `column_type` varchar(50) DEFAULT NULL,
   `instance_id` bigint DEFAULT NULL,
-  `spcace_name` varchar(50) DEFAULT NULL,
+  `space_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_elements_id` (`id`),
   KEY `idx_elements_report_id` (`report_id`),
