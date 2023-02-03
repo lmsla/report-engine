@@ -7,5 +7,5 @@ type Instance struct {
 	URL      string `json:"url" form:"url"`
 	User     string `json:"user" form:"user"`
 	Password string `json:"password" form:"password"`
-	Auth     bool   `json:"auth" form:"auth"`
+	Auth     int   `json:"auth" form:"auth"`
 }

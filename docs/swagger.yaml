@@ -131,7 +131,7 @@ definitions:
   models.Instance:
     properties:
       auth:
-        type: boolean
+        type: integer
       id:
         type: integer
       name:

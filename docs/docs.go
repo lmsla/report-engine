@@ -804,7 +804,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "auth": {
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
