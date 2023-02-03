@@ -20,6 +20,6 @@ type Element struct {
 	RowNum     int      `gorm:"type:int" json:"row_num" form:"row_num"`
 	ColumnType string   `gorm:"type:varchar(50)" json:"column_type" form:"column_type"`
 	InstanceID int      `gorm:"type:int" json:"instance_id" form:"instance_id"`
-	Instance   Instance `gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Instance   Instance `json:"instance" gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	SpaceName string   `gorm:"type:varchar(50)" json:"space_name" form:"space_name"`
 }

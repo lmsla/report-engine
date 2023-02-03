@@ -40,7 +40,7 @@ func GetElementsByReportID(reportID int) (models.Response) {
 	res := models.Response{}
 	res.Success = false
 	var body = []entities.Element{}
-	err := global.Mysql.Debug().Where("report_id = ?",reportID).Find(&body).Error
+	err := global.Mysql.Debug().Where("report_id = ?",reportID).Preload("Instance").Find(&body).Error
 	if err != nil {
 		res.Msg = err.Error()
 		return res
