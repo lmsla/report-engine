@@ -65,23 +65,23 @@ var InstanceData = []Instance{
 		URL:      "http://10.99.1.110:5601/kibana_iframe",
 		User:     "elasic",
 		Password: "RnIv7YhigaVKS=l-*yz9",
-		Auth:     false,
+		Auth:     0,
 	},
 	{
-		Type:     "grafanc",
+		Type:     "grafana",
 		Name:     "grafana_241",
 		URL:      "http://10.99.1.241:3000",
 		User:     "admin",
 		Password: "12345678",
-		Auth:     false,
+		Auth:     0,
 	},
 }
 
 var ReportData = []Report{
 	{
 		Name:       "Kibana_Test",
-		TimeUnit:   1,
-		TimePeriod: "日",
+		TimeUnit:   "日",
+		TimePeriod: 1,
 		Elements: []Element{
 			{
 				Type:       "dashboard",
@@ -114,8 +114,8 @@ var ReportData = []Report{
 	},
 	{
 		Name:       "Grafana_Test",
-		TimeUnit:   1,
-		TimePeriod: "日",
+		TimeUnit:   "日",
+		TimePeriod: 1,
 		Elements: []Element{
 			{
 				Type:       "dashboard",

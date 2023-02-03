@@ -654,7 +654,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "auth": {
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "integer"
@@ -707,10 +707,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "time_period": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "time_unit": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"

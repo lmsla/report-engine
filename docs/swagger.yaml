@@ -32,7 +32,7 @@ definitions:
   entities.Instance:
     properties:
       auth:
-        type: boolean
+        type: integer
       created_at:
         type: integer
       deleted_at:
@@ -67,9 +67,9 @@ definitions:
       name:
         type: string
       time_period:
-        type: string
-      time_unit:
         type: integer
+      time_unit:
+        type: string
       updated_at:
         type: integer
     type: object

@@ -8,7 +8,7 @@ type Instance struct {
 	URL      string `gorm:"type:varchar(50)" json:"url" form:"url"`
 	User     string `gorm:"type:varchar(50)" json:"user" form:"user"`
 	Password string `gorm:"type:varchar(50)" json:"password" form:"password"`
-	Auth     bool   `type:"bool;default:false" json:"auth" form:"auth"`
+	Auth     int   `type:"bool;default:0" json:"auth" form:"auth"`
 }
 
 type Dashboard struct {

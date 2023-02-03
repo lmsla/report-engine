@@ -650,7 +650,7 @@
             "type": "object",
             "properties": {
                 "auth": {
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "integer"
@@ -703,10 +703,10 @@
                     "type": "string"
                 },
                 "time_period": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "time_unit": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"
