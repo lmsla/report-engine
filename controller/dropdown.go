@@ -1,8 +1,6 @@
 package controller
 
 import (
-	// "fmt"
-	"fmt"
 	"net/http"
 	// "strconv"
 
@@ -30,9 +28,8 @@ func GetDropdownSource(c *gin.Context) {
 	// if err := services.GetDropdownSource(body); err != nil {
 
 	// }
-	if body.InstanceID > 0 && body.SourceType == "" && body.SpaceName == "" {
-		fmt.Println("ok")
-
+	switch body.SourceType {
+	case "space":
 		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
@@ -47,35 +44,37 @@ func GetDropdownSource(c *gin.Context) {
 		}
 		// fmt.Println(spaces)
 		c.JSON(http.StatusOK, spaces)
-	} else if body.InstanceID > 0 && body.SourceType == "dashboard" {
 
+	case "dashboard":
 		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
 			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
-		dashboarddata, err := services.GetALLKibanaDashboardTitle1(body.SpaceName,inventory)
+		dashboarddata, err := services.GetALLKibanaDashboardTitle1(body.SpaceName, inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get dashboard details")
 			handler.WriteErrorLog(c, "error to get dashboard details")
 			return
 		}
 		c.JSON(http.StatusOK, dashboarddata)
-	}else if body.InstanceID > 0 && body.SourceType == "visualization" {
+
+	case "visualization":
 		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
 			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
-		visualdata, err := services.GetALLKibanaVisualizationTitle1(body.SpaceName,inventory)
+		visualdata, err := services.GetALLKibanaVisualizationTitle1(body.SpaceName, inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get visualization details")
 			handler.WriteErrorLog(c, "error to get visualization details")
 			return
 		}
 		c.JSON(http.StatusOK, visualdata)
-	}
-}
 
+	}
+
+}
