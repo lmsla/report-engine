@@ -6,7 +6,7 @@ import (
 
 	"report-backend-golang/models"
 	"report-backend-golang/services"
-	// "report-backend-golang/handler"
+	"report-backend-golang/handler"
 
 	"github.com/gin-gonic/gin"
 	// "report-backend-golang/entities"
@@ -109,4 +109,43 @@ func DeleteReport(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, res.Msg)
+}
+
+
+
+// @Summary Get Report by Schedule ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "schedule id"
+// @Success 200 {object} entities.Schedule
+// @Router /Report/GetReportByScheduleID/{id} [get]
+// @Security ApiKeyAuth
+func GetReportByScheduleID(c *gin.Context) {
+
+	ScheduleID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "schedule ID should be int")
+		handler.WriteErrorLog(c, "schedule ID should be integer")
+		return
+	}
+
+
+
+	res := services.GetReportByScheduleID(ScheduleID)
+
+	if !res.Success {
+		c.JSON(http.StatusBadRequest, res.Msg)
+		return
+	}
+
+	c.JSON(http.StatusOK, res.Body)
+	// inventory, err := services.GetElementsByReportID(ReportID)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, "error to get inventory details")
+	// 	handler.WriteErrorLog(c, "error to get inventory details")
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, inventory)
+
 }

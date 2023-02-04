@@ -78,28 +78,29 @@ func UpdateReport(report models.Report) models.Response {
 }
 
 
-func DeleteInstance(id int) models.Response {
+
+func DeleteReport(id int) models.Response {
 
 	res := models.Response{}
 	res.Success = false
 	res.Body = nil
 
-	result := global.Mysql.Where("id = ?", id).First(&entities.Instance{})
+	result := global.Mysql.Where("id = ?", id).First(&entities.Report{})
 	if result.RowsAffected == 0 {
-		res.Msg = "Instance ID does not exist"
+		res.Msg = "Report ID does not exist"
 		return res
 	}
 
 	//先刪除 element 中相應的圖表
-	err := global.Mysql.Where("instance_id = ?", id).Delete(&entities.Element{}).Error
+	err := global.Mysql.Where("report_id = ?", id).Delete(&entities.Element{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
 		return res
 	}
 
-	err = global.Mysql.Where("id = ?", id).Delete(&entities.Instance{}).Error
+	err = global.Mysql.Where("id = ?", id).Delete(&entities.Report{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting instance, err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting report, err: %s", err)
 		return res
 	}
 
@@ -107,5 +108,33 @@ func DeleteInstance(id int) models.Response {
 	res.Msg = "Delete Success"
 
 	return res
+
+}
+
+///365*8 30*14 2920 420 
+
+
+// 查 Reports by ScheduleID
+func GetReportByScheduleID(scheduleID int) (models.Response) {
+
+	// many2many檢索
+	res := models.Response{}
+	res.Success = false
+	var schedule []entities.Schedule
+	// var body = []entities.Schedule{}
+
+	err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
+
+	// err := global.Mysql.Debug().Where("schedule_id = ?",scheduleID).Preload("Report").Find(&body).Error
+	if err != nil {
+		res.Msg = err.Error()
+		return res
+	}
+
+	res.Body = schedule
+	res.Success = true
+	res.Msg = "Get Selected Report Success"
+	return res
+
 
 }

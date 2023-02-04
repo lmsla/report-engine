@@ -106,28 +106,29 @@ func UpdateInstance(instance models.Instance) models.Response {
 
 }
 
-func DeleteReport(id int) models.Response {
+
+func DeleteInstance(id int) models.Response {
 
 	res := models.Response{}
 	res.Success = false
 	res.Body = nil
 
-	result := global.Mysql.Where("id = ?", id).First(&entities.Report{})
+	result := global.Mysql.Where("id = ?", id).First(&entities.Instance{})
 	if result.RowsAffected == 0 {
-		res.Msg = "Report ID does not exist"
+		res.Msg = "Instance ID does not exist"
 		return res
 	}
 
 	//先刪除 element 中相應的圖表
-	err := global.Mysql.Where("report_id = ?", id).Delete(&entities.Element{}).Error
+	err := global.Mysql.Where("instance_id = ?", id).Delete(&entities.Element{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
 		return res
 	}
 
-	err = global.Mysql.Where("id = ?", id).Delete(&entities.Report{}).Error
+	err = global.Mysql.Where("id = ?", id).Delete(&entities.Instance{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting report, err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting instance, err: %s", err)
 		return res
 	}
 
@@ -137,3 +138,5 @@ func DeleteReport(id int) models.Response {
 	return res
 
 }
+
+

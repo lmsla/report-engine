@@ -66,6 +66,10 @@ definitions:
         type: integer
       name:
         type: string
+      schedules:
+        items:
+          $ref: '#/definitions/entities.Schedule'
+        type: array
       time_period:
         type: integer
       time_unit:
@@ -456,6 +460,28 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get Report
+      tags:
+      - Report
+  /Report/GetReportByScheduleID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Schedule'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Report by Schedule ID
       tags:
       - Report
   /Report/Update:

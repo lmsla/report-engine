@@ -452,6 +452,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/Report/GetReportByScheduleID/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get Report by Schedule ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "schedule id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    }
+                }
+            }
+        },
         "/Report/Update": {
             "put": {
                 "consumes": [
@@ -705,6 +741,12 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "schedules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Schedule"
+                    }
                 },
                 "time_period": {
                     "type": "integer"

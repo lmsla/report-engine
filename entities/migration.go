@@ -77,7 +77,7 @@ var InstanceData = []Instance{
 	},
 }
 
-var ReportData = []Report{
+var ReportData = []*Report{
 	{
 		Name:       "Kibana_Test",
 		TimeUnit:   "日",
