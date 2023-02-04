@@ -1,62 +1,81 @@
 package controller
 
 import (
+	// "fmt"
+	"fmt"
 	"net/http"
-	"strconv"
+	// "strconv"
 
 	// "report-backend-golang/models"
-	"report-backend-golang/services"
+	"report-backend-golang/entities"
 	"report-backend-golang/handler"
+	"report-backend-golang/services"
 
 	"github.com/gin-gonic/gin"
 	// "report-backend-golang/entities"
 )
 
-
-
-
 // @Summary Get Space of Instance by Instance ID
 // @Tags DropDown
 // @Accept  json
 // @Produce  json
-// @Param id path int true "instance id"
 // @Success 200 {object}  entities.Dropdown
-// @Router /DropDown/Get/{id} [get]
 // @Security ApiKeyAuth
-func GetSpaceByInstanceID(c *gin.Context) {
+// @Router /Dropdown [get]
 
-	instanceID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "instance ID should be int")
-		handler.WriteErrorLog(c, "instance ID should be integer")
-		return
-	}
+func GetDropdownSource(c *gin.Context) {
 
-	inventory, err := services.GetInstanceByID(instanceID)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "error to get inventory details")
-		handler.WriteErrorLog(c, "error to get inventory details")
-		return
-	}
+	body := new(entities.DropdownBody)
+	c.Bind(&body)
+	// if err := services.GetDropdownSource(body); err != nil {
 
-	switch inventory.Type {
-	case "grafana":
-		r, err := services.GetAllGrafanaDashboardTitle(inventory)
+	// }
+	if body.InstanceID > 0 && body.SourceType == "" && body.SpaceName == "" {
+		fmt.Println("ok")
+
+		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, err.Error())
-			handler.WriteErrorLog(c, err.Error())
+			c.JSON(http.StatusBadRequest, "error to get inventory details")
+			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
-		c.JSON(http.StatusOK, r)
-	case "kibana":
-		r, err := services.GetALLKibanaDashboardTitle(inventory)
+		spaces, err := services.GetKibanaSpaces1(inventory)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, err.Error())
-			// handler.WriteErrorLog(c, err.Error())
+			c.JSON(http.StatusBadRequest, "error to get space details")
+			handler.WriteErrorLog(c, "error to get space details")
 			return
 		}
-		c.JSON(http.StatusOK, r)
-	default:
-		c.JSON(http.StatusBadRequest, "instance type unknown")
+		// fmt.Println(spaces)
+		c.JSON(http.StatusOK, spaces)
+	} else if body.InstanceID > 0 && body.SourceType == "dashboard" {
+
+		inventory, err := services.GetInstanceByID(body.InstanceID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get inventory details")
+			handler.WriteErrorLog(c, "error to get inventory details")
+			return
+		}
+		dashboarddata, err := services.GetALLKibanaDashboardTitle1(body.SpaceName,inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get dashboard details")
+			handler.WriteErrorLog(c, "error to get dashboard details")
+			return
+		}
+		c.JSON(http.StatusOK, dashboarddata)
+	}else if body.InstanceID > 0 && body.SourceType == "visualization" {
+		inventory, err := services.GetInstanceByID(body.InstanceID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get inventory details")
+			handler.WriteErrorLog(c, "error to get inventory details")
+			return
+		}
+		visualdata, err := services.GetALLKibanaVisualizationTitle1(body.SpaceName,inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get visualization details")
+			handler.WriteErrorLog(c, "error to get visualization details")
+			return
+		}
+		c.JSON(http.StatusOK, visualdata)
 	}
 }
+

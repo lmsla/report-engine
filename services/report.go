@@ -120,7 +120,7 @@ func GetReportByScheduleID(scheduleID int) (models.Response) {
 	// many2many檢索
 	res := models.Response{}
 	res.Success = false
-	var schedule []entities.Schedule
+	var schedule entities.Schedule
 	// var body = []entities.Schedule{}
 
 	err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
@@ -131,7 +131,7 @@ func GetReportByScheduleID(scheduleID int) (models.Response) {
 		return res
 	}
 
-	res.Body = schedule
+	res.Body = schedule.Reports
 	res.Success = true
 	res.Msg = "Get Selected Report Success"
 	return res

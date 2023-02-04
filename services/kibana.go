@@ -9,7 +9,7 @@ import (
 	"report-backend-golang/models"
 )
 
-func VerifyKibanaInstance(instance *entities.Instance) (models.Response) {
+func VerifyKibanaInstance(instance *entities.Instance) models.Response {
 	var res models.Response
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", instance.URL+"/api/features", nil)
@@ -21,7 +21,7 @@ func VerifyKibanaInstance(instance *entities.Instance) (models.Response) {
 		return res
 	}
 
-	if 	resq.StatusCode == 200 {
+	if resq.StatusCode == 200 {
 		res.Msg = "Connection Successfully"
 		res.Success = true
 		return res
@@ -36,7 +36,39 @@ func VerifyKibanaInstance(instance *entities.Instance) (models.Response) {
 		res.Success = false
 		return res
 	}
-		
+
+}
+
+func GetKibanaSpaces1(instance models.Instance) ([]entities.Dropdown, error) {
+
+	var curl *exec.Cmd
+	if instance.User == "" {
+		curl = exec.Command("curl", "-XGET", "-k", "-s", instance.URL+"/api/spaces/space")
+	} else {
+		curl = exec.Command("curl", "-XGET", "-k", "-u", instance.User+":"+instance.Password, "-s", instance.URL+"/api/spaces/space")
+	}
+
+	out, err := curl.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	var mapResult []map[string]interface{}
+	err = json.Unmarshal([]byte(string(out)), &mapResult)
+	if err != nil {
+		fmt.Println("JsonToMapDemo err: ", err)
+		return nil, err
+	}
+
+	var dropdownDatas []entities.Dropdown
+	for i := 0; i < len(mapResult); i++ {
+		dropdownData := new(entities.Dropdown)
+		dropdownData.Text = mapResult[i]["id"].(string)
+		dropdownData.Value = mapResult[i]["id"].(string)
+		dropdownDatas = append(dropdownDatas, *dropdownData)
+	}
+
+	return dropdownDatas, nil
 }
 
 func GetKibanaSpaces(instance models.Instance) ([]string, error) {
@@ -102,17 +134,6 @@ func GetKibanaVisualizationData(inventory models.Instance, space string) (string
 
 }
 
-// func GetKibanaDashboardData() string {
-//     curl := exec.Command("curl","-XGET","-k","-u","elastic:RnIv7YhigaVKS=l-*yz9","-s","http://10.99.1.110:5601/api/saved_objects/_find?type=dashboard&fields=id&fields=title&fields=description&per_page=10000")  // 修改了此行
-//     out, err := curl.Output()
-//     if err != nil {
-//         fmt.Println("erorr", err)
-
-//     }
-// 	return string(out)
-
-// }
-
 func GetALLKibanaDashboardTitle(instance models.Instance) ([]entities.Dashboard, error) {
 
 	var dashboards []entities.Dashboard
@@ -128,7 +149,7 @@ func GetALLKibanaDashboardTitle(instance models.Instance) ([]entities.Dashboard,
 			fmt.Println("JsonToMapDemo err: ", err)
 			return nil, err
 		}
-		
+
 		data := mapResult["saved_objects"]
 
 		for i := range mapResult["saved_objects"].([]interface{}) {
@@ -139,7 +160,7 @@ func GetALLKibanaDashboardTitle(instance models.Instance) ([]entities.Dashboard,
 			dashboard.UID = uid.(string)
 			dashboards = append(dashboards, dashboard)
 		}
-		
+
 	}
 	return dashboards, nil
 }
@@ -159,7 +180,7 @@ func GetALLKibanaVisualizationTitle(instance models.Instance) ([]entities.Visual
 			fmt.Println("JsonToMapDemo err: ", err)
 			return nil, err
 		}
-		
+
 		data := mapResult["saved_objects"]
 
 		for i := range mapResult["saved_objects"].([]interface{}) {
@@ -170,7 +191,57 @@ func GetALLKibanaVisualizationTitle(instance models.Instance) ([]entities.Visual
 			dashboard.UID = uid.(string)
 			dashboards = append(dashboards, dashboard)
 		}
-		
+
 	}
 	return dashboards, nil
+}
+
+func GetALLKibanaDashboardTitle1(space string, instance models.Instance) ([]entities.Dropdown, error) {
+
+	var dropdownDatas []entities.Dropdown
+	var mapResult map[string]interface{}
+	res, _ := GetKibanaDashboardData(instance, space)
+	err := json.Unmarshal([]byte(res), &mapResult)
+	if err != nil {
+		fmt.Println("JsonToMapDemo err: ", err)
+		return nil, err
+	}
+
+	data := mapResult["saved_objects"]
+
+	for i := range mapResult["saved_objects"].([]interface{}) {
+		name := data.([]interface{})[i].(map[string]interface{})["attributes"].(map[string]interface{})["title"]
+		uid := data.([]interface{})[i].(map[string]interface{})["id"]
+		dropdownData := new(entities.Dropdown)
+		dropdownData.Text = name.(string)
+		dropdownData.Value = uid.(string)
+		dropdownDatas = append(dropdownDatas, *dropdownData)
+	}
+	return dropdownDatas, nil
+
+}
+
+func GetALLKibanaVisualizationTitle1(space string, instance models.Instance) ([]entities.Dropdown, error) {
+
+	var dropdownDatas []entities.Dropdown
+	var mapResult map[string]interface{}
+	res, _ := GetKibanaVisualizationData(instance, space)
+	err := json.Unmarshal([]byte(res), &mapResult)
+	if err != nil {
+		fmt.Println("JsonToMapDemo err: ", err)
+		return nil, err
+	}
+
+	data := mapResult["saved_objects"]
+
+	for i := range mapResult["saved_objects"].([]interface{}) {
+		// var dashboard entities.Visualization
+		dropdownData := new(entities.Dropdown)
+		name := data.([]interface{})[i].(map[string]interface{})["attributes"].(map[string]interface{})["title"]
+		uid := data.([]interface{})[i].(map[string]interface{})["id"]
+		dropdownData.Text = name.(string)
+		dropdownData.Value = uid.(string)
+		dropdownDatas = append(dropdownDatas, *dropdownData)
+	}
+	return dropdownDatas, nil
 }

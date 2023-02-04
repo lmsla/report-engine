@@ -1,7 +1,12 @@
 package entities
 
+type DropdownBody struct {
+	SpaceName  string `json:"space_name" form:"space_name"`
+	InstanceID int `json:"instance_id" form:"instance_id"`
+	SourceType string `json:"source_type" form:"source_type"`
+}
+
 type Dropdown struct {
-	Common
-	text  string `gorm:"type:varchar(50)"`
-	value string `gorm:"type:varchar(50)"`
+	Text  string `json:"text"`
+	Value string `json:"value"`
 }

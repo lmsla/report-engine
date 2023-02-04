@@ -37,6 +37,8 @@ func LoadRouter() *gin.Engine {
 	apiv1.GET("/Instance/GetDashboards/:id", GetDBDashboardByInstanceID)
 	apiv1.GET("/Instance/GetVisualizations/:id", GetDBVisualizationByInstanceID)
 
+	apiv1.GET("/Dropdown", GetDropdownSource)
+
 	apiv1.GET("/Report/GetAll", GetAllReports)
 	apiv1.POST("/Report/Create",CreateReport)
 	apiv1.PUT("/Report/Update", UpdateReport)
