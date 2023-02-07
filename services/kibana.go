@@ -158,6 +158,7 @@ func GetALLKibanaDashboardTitle(instance models.Instance) ([]entities.Dashboard,
 			uid := data.([]interface{})[i].(map[string]interface{})["id"]
 			dashboard.Name = name.(string)
 			dashboard.UID = uid.(string)
+			dashboard.InstanceID = instance.ID
 			dashboards = append(dashboards, dashboard)
 		}
 
@@ -189,6 +190,7 @@ func GetALLKibanaVisualizationTitle(instance models.Instance) ([]entities.Visual
 			uid := data.([]interface{})[i].(map[string]interface{})["id"]
 			dashboard.Name = name.(string)
 			dashboard.UID = uid.(string)
+			dashboard.InstanceID = instance.ID
 			dashboards = append(dashboards, dashboard)
 		}
 
