@@ -105,7 +105,14 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 	// 	return res
 	// }
 
-	err := global.Mysql.Select("*").Where("id = ?", schedule.ID).Updates(&schedule).Error
+	err := global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.ReportsSchedules{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting report, err: %s", err)
+		return res
+	}
+
+
+	err = global.Mysql.Select("*").Where("id = ?", schedule.ID).Updates(&schedule).Error
 	if err != nil {
 		res.Msg = "Update Fail"
 		return res

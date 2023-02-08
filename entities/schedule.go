@@ -14,3 +14,9 @@ type Schedule struct {
 
 
 // foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;
+
+
+type ReportsSchedules struct {
+	ReportID  int `gorm:"primaryKey" form:"report_id"`
+	ScheduleID int `gorm:"primaryKey" form:"schedule_id"`
+  }
