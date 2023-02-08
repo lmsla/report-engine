@@ -20,6 +20,33 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/Dropdown": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dropdown"
+                ],
+                "summary": "Get Space of Instance by Instance ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Dropdown"
+                        }
+                    }
+                }
+            }
+        },
         "/Element/Create": {
             "post": {
                 "consumes": [
@@ -642,6 +669,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entities.Dropdown": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.Element": {
             "type": "object",
             "properties": {

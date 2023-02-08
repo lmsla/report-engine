@@ -1,5 +1,12 @@
 basePath: /api/v1
 definitions:
+  entities.Dropdown:
+    properties:
+      text:
+        type: string
+      value:
+        type: string
+    type: object
   entities.Element:
     properties:
       column_type:
@@ -189,6 +196,22 @@ info:
   title: Report Engine Golang API
   version: "1.0"
 paths:
+  /Dropdown:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Dropdown'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Space of Instance by Instance ID
+      tags:
+      - Dropdown
   /Element/Create:
     post:
       consumes:

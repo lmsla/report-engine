@@ -14,13 +14,12 @@ import (
 )
 
 // @Summary Get Space of Instance by Instance ID
-// @Tags DropDown
+// @Tags Dropdown
 // @Accept  json
 // @Produce  json
 // @Success 200 {object}  entities.Dropdown
 // @Security ApiKeyAuth
 // @Router /Dropdown [get]
-
 func GetDropdownSource(c *gin.Context) {
 
 	body := new(entities.DropdownBody)
