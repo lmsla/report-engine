@@ -27,32 +27,44 @@ func GetAllElements() models.Response {
 
 
 // 查單一 Element by ReportID
-func GetElementsByReportID(reportID int) (models.Response) {
+func GetElementsByReportID(reportID int) ([]entities.Element,error) {
 
-	// var element models.Element
-	// element.ReportID = reportID
-	// err := global.Mysql.Where("report_id = ?",reportID).First(&element).Error
-	// if err != nil {
-	// 	return element, err
-	// }
-	// return element, nil
-
-	res := models.Response{}
-	res.Success = false
-	var body = []entities.Element{}
-	err := global.Mysql.Debug().Where("report_id = ?",reportID).Preload("Instance").Find(&body).Error
+	// element :=  entities.Element{}
+	report := entities.Report{}
+	// report.ID = reportID
+	// res := models.Response{}
+	// res.Success = false
+	// var body = []entities.Element{}
+	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Find(&report).Error
 	if err != nil {
-		res.Msg = err.Error()
-		return res
+		return nil,err
 	}
-
-	res.Body = body
-	res.Success = true
-	res.Msg = "Get Selected Report Success"
-	return res
+	return report.Elements,nil
 
 
 }
+
+// // 查單一 Element by ReportID
+// func GetElementsByReportID(reportID int) (models.Response) {
+
+// 	// element :=  entities.Element{}
+
+// 	res := models.Response{}
+// 	res.Success = false
+// 	var body = []entities.Element{}
+// 	err := global.Mysql.Debug().Where("report_id = ?",reportID).Preload("Instance").Find(&body).Error
+// 	if err != nil {
+// 		res.Msg = err.Error()
+// 		return res
+// 	}
+
+// 	res.Body = body
+// 	res.Success = true
+// 	res.Msg = "Get Selected Report Success"
+// 	return res
+
+
+// }
 
 
 // 新增element

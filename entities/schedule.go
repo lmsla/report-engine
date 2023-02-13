@@ -9,7 +9,7 @@ type Schedule struct {
 	CC       string   `gorm:"type:varchar(50)" json:"cc" form:"cc"`
 	BCC      string   `gorm:"type:varchar(50)" json:"bcc" form:"bcc"`
 	CronID   int      `gorm:"type:int" json:"cron_id" form:"cron_id"`
-	Reports  []*Report `gorm:"many2many:reports_schedules;foreignKey:ID;reference:ID;"`
+	Reports  []Report `gorm:"many2many:reports_schedules;foreignKey:ID;reference:ID;"`
 }
 
 

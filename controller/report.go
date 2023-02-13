@@ -131,15 +131,24 @@ func GetReportByScheduleID(c *gin.Context) {
 	}
 
 
-
-	res := services.GetReportByScheduleID(ScheduleID)
-
-	if !res.Success {
-		c.JSON(http.StatusBadRequest, res.Msg)
+	inventory, err := services.GetReportByScheduleID(ScheduleID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
 		return
 	}
+	c.JSON(http.StatusOK, inventory)
+	// --------------------
+	// res := services.GetReportByScheduleID(ScheduleID)
 
-	c.JSON(http.StatusOK, res.Body)
+	// if !res.Success {
+	// 	c.JSON(http.StatusBadRequest, res.Msg)
+	// 	return
+	// }
+
+	// c.JSON(http.StatusOK, res.Body)
+
+	// --------------------
 	// inventory, err := services.GetElementsByReportID(ReportID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, "error to get inventory details")

@@ -134,14 +134,25 @@ func GetElementByReportID(c *gin.Context) {
 
 
 
-	res := services.GetElementsByReportID(ReportID)
-
-	if !res.Success {
-		c.JSON(http.StatusBadRequest, res.Msg)
+	inventory, err := services.GetElementsByReportID(ReportID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
 		return
 	}
+	c.JSON(http.StatusOK, inventory)
 
-	c.JSON(http.StatusOK, res.Body)
+//-----------------
+	// res := services.GetElementsByReportID(ReportID)
+
+	// if !res.Success {
+	// 	c.JSON(http.StatusBadRequest, res.Msg)
+	// 	return
+	// }
+
+	// c.JSON(http.StatusOK, res.Body)
+//-----------------
+
 	// inventory, err := services.GetElementsByReportID(ReportID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, "error to get inventory details")

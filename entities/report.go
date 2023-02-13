@@ -7,7 +7,7 @@ type Report struct {
 	TimeUnit   string        `gorm:"type:varchar(50)" json:"time_unit" form:"time_unit"`
 	TimePeriod int     `gorm:"type:int" json:"time_period" form:"time_period"`
 	Elements   []Element  `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
-	Schedules  []*Schedule `gorm:"many2many:reports_schedules;"`
+	Schedules  []Schedule `gorm:"many2many:reports_schedules;"`
 }
 
 type Element struct {

@@ -13,6 +13,17 @@ import (
 	// "github.com/chromedp/chromedp/device"
 )
 
+
+func Test(){
+	data,err := GetElementsByReportID(1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _,ttt := range data {
+		fmt.Println(ttt.Instance.Password)
+	}
+}
+
 func Screenshot() {
 
 	ctx, cancel := chromedp.NewContext(
@@ -20,8 +31,9 @@ func Screenshot() {
 		// chromedp.WithDebugf(log.Printf),
 	)
 	defer cancel()
-
 	
+	// element_data,err := GetElementsByReportID()
+
 	// 用 report 中 instance 的 instance ID 去 instance 資料庫中撈出 instance 的 IP,type,user,password
 	// auth, err := GetInstanceTypeAndIP(data1.InstanceID)
 	// if err != nil {
