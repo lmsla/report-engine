@@ -4,13 +4,10 @@ import (
 	"context"
 	"io/ioutil"
 	"report-backend-golang/global"
-
 	// "log"
 	"fmt"
 	"time"
-
 	"github.com/chromedp/cdproto/emulation"
-
 	// "github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"

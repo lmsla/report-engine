@@ -3,6 +3,7 @@ package services
 import (
 	//"fmt"
 	"fmt"
+	"report-backend-golang/global"
 
 	gr "github.com/mikeshimura/goreport"
 	//"io/ioutil"
@@ -20,13 +21,16 @@ func ReportCreater() {
 	r.SumWork["g1hrcum"] = 0.0
 	r.SumWork["g2hrcum"] = 0.0
 	r.SumWork["g2item"] = 0.0
+	fileIpaexg := fmt.Sprintf("%s/ipaexg.ttf",global.EnvConfig.Files.FontFile)
+	fileMpbold := fmt.Sprintf("%s/mplus-1p-bold.ttf",global.EnvConfig.Files.FontFile)
+
 	font1 := gr.FontMap{
 		FontName: "IPAexG",
-		FileName: "/Users/chen/Documents/gitlab/git-out/product/report-backend/font/ipaexg.ttf",
+		FileName: fileIpaexg,
 	}
 	font2 := gr.FontMap{
 		FontName: "MPBOLD",
-		FileName: "/Users/chen/Documents/gitlab/git-out/product/report-backend/font/mplus-1p-bold.ttf",
+		FileName: fileMpbold,
 	}
 	fonts := []*gr.FontMap{&font1, &font2}
 	r.SetFonts(fonts)
