@@ -35,7 +35,7 @@ func GetElementsByReportID(reportID int) ([]entities.Element,error) {
 	// res := models.Response{}
 	// res.Success = false
 	// var body = []entities.Element{}
-	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Find(&report).Error
+	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Find(&report).Error
 	if err != nil {
 		return nil,err
 	}

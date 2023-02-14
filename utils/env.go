@@ -66,5 +66,9 @@ func viperConfigToModel() {
 
 	config.Other.Backend = viper.GetString("other.backend")
 
+	config.Files.FontFile = viper.GetString("files.font_file")
+	config.Files.ScreenshotFile = viper.GetString("files.screenshot_file")
+	config.Files.ReportFile = viper.GetString("files.report_file")
+
 	global.EnvConfig = &config
 }

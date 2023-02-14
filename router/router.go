@@ -56,5 +56,7 @@ func LoadRouter() *gin.Engine {
 	apiv1.DELETE("/Schedule/Delete/:id",DeleteSchedule)
 	apiv1.PUT("/Schedule/Update",UpdateSchedule)
 
+
+	apiv1.POST("Screenshot/Create/:id", GetScreenShot)
 	return router
 }

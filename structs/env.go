@@ -7,8 +7,14 @@ type EnviromentModel struct {
 	Cors     corsModel
 	Email    email
 	Other    other
+	Files    files
 }
 
+type files struct {
+	FontFile string
+	ScreenshotFile string
+	ReportFile string
+}
 
 type other struct {
 	Backend string
