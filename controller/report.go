@@ -32,6 +32,36 @@ func GetAllReports(c *gin.Context) {
 }
 
 
+// @Summary Get report by Report ID
+// @Tags Report
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Report
+// @Router /Report/GetReport/{id} [get]
+// @Security ApiKeyAuth
+func GetReportByReportID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetReportByReportID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
+
+
 
 // @Summary Create Report
 // @Tags Report

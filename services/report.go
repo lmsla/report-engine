@@ -26,6 +26,20 @@ func GetAllReports() models.Response {
 
 
 
+// 查單一 report by ReportID
+func GetReportByReportID(reportID int) (entities.Report,error) {
+
+	var instance entities.Report
+	instance.ID = reportID
+	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Find(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
+
+}
+
+
 func CreateReport(report models.Report) models.Response {
 
 	res := models.Response{}

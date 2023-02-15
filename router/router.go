@@ -44,6 +44,7 @@ func LoadRouter() *gin.Engine {
 	apiv1.PUT("/Report/Update", UpdateReport)
 	apiv1.DELETE("/Report/Delete/:id",DeleteReport)
 	apiv1.GET("/Report/GetReportByScheduleID/:id",GetReportByScheduleID)
+	apiv1.GET("/Report/GetReport/:id",GetReportByReportID)
 
 	apiv1.GET("/Element/GetAll", GetAllElements)
 	apiv1.POST("/Element/Create",CreateElement)
@@ -58,5 +59,7 @@ func LoadRouter() *gin.Engine {
 
 
 	apiv1.POST("Screenshot/Create/:id", GetScreenShot)
+
+	apiv1.POST("Html/Create/:id", CreateHtml)
 	return router
 }

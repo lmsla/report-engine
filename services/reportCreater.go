@@ -1,134 +1,155 @@
 package services
 
 import (
-	//"fmt"
-	"fmt"
 	"report-backend-golang/global"
-
-	gr "github.com/mikeshimura/goreport"
-	//"io/ioutil"
-	// "strconv"
-	//"strings"
+	"bufio"
+	"bytes"
+	"fmt"
+	"html/template"
+	"log"
+	"os"
+	// "report-backend-golang/entities"
+	// "strings"
+	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
-
-func ReportCreater() {
-	r := gr.CreateGoReport()
-	//Page Total Function
-	r.PageTotal = true
-	r.SumWork["g1amtcum"] = 0.0
-	r.SumWork["g2amtcum"] = 0.0
-	r.SumWork["g1hrcum"] = 0.0
-	r.SumWork["g2hrcum"] = 0.0
-	r.SumWork["g2item"] = 0.0
-	fileIpaexg := fmt.Sprintf("%s/ipaexg.ttf",global.EnvConfig.Files.FontFile)
-	fileMpbold := fmt.Sprintf("%s/mplus-1p-bold.ttf",global.EnvConfig.Files.FontFile)
-
-	font1 := gr.FontMap{
-		FontName: "IPAexG",
-		FileName: fileIpaexg,
-	}
-	font2 := gr.FontMap{
-		FontName: "MPBOLD",
-		FileName: fileMpbold,
-	}
-	fonts := []*gr.FontMap{&font1, &font2}
-	r.SetFonts(fonts)
-	// d := new(C1Detail)
-	// r.RegisterBand(gr.Band(*d), gr.Detail)
-	h := new(C1Header)
-	r.RegisterBand(gr.Band(*h), gr.PageHeader)
-	// f := new(C1Footer)
-	// r.RegisterBand(gr.Band(*f), gr.PageFooter)
-	// s1h := new(C1G1Header)
-	// r.RegisterGroupBand(gr.Band(*s1h), gr.GroupHeader, 1)
-	// s1 := new(C1G1Summary)
-	// r.RegisterGroupBand(gr.Band(*s1), gr.GroupSummary, 1)
-	// s2 := new(C1G2Summary)
-	// r.RegisterGroupBand(gr.Band(*s2), gr.GroupSummary, 2)
-	r.Records = gr.ReadTextFile("/Users/chen/Downloads/BiMap/CodeBackup/screenshot_test/invoice.txt", 12)
-	//fmt.Printf("Records %v \n", r.Records)
-	r.SetPage("A4", "mm", "P")
-	r.SetFooterY(265)
-	r.Execute("complex1.pdf")
-	r.SaveText("complex1.txt")
+func subtr(a, b float64) float64 {
+	return a - b
 }
 
-type C1Header struct {
+func list(e ...float64) []float64 {
+	return e
 }
 
 
-func (h C1Header) GetHeight(report gr.GoReport) float64 {
-	if report.SumWork["g2item"] == 0.0 {
-		return 116
-	}
-	return 38
+type dashboard struct {
+	Img   string
+	Name  string
+	Price string
 }
 
-func (h C1Header) Execute(report gr.GoReport) {
-	// cols := report.Records[report.DataPos].([]string)
-	// y := 32.0
-	if report.SumWork["g2item"] == 0.0 {
+func CreateHtml(ReportId int) {
 
-		rowIncreaseStep := 80.0
-		rowStartPosition := 20.0
-		picstart := 80.0
-		picheight := 80.0
-		for i := 0; i < 3; i++ {
-			report.Image("/Users/chen/Downloads/BiMap/CodeBackup/screenshot_test/testpic1.jpg", 10, rowStartPosition, 200, picstart)
-			fmt.Println(picheight)
-			rowStartPosition += rowIncreaseStep
-			picstart += picheight
-			
-		}
-		// report.Image("/Users/chen/Downloads/BiMap/CodeBackup/screenshot_test/testpic1.jpg", 10, 20, 200, 80)
-		// report.Image("/Users/chen/Downloads/BiMap/CodeBackup/screenshot_test/testpic1.jpg", 10, 100, 200, 160)
-		// report.Image("/Users/chen/Downloads/BiMap/CodeBackup/screenshot_test/testpic1.jpg", 10, 180, 200, 240)
+	// ScreenshotbyReport(ReportId)
 
-		report.Font("MPBOLD", 18, "")
-		// report.LineType("straight", 1)
-		// report.GrayStroke(0.9)
-		// report.LineV(49, 72, 90)
-		// report.LineV(150, 43, 67)
-		// report.LineV(150, 71, 95)
-		// report.GrayStroke(0)
-		//	report.LineType("straight", 0.5)
-		//	report.Rect(48, 13, 81, 21)
-		report.Cell(10, 10, "報表001")
-		// report.Font("MPBOLD", 9, "")
-		// report.Cell(139, 45, "From")
-		// x := 153.0
-		// report.Cell(x, 45, "Test Consulting Corp.")
-		// report.Cell(x, 51, "123 Hyde Street")
-		// report.Cell(x, 57, "San Francisco, Calfornia")
-		// report.Cell(x, 63, "USA")
-
-		// report.Cell(139, 74, "To")
-		// report.Cell(x, 74, cols[0])
-		// report.Cell(x, 80, cols[1])
-		// report.Cell(x, 86, cols[2])
-		// report.Cell(x, 92, cols[3])
-
-		// x = 14.0
-		// report.Cell(x, 73, "Tax Invoice No:")
-		// report.Cell(x, 79, "Tax Invoice Date:")
-		// report.Cell(x, 85, "Payment Due Date:")
-
-		// x = 52
-		// report.Cell(x, 73, cols[9])
-		// report.Cell(x, 79, cols[10])
-		// report.Cell(x, 85, cols[11])
-
-		// y = 110
-		// y = y
+	elementData, err := GetElementsByReportID(ReportId)
+	if err != nil {
+		fmt.Println(err)
 	}
-	// report.LineType("straight", 7)
-	// report.GrayStroke(0.9)
-	// report.LineH(11, y-2, 199)
-	// report.GrayStroke(0)
-	// report.Cell(14, y, "Type")
-	// report.Cell(40, y, "Description")
-	// report.Cell(161, y, "Hours")
-	// report.Cell(184, y, "Amount")
-	report.SumWork["g2item"] = 1.0
+	data1 := []dashboard{}
+	for _, elements := range elementData {
+		uu := new(dashboard)
+		uu.Img = fmt.Sprintf("%s/%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID)
+		uu.Name = fmt.Sprintf(elements.Name)
+		data1 = append(data1, *uu)
+	}
+	fmt.Println(data1)
+
+	//	用 ReportID 取出 Report 的相關資料
+	inventory, err := GetReportByReportID(ReportId)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(inventory.Name)
+
+	// fromtimeconverted := Timeconverter(inventory.From + "+8h")
+	// totimeconverted := Timeconverter(inventory.To + "+8h")
+	// str1 := fromtimeconverted[0:16]
+	// str2 := totimeconverted[0:16]
+
+	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
+
+	var allPaths []string
+	for _, tmpl := range allFiles {
+		allPaths = append(allPaths, "/Users/chen/Documents/gitlab/git-out/product/report-backend/files/template/"+tmpl)
+	}
+
+	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))
+
+	var processed bytes.Buffer
+	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
+		fmt.Println(err.Error())
+	}
+	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
+	outputPath := fmt.Sprintf("%s/%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name)
+	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
+	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name)
+	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
+
+	// 新增 html history
+	// Htmlfile := entities.FileHistory{ScheduleID:ScheduleID, HtmlName: htmlName,Filetype: "html"}
+	// global.Mysql.Create(&Htmlfile)
+
+	f, _ := os.Create(outputPath)
+	w := bufio.NewWriter(f)
+	w.WriteString(string(processed.Bytes()))
+	w.Flush()
+
+	// pdf的名稱
+	// pdfname := fmt.Sprintf("%s/%s_%s~%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name, str1, str2)
+	pdfname := fmt.Sprintf("%s/%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name)
+	// pdfshortname := fmt.Sprintf("%s",htmlName)
+
+	// 執行產出pdf的程式
+	GeneratePDF(outputPath, pdfname)
+
+	// // 新增 pdf history
+	// file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
+	// global.Mysql.Create(&file)
+
+}
+
+
+
+
+func GeneratePDF(htmlpath string, pdfname string) {
+
+	pdf.Init()
+	defer pdf.Destroy()
+
+	// Create object from file.
+	// object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
+	object, err := pdf.NewObject(htmlpath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	object.Header.ContentCenter = "[title]"
+	// object.Header.DisplaySeparator = true
+	object.Header.DisplaySeparator = false
+
+	// Create converter.
+	converter, err := pdf.NewConverter()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer converter.Destroy()
+
+	// Add created objects to the converter.
+	converter.Add(object)
+	// converter.Add(object2)
+	// converter.Add(object3)
+
+	// Set converter options.
+	converter.Title = "Sample document"
+	converter.PaperSize = pdf.A4
+	//橫向展示
+	// converter.Orientation = pdf.Landscape
+	converter.MarginTop = "1cm"
+	converter.MarginBottom = "1cm"
+	converter.MarginLeft = "10mm"
+	converter.MarginRight = "10mm"
+
+	// Convert objects and save the output PDF document.
+	outFile, err := os.Create(pdfname)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer outFile.Close()
+
+	if err := converter.Run(outFile); err != nil {
+		log.Fatal(err)
+	}
+
+
 }

@@ -14,6 +14,7 @@ type files struct {
 	FontFile string
 	ScreenshotFile string
 	ReportFile string
+	HtmlFile string
 }
 
 type other struct {

@@ -310,6 +310,28 @@ paths:
       summary: Update Element
       tags:
       - Element
+  /Html/Create/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Html
+      tags:
+      - Html
   /Instance/Create:
     post:
       consumes:
@@ -483,6 +505,28 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get Report
+      tags:
+      - Report
+  /Report/GetReport/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Report'
+      security:
+      - ApiKeyAuth: []
+      summary: Get report by Report ID
       tags:
       - Report
   /Report/GetReportByScheduleID/{id}:
