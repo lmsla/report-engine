@@ -32,6 +32,22 @@ func GetAllSchedule() models.Response {
 }
 
 
+
+// 查單一Schedule by schedule ID
+func GetScheduleBysSheduleID(scheduleID int) (entities.Schedule, error) {
+
+	var instance entities.Schedule
+	instance.ID = scheduleID
+	err := global.Mysql.First(&instance).Error
+	if err != nil {
+		return instance, err
+	}
+	return instance, nil
+}
+
+
+
+
 func DeleteSchedule(id int) models.Response {
 
 	res := models.Response{}
@@ -82,6 +98,8 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 	if err != nil {
 		res.Msg = "Create Fail"
 		return res
+	}else {
+		ExecuteShedulePDF(schedule.ID)
 	}
 
 	res.Success = true

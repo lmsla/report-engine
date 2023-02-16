@@ -70,6 +70,7 @@ func viperConfigToModel() {
 	config.Files.ScreenshotFile = viper.GetString("files.screenshot_file")
 	config.Files.ReportFile = viper.GetString("files.report_file")
 	config.Files.HtmlFile = viper.GetString("files.html_file")
+	config.Files.LogFile = viper.GetString("files.log_file")
 
 	global.EnvConfig = &config
 }
