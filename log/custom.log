@@ -1,0 +1,26 @@
+排程  2023/02/18 17:35:02 PDF排程 初始化失敗
+ERROR  2023/02/18 17:35:02 expected exactly 6 fields, found 5: [32 17 * * *]
+排程  2023/02/18 17:35:32 PDF排程 初始化成功
+排程 2023/02/18 17:37:00 schedule name: schedule001
+截圖 2023/02/18 17:37:00 element name: cht_vsm_MD_track_dashboard開始執行截圖
+截圖 2023/02/18 17:37:29 element name: cht_vsm_MD_track_dashboard完成截圖
+截圖 2023/02/18 17:37:29 element name: cht_apache_overall_dashboard開始執行截圖
+截圖 2023/02/18 17:37:56 element name: cht_apache_overall_dashboard完成截圖
+截圖 2023/02/18 17:37:56 element name: cht_vsm_dashboard開始執行截圖
+截圖 2023/02/18 17:38:23 element name: cht_vsm_dashboard完成截圖
+截圖 2023/02/18 17:38:23 element name: 儀錶板-Waf_HTTP回應開始執行截圖
+截圖 2023/02/18 17:38:50 element name: 儀錶板-Waf_HTTP回應完成截圖
+截圖 2023/02/18 17:38:50 element name: 儀錶板-Waf總覽開始執行截圖
+截圖 2023/02/18 17:39:16 element name: 儀錶板-Waf總覽完成截圖
+排程  2023/02/18 18:25:57 PDF排程 初始化成功
+排程 2023/02/18 18:26:00 schedule name: schedule003
+截圖 2023/02/18 18:26:00 element name: cht_vsm_MD_track_dashboard開始執行截圖
+截圖 2023/02/18 18:26:28 element name: cht_vsm_MD_track_dashboard完成截圖
+截圖 2023/02/18 18:26:28 element name: cht_apache_overall_dashboard開始執行截圖
+截圖 2023/02/18 18:26:55 element name: cht_apache_overall_dashboard完成截圖
+截圖 2023/02/18 18:26:55 element name: cht_vsm_dashboard開始執行截圖
+截圖 2023/02/18 18:27:21 element name: cht_vsm_dashboard完成截圖
+截圖 2023/02/18 18:27:21 element name: 儀錶板-Waf_HTTP回應開始執行截圖
+截圖 2023/02/18 18:27:49 element name: 儀錶板-Waf_HTTP回應完成截圖
+截圖 2023/02/18 18:27:49 element name: 儀錶板-Waf總覽開始執行截圖
+截圖 2023/02/18 18:28:16 element name: 儀錶板-Waf總覽完成截圖

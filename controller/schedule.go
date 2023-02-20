@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"report-backend-golang/services"
-	// "report-backend-golang/handler"
+	"report-backend-golang/handler"
 
 	"report-backend-golang/entities"
 	"github.com/gin-gonic/gin"
@@ -28,6 +28,34 @@ func GetAllSchedule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
+
+// @Summary Get Schedule by Schedule ID
+// @Tags Schedule
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} models.Response
+// @Router /Schedule/GetSchedule/{id} [get]
+// @Security ApiKeyAuth
+func GetScheduleByScheduleID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetScheduleBysSheduleID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
 
 
 // @Summary Create Schedule

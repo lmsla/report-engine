@@ -111,6 +111,12 @@ func DeleteReport(id int) models.Response {
 		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
 		return res
 	}
+	//刪除 ReportsSchedule 中對應的 Report
+	err = global.Mysql.Where("report_id = ?" ,id).Delete(&entities.ReportsSchedules{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting data in ReportsSchedule, err: %s", err)
+		return res
+	}
 
 	err = global.Mysql.Where("id = ?", id).Delete(&entities.Report{}).Error
 	if err != nil {

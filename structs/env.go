@@ -25,10 +25,11 @@ type other struct {
 type email struct {
 	User     string
 	Password string
-	SMTP     []string
 	Host     string
+	Port     string
 	Sender   string
 	Auth     bool
+	SMTP     []string
 }
 
 type server struct {

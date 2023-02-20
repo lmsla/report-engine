@@ -5,6 +5,8 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
+	// "report-backend-golang/tools"
+	// "report-backend-golang/services"
 	"report-backend-golang/utils"
 	// "report-backend-golang/entities"
 )
@@ -56,3 +58,12 @@ func main() {
 	// services.CheckRule(2)
 
 }
+
+
+// func main() {
+// 	utils.LoadEnvironment()
+// 	// services.SendEmail()
+// 	// tools.Timeconverter("年",1)
+// 	tools.Toools()
+
+// }

@@ -61,6 +61,7 @@ func viperConfigToModel() {
 	config.Email.Password = viper.GetString("email.password")
 	config.Email.SMTP = viper.GetStringSlice("email.smtp")
 	config.Email.Host = viper.GetString("email.host")
+	config.Email.Port = viper.GetString("email.port")
 	config.Email.Sender = viper.GetString("email.sender")
 	config.Email.Auth = viper.GetBool("email.auth")
 
@@ -71,6 +72,12 @@ func viperConfigToModel() {
 	config.Files.ReportFile = viper.GetString("files.report_file")
 	config.Files.HtmlFile = viper.GetString("files.html_file")
 	config.Files.LogFile = viper.GetString("files.log_file")
+
+
+	// config.Email.User = viper.GetString("email.user")
+	// config.Email.Password = viper.GetString("email.password")
+	// config.Email.Port = viper.GetString("email.port")
+	// config.Email.Host = viper.GetString("email.host")
 
 	global.EnvConfig = &config
 }

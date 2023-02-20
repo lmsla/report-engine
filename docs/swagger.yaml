@@ -452,6 +452,50 @@ paths:
       summary: Update Instance
       tags:
       - Instance
+  /Mail/Send/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Mail
+      tags:
+      - Mail
+  /PDF/Create/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: PDF
+      tags:
+      - PDF
   /Report/Create:
     post:
       consumes:
@@ -625,6 +669,28 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get Schedule
+      tags:
+      - Schedule
+  /Schedule/GetSchedule/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Schedule by Schedule ID
       tags:
       - Schedule
   /Schedule/Update:

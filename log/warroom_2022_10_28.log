@@ -1,6 +1,0 @@
-2022/10/28 12:06:50 Method="GET" URL="/api/v1/Report/GetInstance/1" msg="error to get inventory details"
-2022/10/28 12:06:54 Method="GET" URL="/api/v1/Report/GetInstance/2" msg="error to get inventory details"
-2022/10/28 12:07:43 Method="GET" URL="/api/v1/Report/GetInstance/2" msg="error to get inventory details"
-2022/10/28 12:07:46 Method="GET" URL="/api/v1/Report/GetInstance/1" msg="error to get inventory details"
-2022/10/28 16:56:47 Method="PUT" URL="/api/v1/Report/ReportUpdate" msg="Group id does not exist"
-2022/10/28 16:58:07 Method="PUT" URL="/api/v1/Report/ReportUpdate" msg="Report id does not exist"

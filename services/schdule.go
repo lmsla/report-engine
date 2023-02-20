@@ -60,14 +60,14 @@ func DeleteSchedule(id int) models.Response {
 		return res
 	}
 
-	// //先刪除 element 中相應的圖表
-	// err := global.Mysql.Where("instance_id = ?", id).Delete(&entities.Element{}).Error
-	// if err != nil {
-	// 	res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
-	// 	return res
-	// }
+	//先刪除 ReportsSchedule 中相應的圖表
+	err := global.Mysql.Where("schedule_id = ?", id).Delete(&entities.ReportsSchedules{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting data in  ReportsSchedule, err: %s", err)
+		return res
+	}
 
-	err := global.Mysql.Where("id = ?", id).Delete(&entities.Schedule{}).Error
+	err = global.Mysql.Where("id = ?", id).Delete(&entities.Schedule{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting Schedule, err: %s", err)
 		return res
@@ -85,8 +85,8 @@ func DeleteSchedule(id int) models.Response {
 func CreateSchedule(schedule entities.Schedule) models.Response {
 
 	res := models.Response{}
-	res.Success = false
-	res.Body = []entities.Schedule{}
+	// res.Success = false
+	// res.Body = []entities.Schedule{}
 
 	result := global.Mysql.Where("name = ?", schedule.Name).First(&entities.Schedule{})
 	if result.RowsAffected > 0 {
@@ -99,13 +99,15 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 		res.Msg = "Create Fail"
 		return res
 	}else {
+		fmt.Println("schedule.ID")
+		fmt.Println(schedule.ID)
 		ExecuteShedulePDF(schedule.ID)
 	}
 
-	res.Success = true
+	
 	res.Msg = "Create Success"
-	global.Mysql.Where("name = ?", schedule.Name).First(&res.Body)
-
+	res.Success = true
+	// global.Mysql.Where("name = ?", schedule.Name).First(&res.Body)
 	return res
 }
 

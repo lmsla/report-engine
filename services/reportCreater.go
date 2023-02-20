@@ -1,16 +1,17 @@
 package services
 
 import (
-	"report-backend-golang/global"
 	"bufio"
 	"bytes"
 	"fmt"
 	"html/template"
 	"log"
 	"os"
-	// "report-backend-golang/entities"
-	// "strings"
-	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	"report-backend-golang/global"
+	"report-backend-golang/tools"
+	"time"
+
+	// "report-backend-golang/log"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
@@ -22,29 +23,53 @@ func list(e ...float64) []float64 {
 	return e
 }
 
-
 type dashboard struct {
 	Img   string
 	Name  string
 	Price string
 }
 
-func CreateHtml(ReportId int) {
-
-	// ScreenshotbyReport(ReportId)
-
-	elementData, err := GetElementsByReportID(ReportId)
+func CreateHtmlbySchedule(ScheduleID int) {
+	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
 	}
-	data1 := []dashboard{}
-	for _, elements := range elementData {
-		uu := new(dashboard)
-		uu.Img = fmt.Sprintf("%s/%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID)
-		uu.Name = fmt.Sprintf(elements.Name)
-		data1 = append(data1, *uu)
+	for _, reports := range scheduleData {
+		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
+		CreateHtml(reports.ID)
+		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
 	}
-	fmt.Println(data1)
+
+}
+
+func CreatePDFbySchedule(ScheduleID int) {
+	scheduleData, err := GetReportByScheduleID(ScheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	time.Sleep(10 * time.Second)
+	for _, reports := range scheduleData {
+		fmt.Println(reports.Name)
+		timefrom := tools.Timeconverter(reports.TimeUnit,reports.TimePeriod) 
+		now := time.Now().Format("2006-01-02")
+		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name,timefrom,now)
+		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name,timefrom,now)
+		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
+		// defer pdf.Destroy()
+		GeneratePDF(outputPath, pdfname)
+		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
+		// time.Sleep(5 * time.Second)
+		// pdf.Destroy()
+		// defer pdf.Destroy()
+	}
+	pdf.Destroy()
+	// defer pdf.Destroy()
+
+}
+
+func CreateHtml(ReportId int) {
+
+	// ScreenshotbyReport(ReportId)
 
 	//	用 ReportID 取出 Report 的相關資料
 	inventory, err := GetReportByReportID(ReportId)
@@ -52,6 +77,22 @@ func CreateHtml(ReportId int) {
 		fmt.Println(err)
 	}
 	fmt.Println(inventory.Name)
+
+	elementData, err := GetElementsByReportID(ReportId)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	now := time.Now().Format("2006-01-02")
+	timefrom := tools.Timeconverter(inventory.TimeUnit,inventory.TimePeriod)
+	data1 := []dashboard{}
+	for _, elements := range elementData {
+		uu := new(dashboard)
+		uu.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
+		uu.Name = fmt.Sprintf(elements.Name)
+		data1 = append(data1, *uu)
+	}
+	fmt.Println(data1)
 
 	// fromtimeconverted := Timeconverter(inventory.From + "+8h")
 	// totimeconverted := Timeconverter(inventory.To + "+8h")
@@ -72,7 +113,7 @@ func CreateHtml(ReportId int) {
 		fmt.Println(err.Error())
 	}
 	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
-	outputPath := fmt.Sprintf("%s/%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name)
+	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name,timefrom,now)
 	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
 	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name)
 	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
@@ -88,11 +129,25 @@ func CreateHtml(ReportId int) {
 
 	// pdf的名稱
 	// pdfname := fmt.Sprintf("%s/%s_%s~%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name, str1, str2)
-	pdfname := fmt.Sprintf("%s/%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name)
-	// pdfshortname := fmt.Sprintf("%s",htmlName)
 
+	// pdfname := fmt.Sprintf("%s/%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name)
+
+	// pdfshortname := fmt.Sprintf("%s",htmlName)
+	// time.Sleep(5 * time.Second)
 	// 執行產出pdf的程式
-	GeneratePDF(outputPath, pdfname)
+
+	// GeneratePDF(outputPath, pdfname)
+
+	// var wg sync.WaitGroup
+	// go func() {
+	// 	wg.Add(1)//計數器+1
+	// 	defer wg.Done()
+
+	// }()
+
+	// time.Sleep(time.Millisecond * 30)//休息30 ms
+	// log.Println("wait a goroutine")
+	// wg.Wait()//等待計數器歸0
 
 	// // 新增 pdf history
 	// file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
@@ -100,13 +155,10 @@ func CreateHtml(ReportId int) {
 
 }
 
-
-
-
 func GeneratePDF(htmlpath string, pdfname string) {
 
 	pdf.Init()
-	defer pdf.Destroy()
+	// defer pdf.Destroy()
 
 	// Create object from file.
 	// object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
@@ -123,7 +175,7 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer converter.Destroy()
+	// defer converter.Destroy()
 
 	// Add created objects to the converter.
 	converter.Add(object)
@@ -145,11 +197,11 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer outFile.Close()
+	// defer outFile.Close()
 
 	if err := converter.Run(outFile); err != nil {
 		log.Fatal(err)
 	}
-
-
+	converter.Destroy()
+	outFile.Close()
 }

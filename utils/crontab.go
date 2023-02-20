@@ -8,6 +8,6 @@ import (
 
 func LoadCrontab() {
 
-	global.Crontab = cron.New(cron.WithSeconds())
+	global.Crontab = cron.New()
 	global.Crontab.Start()
 }
