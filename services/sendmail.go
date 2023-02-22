@@ -9,6 +9,7 @@ import (
 	"mime"
 	"net/smtp"
 	"report-backend-golang/global"
+	"report-backend-golang/tools"
 	"strings"
 	"time"
 )
@@ -58,10 +59,13 @@ func SendEmailBySchedule(ScheduleID int) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	// timefrom := tools.Timeconverter(report_data.TimeUnit,report_data.TimePeriod)
 	var reportForSendList []string
 	var nameList []string
+	now := time.Now().Format("2006-01-02")
 	for _, report := range report_data {
-		reportname := report.Name
+		timefrom := tools.Timeconverter(report.TimeUnit,report.TimePeriod)
+		reportname := fmt.Sprintf("%s_%s_%s",report.Name,timefrom,now)
 		nameList = append(nameList, reportname)
 		reportForSendList = append(reportForSendList, report_path+reportname)
 
@@ -169,7 +173,6 @@ func SendEmail() {
 		// to:          reciver_list,
 		// cc:          cc_list,
 		// bcc:         bcc_list,
-
 		subject:     "test_subject",
 		body:        "test_body",
 		contentType: "text/plain;charset=utf-8",

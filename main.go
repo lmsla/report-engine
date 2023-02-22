@@ -5,6 +5,8 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
+	"report-backend-golang/services"
+
 	// "report-backend-golang/tools"
 	// "report-backend-golang/services"
 	"report-backend-golang/utils"
@@ -29,7 +31,7 @@ import (
 // @name Authorization
 
 // @schemes http
-func main() {
+func main1() {
 
 	utils.LoadEnvironment()
 
@@ -59,11 +61,12 @@ func main() {
 
 }
 
+func main() {
+	utils.LoadEnvironment()
+	utils.LoadCrontab()
+	// // authorize.LoadCasbin()
+	// services.SendEmail()
+	// tools.Timeconverter("年",1)
+	services.CronTest()
 
-// func main() {
-// 	utils.LoadEnvironment()
-// 	// services.SendEmail()
-// 	// tools.Timeconverter("年",1)
-// 	tools.Toools()
-
-// }
+}

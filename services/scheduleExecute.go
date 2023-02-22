@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	// "report-backend-golang/entities"
+	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	// "report-backend-golang/models"
 	// "report-backend-golang/screenshot"
@@ -12,12 +13,6 @@ import (
 	// "time"
 )
 
-
-
-
-
-
-
 // 執行 PDF Schedule by ScheduleID
 func ExecuteShedulePDF(scheduleID int) {
 	inventory,err := GetScheduleBysSheduleID(scheduleID)
@@ -26,10 +21,26 @@ func ExecuteShedulePDF(scheduleID int) {
 	}
 	// inventory1,err := services.GetReportByReportName(inventory.Report)
 
-	
-	_,err = global.Crontab.AddFunc(inventory.CronTime,func(){
+	// inventory.CronID
+	EntryID,err := global.Crontab.AddFunc(inventory.CronTime,func(){
 		FuncAddToCron(scheduleID)
 	}) 
+	fmt.Println(EntryID,err)
+
+	// 寫一筆記錄到 cron_lists 的 table 中
+	// res := models.Response{}
+	// res.Success = false
+	cronlist := entities.CronList{ScheduleID: scheduleID,EntryID: int(EntryID)}
+	// cronlist := Cron
+	result  := global.Mysql.Create(&cronlist).Error
+	if result != nil {
+		fmt.Println("Create Fail")
+		// return res) 
+	}
+
+	// res.Success = true
+	// res.Msg = "Create Success"
+
 	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
 	if err != nil {
 		fmt.Println("crontab PDF 初始化失敗")
@@ -57,6 +68,7 @@ func FuncAddToCron(scheduleID int) {
 		fmt.Println(err)
 	}
 	log.Logrecord("排程","schedule name: "+inventory.Name)
+
 	ScreenshotbySchedule(scheduleID)
 	// time.Sleep(3 * time.Second) 
 	CreateHtmlbySchedule(scheduleID)

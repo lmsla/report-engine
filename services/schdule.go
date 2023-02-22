@@ -2,10 +2,10 @@ package services
 
 import (
 	// "fmt"
+	"fmt"
 	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	"report-backend-golang/models"
-	"fmt"
 )
 
 func GetAllSchedule() models.Response {
@@ -31,8 +31,6 @@ func GetAllSchedule() models.Response {
 	return res
 }
 
-
-
 // 查單一Schedule by schedule ID
 func GetScheduleBysSheduleID(scheduleID int) (entities.Schedule, error) {
 
@@ -44,9 +42,6 @@ func GetScheduleBysSheduleID(scheduleID int) (entities.Schedule, error) {
 	}
 	return instance, nil
 }
-
-
-
 
 func DeleteSchedule(id int) models.Response {
 
@@ -63,7 +58,27 @@ func DeleteSchedule(id int) models.Response {
 	//先刪除 ReportsSchedule 中相應的圖表
 	err := global.Mysql.Where("schedule_id = ?", id).Delete(&entities.ReportsSchedules{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting data in  ReportsSchedule, err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting data in ReportsSchedule, err: %s", err)
+		return res
+	}
+	data, err := GetEntryByScheduleID(id)
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when get data in CronList, err: %s", err)
+		return res
+	}
+
+	// 找出目前 Entries 中 與CronList 對應的 entryID 並刪除 Entries 中的 entry
+	entries := global.Crontab.Entries()
+	for _, entry := range entries {
+		if data.EntryID == int(entry.ID) {
+			global.Crontab.Remove(entry.ID)
+		}
+	}
+
+	// 刪除 CronList 中對應的 entry ID
+	err = global.Mysql.Where("schedule_id = ?", id).Delete(&entities.CronList{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting data in CronList, err: %s", err)
 		return res
 	}
 
@@ -79,7 +94,6 @@ func DeleteSchedule(id int) models.Response {
 	return res
 
 }
-
 
 // 新增schedule
 func CreateSchedule(schedule entities.Schedule) models.Response {
@@ -98,20 +112,17 @@ func CreateSchedule(schedule entities.Schedule) models.Response {
 	if err != nil {
 		res.Msg = "Create Fail"
 		return res
-	}else {
+	} else {
 		fmt.Println("schedule.ID")
 		fmt.Println(schedule.ID)
 		ExecuteShedulePDF(schedule.ID)
 	}
 
-	
 	res.Msg = "Create Success"
 	res.Success = true
 	// global.Mysql.Where("name = ?", schedule.Name).First(&res.Body)
 	return res
 }
-
-
 
 func UpdateSchedule(schedule entities.Schedule) models.Response {
 
@@ -131,11 +142,41 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 		return res
 	}
 
+	//先刪除 ReportsSchedule 中相應的圖表
+	err = global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.ReportsSchedules{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting data in ReportsSchedule, err: %s", err)
+		return res
+	}
+	data, err := GetEntryByScheduleID(schedule.ID)
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when get data in CronList, err: %s", err)
+		return res
+	}
 
+	// 找出目前 Entries 中 與CronList 對應的 entryID 並刪除 Entries 中的 entry
+	entries := global.Crontab.Entries()
+	for _, entry := range entries {
+		if data.EntryID == int(entry.ID) {
+			global.Crontab.Remove(entry.ID)
+		}
+	}
+
+	// 刪除 CronList 中對應的 entry ID
+	err = global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.CronList{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting data in CronList, err: %s", err)
+		return res
+	}
+
+	//update schedule
 	err = global.Mysql.Select("*").Where("id = ?", schedule.ID).Updates(&schedule).Error
 	if err != nil {
 		res.Msg = "Update Fail"
 		return res
+	}else {
+		res.Msg = "Update Success"
+		ExecuteShedulePDF(schedule.ID)
 	}
 
 	res.Success = true
@@ -145,3 +186,28 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 	return res
 
 }
+
+func GetEntryByScheduleID(scheduleID int) (entities.CronList, error) {
+	cronlist := entities.CronList{}
+	// err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
+
+	err := global.Mysql.Debug().Where("id = ?", scheduleID).Find(&cronlist).Error
+	if err != nil {
+		return cronlist, err
+	}
+	return cronlist, nil
+
+}
+
+// // 查單一 report by ReportID
+// func GetReportByReportID(reportID int) (entities.Report,error) {
+
+// 	var instance entities.Report
+// 	instance.ID = reportID
+// 	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Find(&instance).Error
+// 	if err != nil {
+// 		return instance, err
+// 	}
+// 	return instance, nil
+
+// }

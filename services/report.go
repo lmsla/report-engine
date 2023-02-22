@@ -76,8 +76,14 @@ func UpdateReport(report models.Report) models.Response {
 		res.Msg = "Report Name already existed"
 		return res
 	}
+	//先刪除 element 中相應的圖表
+	err := global.Mysql.Where("report_id = ?", report.ID).Delete(&entities.Element{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
+		return res
+	}
 
-	err := global.Mysql.Select("*").Where("id = ?", report.ID).Omit("Elements").Updates(&report).Error
+	err = global.Mysql.Select("*").Where("id = ?", report.ID).Updates(&report).Error
 	if err != nil {
 		res.Msg = "Update Fail"
 		return res
