@@ -31,7 +31,7 @@ import (
 // @name Authorization
 
 // @schemes http
-func main1() {
+func main() {
 
 	utils.LoadEnvironment()
 
@@ -61,7 +61,7 @@ func main1() {
 
 }
 
-func main() {
+func main1() {
 	utils.LoadEnvironment()
 	utils.LoadCrontab()
 	// // authorize.LoadCasbin()

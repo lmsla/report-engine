@@ -36,7 +36,7 @@ func GetScheduleBysSheduleID(scheduleID int) (entities.Schedule, error) {
 
 	var instance entities.Schedule
 	instance.ID = scheduleID
-	err := global.Mysql.First(&instance).Error
+	err := global.Mysql.Preload("Reports").First(&instance).Error
 	if err != nil {
 		return instance, err
 	}
@@ -191,7 +191,7 @@ func GetEntryByScheduleID(scheduleID int) (entities.CronList, error) {
 	cronlist := entities.CronList{}
 	// err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
 
-	err := global.Mysql.Debug().Where("id = ?", scheduleID).Find(&cronlist).Error
+	err := global.Mysql.Debug().Where("schedule_id = ?", scheduleID).Find(&cronlist).Error
 	if err != nil {
 		return cronlist, err
 	}
