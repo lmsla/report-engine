@@ -134,9 +134,9 @@ var ScheduleData = []Schedule{
 	{
 		Name:     "日報",
 		CronTime: "0 0 * * *",
-		To:       "example@gmail.com",
-		CC:       "example@gmail.com",
-		BCC:      "example@gmail.com",
+		To:       []string{""},
+		CC:       []string{""},
+		BCC:      []string{""},
 		CronID:   0,
 		Reports:  ReportData,
 	},

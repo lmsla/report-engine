@@ -87,9 +87,13 @@ definitions:
   entities.Schedule:
     properties:
       bcc:
-        type: string
+        items:
+          type: string
+        type: array
       cc:
-        type: string
+        items:
+          type: string
+        type: array
       created_at:
         type: integer
       cron_id:
@@ -107,7 +111,13 @@ definitions:
           $ref: '#/definitions/entities.Report'
         type: array
       to:
-        type: string
+        description: |-
+          To       []string `gorm:"type:varchar(50)" json:"to" form:"to"`
+          CC       []string `gorm:"type:varchar(50)" json:"cc" form:"cc"`
+          BCC      []string `gorm:"type:varchar(50)" json:"bcc" form:"bcc"`
+        items:
+          type: string
+        type: array
       updated_at:
         type: integer
     type: object

@@ -1017,10 +1017,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "bcc": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "cc": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "created_at": {
                     "type": "integer"
@@ -1047,7 +1053,11 @@ const docTemplate = `{
                     }
                 },
                 "to": {
-                    "type": "string"
+                    "description": "To       []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"to\" form:\"to\"` + "`" + `\nCC       []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"cc\" form:\"cc\"` + "`" + `\nBCC      []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"bcc\" form:\"bcc\"` + "`" + `",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "updated_at": {
                     "type": "integer"

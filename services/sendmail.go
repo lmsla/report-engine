@@ -64,13 +64,35 @@ func SendEmailBySchedule(ScheduleID int) {
 	var nameList []string
 	now := time.Now().Format("2006-01-02")
 	for _, report := range report_data {
-		timefrom := tools.Timeconverter(report.TimeUnit,report.TimePeriod)
-		reportname := fmt.Sprintf("%s_%s_%s",report.Name,timefrom,now)
+		timefrom := tools.Timeconverter(report.TimeUnit, report.TimePeriod)
+		reportname := fmt.Sprintf("%s_%s_%s", report.Name, timefrom, now)
 		nameList = append(nameList, reportname)
 		reportForSendList = append(reportForSendList, report_path+reportname)
 
 	}
 
+	var reciver_list []string
+	var cc_list []string
+	var bcc_list []string
+	schedule_data, err := GetScheduleBysSheduleID(ScheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, to := range schedule_data.To {
+		reciver_list = append(reciver_list, to)
+
+	}
+
+	for _, cc := range schedule_data.CC {
+		cc_list = append(cc_list, cc)
+
+	}
+
+	for _, bcc := range schedule_data.CC {
+		bcc_list = append(bcc_list, bcc)
+
+	}
 	// send := viper.Get("send")
 	// tolist := send.(map[string]interface{})["to"]
 	// cclist := send.(map[string]interface{})["cc"]
@@ -98,14 +120,14 @@ func SendEmailBySchedule(ScheduleID int) {
 	// fmt.Println("mail",mail)
 
 	message := Message{from: global.EnvConfig.Email.Sender,
-		to:  []string{"rabot6201@gmail.com"},
-		cc:  []string{"russell.chen@bimap.co"},
-		bcc: []string{"russell.chen@bimap.co"},
-		// to:          reciver_list,
-		// cc:          cc_list,
-		// bcc:         bcc_list,
-
-		subject:     "test_subject",
+		// to:  []string{"rabot6201@gmail.com"},
+		// cc:  []string{"russell.chen@bimap.co"},
+		// bcc: []string{"russell.chen@bimap.co"},
+		to:          reciver_list,
+		cc:          cc_list,
+		bcc:         bcc_list,
+		// subject:     "test_subject",
+		subject:     schedule_data.Name+"_"+ now,
 		body:        "test_body",
 		contentType: "text/plain;charset=utf-8",
 		// attachment: Attachment{
@@ -242,7 +264,7 @@ func (mail SendMail) Send(message Message) error {
 				}
 			}()
 			// mail.writeFile(buffer, message.attachment.name)
-			mail.writeFile(buffer, global.EnvConfig.Files.ReportFile +"/"+ name+".pdf")
+			mail.writeFile(buffer, global.EnvConfig.Files.ReportFile+"/"+name+".pdf")
 		}
 	}
 

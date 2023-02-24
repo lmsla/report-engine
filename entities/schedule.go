@@ -2,16 +2,23 @@ package entities
 
 type Schedule struct {
 	Common
-	ID       int      `gorm:"primaryKey;index" json:"id" form:"id"`
-	Name     string   `gorm:"type:varchar(50)" json:"name" form:"name"`
-	CronTime string   `gorm:"type:varchar(50)" json:"cron_time" form:"cron_time"`
-	To       string `gorm:"type:varchar(50)" json:"to" form:"to"`
-	CC       string `gorm:"type:varchar(50)" json:"cc" form:"cc"`
-	BCC      string `gorm:"type:varchar(50)" json:"bcc" form:"bcc"`
-	CronID   int      `gorm:"type:int" json:"cron_id" form:"cron_id"`
-	Reports  []Report `gorm:"many2many:reports_schedules;foreignKey:ID;reference:ID;"`
-	// CronList CronList 
+	ID       int    `gorm:"primaryKey;index" json:"id" form:"id"`
+	Name     string `gorm:"type:varchar(50)" json:"name" form:"name"`
+	CronTime string `gorm:"type:varchar(50)" json:"cron_time" form:"cron_time"`
+	// To       []string `gorm:"type:varchar(50)" json:"to" form:"to"`
+	// CC       []string `gorm:"type:varchar(50)" json:"cc" form:"cc"`
+	// BCC      []string `gorm:"type:varchar(50)" json:"bcc" form:"bcc"`
+	To      To       `gorm:"serializer:json"`
+	CC      CC       `gorm:"serializer:json"`
+	BCC     BCC      `gorm:"serializer:json"`
+	CronID  int      `gorm:"type:int" json:"cron_id" form:"cron_id"`
+	Reports []Report `gorm:"many2many:reports_schedules;foreignKey:ID;reference:ID;"`
+	// CronList CronList
 }
+
+type To []string
+type CC []string
+type BCC []string
 
 // foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;
 
@@ -24,8 +31,6 @@ type CronList struct {
 	EntryID    int `gorm:"primaryKey" form:"entry_id"`
 	ScheduleID int `gorm:"primaryKey" form:"schedule_id"`
 }
-
-
 
 // type Entry struct {
 // 	// ID is the cron-assigned ID of this entry, which may be used to look up a
@@ -46,7 +51,6 @@ type CronList struct {
 // 	Job Job
 // }
 
-
 // type FuncJob func()
 
 // type EntryID int
@@ -54,7 +58,6 @@ type CronList struct {
 // type Job interface {
 // 	Run()
 // }
-
 
 // type Schedule_cron interface {
 // 	// Next returns the next activation time, later than the given time.
