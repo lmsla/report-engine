@@ -86,3 +86,27 @@ ERROR  2023/02/21 16:48:36 unsupported data
 排程  2023/02/24 12:53:29 PDF排程 初始化成功
 排程  2023/02/24 14:16:38 PDF排程 初始化成功
 排程  2023/02/24 14:30:01 PDF排程 初始化成功
+排程  2023/02/24 14:56:32 PDF排程 初始化成功
+排程  2023/02/24 14:58:55 PDF排程 初始化成功
+排程 2023/02/24 14:59:00 schedule name: schedule004
+截圖 2023/02/24 14:59:00 element name: Elasticsearch_Api_Stats_Indices開始執行截圖
+截圖 2023/02/24 14:59:34 element name: Elasticsearch_Api_Stats_Indices完成截圖
+截圖 2023/02/24 14:59:34 element name: Elasticsearch_Api_Pending_Tasks開始執行截圖
+截圖 2023/02/24 15:00:05 element name: Elasticsearch_Api_Pending_Tasks完成截圖
+截圖 2023/02/24 15:00:05 element name: Elasticsearch_Api_Health開始執行截圖
+截圖 2023/02/24 15:00:37 element name: Elasticsearch_Api_Health完成截圖
+截圖 2023/02/24 15:00:37 element name: Elasticsearch_Api_Thread_Pool開始執行截圖
+截圖 2023/02/24 15:01:09 element name: Elasticsearch_Api_Thread_Pool完成截圖
+截圖 2023/02/24 15:01:09 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/02/24 15:01:41 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/02/24 15:01:41 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/02/24 15:02:13 element name: Elasticsearch_Api_Nodes完成截圖
+
+截圖 2023/03/01 13:48:04 element name: Elasticsearch_Api_Stats_Indices開始執行截圖
+截圖 2023/03/01 13:48:38 element name: Elasticsearch_Api_Stats_Indices完成截圖
+截圖 2023/03/01 13:48:38 element name: Elasticsearch_Api_Pending_Tasks開始執行截圖
+截圖 2023/03/01 13:49:12 element name: Elasticsearch_Api_Pending_Tasks完成截圖
+截圖 2023/03/01 13:49:12 element name: Elasticsearch_Api_Health開始執行截圖
+截圖 2023/03/01 13:49:44 element name: Elasticsearch_Api_Health完成截圖
+截圖 2023/03/01 13:49:44 element name: Elasticsearch_Api_Thread_Pool開始執行截圖
+截圖 2023/03/01 13:50:18 element name: Elasticsearch_Api_Thread_Pool完成截圖

@@ -93,23 +93,7 @@ func SendEmailBySchedule(ScheduleID int) {
 		bcc_list = append(bcc_list, bcc)
 
 	}
-	// send := viper.Get("send")
-	// tolist := send.(map[string]interface{})["to"]
-	// cclist := send.(map[string]interface{})["cc"]
-	// bcclist := send.(map[string]interface{})["bcc"]
 
-	// var reciver_list []string
-	// var cc_list []string
-	// var bcc_list []string
-	// for _, receiver := range tolist.([]interface{}) {
-	// 	reciver_list = append(reciver_list, receiver.(string))
-	// }
-	// for _, cc := range cclist.([]interface{}) {
-	// 	cc_list = append(cc_list, cc.(string))
-	// }
-	// for _, bcc := range bcclist.([]interface{}) {
-	// 	bcc_list = append(bcc_list, bcc.(string))
-	// }
 	var mail Mail
 
 	if user == "" {

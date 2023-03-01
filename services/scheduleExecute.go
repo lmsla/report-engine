@@ -31,7 +31,6 @@ func ExecuteShedulePDF(scheduleID int) {
 	// res := models.Response{}
 	// res.Success = false
 	cronlist := entities.CronList{ScheduleID: scheduleID,EntryID: int(EntryID)}
-	// cronlist := Cron
 	result  := global.Mysql.Create(&cronlist).Error
 	if result != nil {
 		fmt.Println("Create Fail")

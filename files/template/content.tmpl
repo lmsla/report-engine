@@ -1,12 +1,13 @@
 {{define "content" -}}
 <div class="container">
-   <h3 class="title"> report </h3>
+   <h1 class="Report"> {{.Name}} </h1>
    <div class="products-container">
-{{range $index, $item :=.}}
-      <div class="dashboard" data-name="p-{{$index}}" style="display:block;clear:both;page-break-after:auto;page-break-inside:avoid;">
-         <h3>{{$item.Name}}</h3>
-         <div class="price">{{$item.Price}}</div>
-         <img src="{{$item.Img}}" alt="">        
+{{range .Elements}}
+      <div class="element" style="display:block;clear:both;page-break-after:auto;page-break-inside:avoid;">
+         <h3>儀表板名稱</h3>
+         <h3>{{.Name}}</h3>
+         <div class="img">報表期間:{{.Period}}</div>
+         <img src="{{.Img}}" alt="">        
       </div>
 {{end}}
    </div>

@@ -3,14 +3,12 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/chromedp/cdproto/emulation"
 	"io/ioutil"
 	"report-backend-golang/global"
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-
-	"github.com/chromedp/cdproto/emulation"
-
 	// "github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
@@ -30,7 +28,7 @@ func ScreenshotbySchedule(scheduleID int) {
 }
 
 func ScreenshotbyReport(reportID int) {
-	report_data,err := GetReportByReportID(reportID)
+	report_data, err := GetReportByReportID(reportID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,10 +36,10 @@ func ScreenshotbyReport(reportID int) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	timefrom := tools.Timeconverter(report_data.TimeUnit,report_data.TimePeriod)
+	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
 	for _, data := range element_data {
 		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖")
-		Screenshot_element(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom,data.Instance.User, data.Instance.Password)
+		Screenshot_element(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 		time.Sleep(3 * time.Second)
 		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖")
 	}
@@ -55,12 +53,12 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		// chromedp.WithDebugf(log.Printf),
 	)
 	defer cancel()
-	// 用 report 中 instance 的 instance ID 去 instance 資料庫中撈出 instance 的 IP,type,user,password
-	// auth, err := GetInstanceTypeAndIP(data1.InstanceID)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// capture screenshot of an element 截圖程式碼，擺著就好勿動
+
+	// 創建超時上下文
+	ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+
+	// capture screenshot of an element 截圖程式碼
 	var buf []byte
 	// 將取出來的個參數帶入網址中以便截圖
 	var url1 string
@@ -71,16 +69,16 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.css-zxsb69`, &buf)); err != nil {
 			// log.Fatal(err)
 		}
-		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid,timefrom,now)
+		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 			// log.Fatal(err)
 		}
 	case "dashboard":
-		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid,timefrom)
+		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.dashboardViewport`, &buf)); err != nil {
 			// log.Fatal(err)
 		}
-		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid,timefrom,now)
+		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 			// log.Fatal(err)
 		}
@@ -93,11 +91,8 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 func kibanaElementScreenshotWithAuth(loginUrl, username, password, sel string, res *[]byte) chromedp.Tasks {
 
 	var executed *runtime.RemoteObject
-	// instancedata := GetInstanceTypeAndIP(id)
-	// username:="elastic"
-	// password:="12345678"
-	// width, height := 1920, 1080
-	width, height := 1240, 1754
+	// 自定義長寬
+	// width, height := 1240, 1754
 
 	return chromedp.Tasks{
 		chromedp.Navigate(loginUrl),
@@ -111,11 +106,15 @@ func kibanaElementScreenshotWithAuth(loginUrl, username, password, sel string, r
 		chromedp.Sleep(2 * time.Second),
 		chromedp.Click(`.euiButton`),
 		chromedp.Sleep(3 * time.Second),
-		emulation.SetDeviceMetricsOverride(int64(width), int64(height), 1.0, false),
-		// chromedp.WaitVisible(`div.dashboardViewport`),
+		//如果要自訂長寬
+		// emulation.SetDeviceMetricsOverride(int64(width), int64(height), 1.0, false),
+		// 使用原圖的長寬比
+		emulation.SetDeviceMetricsOverride(0, 0, 1.0, false),
+		// chromedp.WaitVisible(`div.dashboardViewpxort`),
 		// chromedp.WaitVisible(`div.css-zxsb69`),
 		chromedp.Sleep(15 * time.Second),
 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
 		// chromedp.Emulate(device.Reset),
 	}
+
 }

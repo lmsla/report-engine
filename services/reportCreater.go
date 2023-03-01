@@ -5,13 +5,13 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"log"
+	log1 "log"
 	"os"
 	"report-backend-golang/global"
+	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
 
-	// "report-backend-golang/log"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
@@ -21,6 +21,21 @@ func subtr(a, b float64) float64 {
 
 func list(e ...float64) []float64 {
 	return e
+}
+
+type Report struct {
+	Name     string
+	Elements []Element
+}
+
+type Element struct {
+	Img   string
+	Name  string
+	Period string
+}
+
+type title struct {
+	Name string
 }
 
 type dashboard struct {
@@ -50,10 +65,10 @@ func CreatePDFbySchedule(ScheduleID int) {
 	time.Sleep(10 * time.Second)
 	for _, reports := range scheduleData {
 		fmt.Println(reports.Name)
-		timefrom := tools.Timeconverter(reports.TimeUnit,reports.TimePeriod) 
+		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
 		now := time.Now().Format("2006-01-02")
-		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name,timefrom,now)
-		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name,timefrom,now)
+		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
+		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
 		// defer pdf.Destroy()
 		GeneratePDF(outputPath, pdfname)
@@ -72,27 +87,50 @@ func CreateHtml(ReportId int) {
 	// ScreenshotbyReport(ReportId)
 
 	//	用 ReportID 取出 Report 的相關資料
-	inventory, err := GetReportByReportID(ReportId)
+	report_data, err := GetReportByReportID(ReportId)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(inventory.Name)
+	fmt.Println(report_data.Name)
 
-	elementData, err := GetElementsByReportID(ReportId)
+	element_data, err := GetElementsByReportID(ReportId)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	now := time.Now().Format("2006-01-02")
-	timefrom := tools.Timeconverter(inventory.TimeUnit,inventory.TimePeriod)
-	data1 := []dashboard{}
-	for _, elements := range elementData {
-		uu := new(dashboard)
-		uu.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
-		uu.Name = fmt.Sprintf(elements.Name)
-		data1 = append(data1, *uu)
+	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+	//----------------------------------------
+	// data1 := []dashboard{}
+	// for _, elements := range elementData {
+	// 	uu := new(dashboard)
+	// 	uu.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
+	// 	uu.Name = fmt.Sprintf(elements.Name)
+	// 	data1 = append(data1, *uu)
+	// }
+	// fmt.Println(data1)
+	//----------------------------------------
+
+	data1 := Report{}
+	uu := new(Report)
+	gg := new(Element)
+	uu.Name = fmt.Sprintf(report_data.Name)
+	for _, elements := range element_data {
+		// uu := new(Report)
+		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
+		gg.Name = fmt.Sprintf(elements.Name)
+		gg.Period = fmt.Sprintf(timefrom+"~"+now)
+		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
+		data1.Elements = append(data1.Elements, *gg)
 	}
-	fmt.Println(data1)
+
+	data1 = Report{
+		Name: uu.Name,
+		Elements:data1.Elements ,
+	}
+	log.Logrecord("test", "testlog")
+	fmt.Println(data1.Name)
+	fmt.Println(data1.Elements)
 
 	// fromtimeconverted := Timeconverter(inventory.From + "+8h")
 	// totimeconverted := Timeconverter(inventory.To + "+8h")
@@ -113,7 +151,7 @@ func CreateHtml(ReportId int) {
 		fmt.Println(err.Error())
 	}
 	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
-	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name,timefrom,now)
+	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, report_data.Name, timefrom, now)
 	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
 	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name)
 	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
@@ -164,7 +202,7 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	// object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
 	object, err := pdf.NewObject(htmlpath)
 	if err != nil {
-		log.Fatal(err)
+		log1.Fatal(err)
 	}
 	object.Header.ContentCenter = "[title]"
 	// object.Header.DisplaySeparator = true
@@ -173,7 +211,7 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	// Create converter.
 	converter, err := pdf.NewConverter()
 	if err != nil {
-		log.Fatal(err)
+		log1.Fatal(err)
 	}
 	// defer converter.Destroy()
 
@@ -195,12 +233,12 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	// Convert objects and save the output PDF document.
 	outFile, err := os.Create(pdfname)
 	if err != nil {
-		log.Fatal(err)
+		log1.Fatal(err)
 	}
 	// defer outFile.Close()
 
 	if err := converter.Run(outFile); err != nil {
-		log.Fatal(err)
+		log1.Fatal(err)
 	}
 	converter.Destroy()
 	outFile.Close()
