@@ -23,22 +23,29 @@ func Run() {
 	dbname := global.EnvConfig.Database.Db
 	parameter := global.EnvConfig.Database.Params
 
-	db, _ := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, port, dbname, parameter))
-	driver, _ := mysql.WithInstance(db, &mysql.Config{})
-	m, _ := migrate.NewWithDatabaseInstance(
-		"file://./db/migrations",
-		"mysql",
-		driver,
-	)
+	if db, e := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, port, dbname, parameter)); e != nil {
+		fmt.Printf(e.Error())
+		panic(e)
+	} else {
+		fmt.Println("migration db connect success!!")
+		if driver, e := mysql.WithInstance(db, &mysql.Config{}); e != nil {
+			fmt.Printf(e.Error())
+			panic(e)
+		} else {
+			fmt.Println("driver ok")
+			if m, e := migrate.NewWithDatabaseInstance(
+				"file://./db/migrations",
+				"mysql",
+				driver,
+			); e != nil {
+				fmt.Printf(e.Error())
+				panic(e)
+			} else {
+				fmt.Println("migration ready to go")
+				fmt.Println(m.Up())
+			}
+		}
+	}
 
-	// // var err error
-	// err := errors.New("mock error")
-	// for err != nil {
-	// 	global.Mysql, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, port, dbname, parameter)), &gorm.Config{
-	// 		DisableForeignKeyConstraintWhenMigrating: true,
-	// 	})
-	// 	time.Sleep(1 * time.Second)
-	// }
-	fmt.Println(m.Up())
 	// or m.Step(2) if you want to explicitly set the number of migrations to run
 }
