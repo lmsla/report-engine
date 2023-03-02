@@ -3,7 +3,7 @@ package main
 import (
 	"report-backend-golang/clients"
 	"report-backend-golang/global"
-	"report-backend-golang/migrate"
+	// "report-backend-golang/migrate"
 	"report-backend-golang/router"
 	"report-backend-golang/services"
 
@@ -45,7 +45,7 @@ func main() {
 	// 	entities.InitTable()
 	// }
 
-	migrate.Run()
+	// migrate.Run()
 
 	clients.LoadRedis()
 	defer global.Redis.Close()
