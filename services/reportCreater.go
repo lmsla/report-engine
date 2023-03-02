@@ -29,8 +29,8 @@ type Report struct {
 }
 
 type Element struct {
-	Img   string
-	Name  string
+	Img    string
+	Name   string
 	Period string
 }
 
@@ -119,14 +119,14 @@ func CreateHtml(ReportId int) {
 		// uu := new(Report)
 		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
 		gg.Name = fmt.Sprintf(elements.Name)
-		gg.Period = fmt.Sprintf(timefrom+"~"+now)
+		gg.Period = fmt.Sprintf(timefrom + "~" + now)
 		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
 		data1.Elements = append(data1.Elements, *gg)
 	}
 
 	data1 = Report{
-		Name: uu.Name,
-		Elements:data1.Elements ,
+		Name:     uu.Name,
+		Elements: data1.Elements,
 	}
 	log.Logrecord("test", "testlog")
 	fmt.Println(data1.Name)
@@ -141,7 +141,7 @@ func CreateHtml(ReportId int) {
 
 	var allPaths []string
 	for _, tmpl := range allFiles {
-		allPaths = append(allPaths, "/Users/chen/Documents/gitlab/git-out/product/report-backend/files/template/"+tmpl)
+		allPaths = append(allPaths, global.EnvConfig.Files.TemplateFile+tmpl)
 	}
 
 	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))
