@@ -25,6 +25,7 @@ func ExecuteShedulePDF(scheduleID int) {
 	EntryID,err := global.Crontab.AddFunc(inventory.CronTime,func(){
 		FuncAddToCron(scheduleID)
 	}) 
+	fmt.Println("entryID: ")
 	fmt.Println(EntryID,err)
 
 	// 寫一筆記錄到 cron_lists 的 table 中
@@ -67,7 +68,8 @@ func FuncAddToCron(scheduleID int) {
 		fmt.Println(err)
 	}
 	log.Logrecord("排程","schedule name: "+inventory.Name)
-
+	fmt.Println("screenshot file at")
+	fmt.Println(global.EnvConfig.Files.ScreenshotFile)
 	ScreenshotbySchedule(scheduleID)
 	// time.Sleep(3 * time.Second) 
 	CreateHtmlbySchedule(scheduleID)
