@@ -141,7 +141,7 @@ func CreateHtml(ReportId int) {
 
 	var allPaths []string
 	for _, tmpl := range allFiles {
-		allPaths = append(allPaths, global.EnvConfig.Files.TemplateFile+tmpl)
+		allPaths = append(allPaths, global.EnvConfig.Files.TemplateFile+"/"+tmpl)
 	}
 
 	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))

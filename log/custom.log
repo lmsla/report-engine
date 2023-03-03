@@ -110,3 +110,18 @@ ERROR  2023/02/21 16:48:36 unsupported data
 截圖 2023/03/01 13:49:44 element name: Elasticsearch_Api_Health完成截圖
 截圖 2023/03/01 13:49:44 element name: Elasticsearch_Api_Thread_Pool開始執行截圖
 截圖 2023/03/01 13:50:18 element name: Elasticsearch_Api_Thread_Pool完成截圖
+排程  2023/03/03 15:34:21 PDF排程 初始化成功
+排程 2023/03/03 15:35:00 schedule name: schedule004
+截圖 2023/03/03 15:35:00 element name: Elasticsearch_Api_Stats_Indices開始執行截圖
+截圖 2023/03/03 15:35:23 element name: Elasticsearch_Api_Stats_Indices完成截圖
+截圖 2023/03/03 15:35:23 element name: Elasticsearch_Api_Pending_Tasks開始執行截圖
+截圖 2023/03/03 15:35:46 element name: Elasticsearch_Api_Pending_Tasks完成截圖
+截圖 2023/03/03 15:35:46 element name: Elasticsearch_Api_Health開始執行截圖
+截圖 2023/03/03 15:36:09 element name: Elasticsearch_Api_Health完成截圖
+截圖 2023/03/03 15:36:09 element name: Elasticsearch_Api_Thread_Pool開始執行截圖
+截圖 2023/03/03 15:36:32 element name: Elasticsearch_Api_Thread_Pool完成截圖
+截圖 2023/03/03 15:36:32 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/03/03 15:36:55 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/03/03 15:36:55 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/03/03 15:37:18 element name: Elasticsearch_Api_Nodes完成截圖
+test 2023/03/03 15:37:18 testlog
