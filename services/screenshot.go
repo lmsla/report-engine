@@ -56,9 +56,9 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 	)
 	defer cancel()
 
-	// 創建超時上下文
-	ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
-	defer cancel()
+	// // 創建超時上下文
+	// ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
+	// defer cancel()
 
 	// capture screenshot of an element 截圖程式碼
 	var buf []byte
