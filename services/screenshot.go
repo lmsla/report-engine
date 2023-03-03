@@ -30,10 +30,12 @@ func ScreenshotbySchedule(scheduleID int) {
 func ScreenshotbyReport(reportID int) {
 	report_data, err := GetReportByReportID(reportID)
 	if err != nil {
+		fmt.Println("ScreenshotbyReport - line 33")
 		fmt.Println(err)
 	}
 	element_data, err := GetElementsByReportID(reportID)
 	if err != nil {
+		fmt.Println("ScreenshotbyReport - line 38")
 		fmt.Println(err)
 	}
 	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
@@ -71,15 +73,18 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+			fmt.Println("Screenshot_element - line 76")
 			// log.Fatal(err)
 		}
 	case "dashboard":
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.dashboardViewport`, &buf)); err != nil {
+			fmt.Println("Screenshot_element - line 82")
 			// log.Fatal(err)
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+			fmt.Println("Screenshot_element - line 87")
 			// log.Fatal(err)
 		}
 
