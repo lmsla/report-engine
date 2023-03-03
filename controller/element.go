@@ -21,7 +21,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /Element/GetAll [get]
-func GetAllElements(c *gin.Context) {
+func GetAllElements(c *gin.Context) { 
 
 	res := services.GetAllElements()
 
