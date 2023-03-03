@@ -48,7 +48,11 @@ func ExecuteShedulePDF(scheduleID int) {
 		fmt.Println(err.Error())
 		log.Logrecord("ERROR ",err.Error())
 	} else {
+		fmt.Println(global.EnvConfig.Files.ScreenshotFile)
+		fmt.Println(global.EnvConfig.Files.HtmlFile)
+		fmt.Println(global.EnvConfig.Files.ReportFile)
 		fmt.Println("crontab PDF 初始化成功")
+
 		log.Logrecord("排程 ","PDF排程 初始化成功")
 		// c.Start()
 		global.Crontab.Start()
