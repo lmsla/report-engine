@@ -73,6 +73,7 @@ func viperConfigToModel() {
 	config.Files.HtmlFile = viper.GetString("files.html_file")
 	config.Files.LogFile = viper.GetString("files.log_file")
 	config.Files.TemplateFile = viper.GetString("files.template_file")
+	config.Files.MigrationsFile = viper.GetString("files.migrations_file")
 
 
 	// config.Email.User = viper.GetString("email.user")

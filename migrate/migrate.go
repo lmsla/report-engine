@@ -34,7 +34,9 @@ func Run() {
 		} else {
 			fmt.Println("driver ok")
 			if m, e := migrate.NewWithDatabaseInstance(
-				"file://./db/migrations",
+				global.EnvConfig.Files.MigrationsFile,
+				// "file://./db/migrations",
+				// "file:///src/db/migrations"
 				"mysql",
 				driver,
 			); e != nil {

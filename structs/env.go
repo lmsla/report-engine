@@ -17,6 +17,7 @@ type files struct {
 	HtmlFile string
 	LogFile string
 	TemplateFile string
+	MigrationsFile string
 }
 
 type other struct {
