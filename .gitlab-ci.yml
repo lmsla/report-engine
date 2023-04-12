@@ -56,5 +56,6 @@ deploy-develop-job:
     - cp $DEV_ENV_FILE env.list
     - sudo docker ps -q --filter "name=$CONTAINER_NAME" | grep -q . && sudo docker stop $CONTAINER_NAME && sudo docker rm -fv $CONTAINER_NAME
     - sudo docker pull $CI_IMAGE_DEV
-    - sudo docker run -p $CONTAINER_PORT --env-file ./env.list --name $CONTAINER_NAME --restart=always -d $CI_IMAGE_DEV
+    - sudo docker run -p $CONTAINER_PORT --env-file ./env.list -v /home/bimap/report-engine/files:/src/app/files -v /var/log/report-engine/:/src/app/log  --name $CONTAINER_NAME --restart=always -d $CI_IMAGE
+
 
