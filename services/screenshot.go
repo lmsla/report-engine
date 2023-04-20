@@ -28,6 +28,7 @@ func ScreenshotbySchedule(scheduleID int) {
 }
 
 func ScreenshotbyReport(reportID int) {
+	log.Logrecord("debug", "screenshot by report in:")
 	report_data, err := GetReportByReportID(reportID)
 	if err != nil {
 		fmt.Println("ScreenshotbyReport - line 33")
