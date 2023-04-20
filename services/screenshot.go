@@ -41,10 +41,10 @@ func ScreenshotbyReport(reportID int) {
 	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
 	for _, data := range element_data {
 		log.Logrecord("截圖", "data.Type: "+data.Name+", data.Instance.URL: "+data.Instance.URL+", SpaceName: "+data.SpaceName+", UID: "+data.UID+" ,timefrom: "+timefrom+" , Instance.User: "+ data.Instance.User+" , data.Instance.Password: "+data.Instance.Password)
-		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖")
+		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖1")
 		Screenshot_element(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 		time.Sleep(3 * time.Second)
-		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖")
+		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖1")
 	}
 
 }
