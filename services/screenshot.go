@@ -3,12 +3,14 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/chromedp/cdproto/emulation"
 	"io/ioutil"
 	"report-backend-golang/global"
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
+
+	"github.com/chromedp/cdproto/emulation"
+
 	// "github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
@@ -43,7 +45,7 @@ func ScreenshotbyReport(reportID int) {
 	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
 	for _, data := range element_data {
 		fmt.Println("2222")
-		log.Logrecord("截圖", "data.Type: "+data.Name+", data.Instance.URL: "+data.Instance.URL+", SpaceName: "+data.SpaceName+", UID: "+data.UID+" ,timefrom: "+timefrom+" , Instance.User: "+ data.Instance.User+" , data.Instance.Password: "+data.Instance.Password)
+		log.Logrecord("截圖", "data.Type: "+data.Name+", data.Instance.URL: "+data.Instance.URL+", SpaceName: "+data.SpaceName+", UID: "+data.UID+" ,timefrom: "+timefrom+" , Instance.User: "+data.Instance.User+" , data.Instance.Password: "+data.Instance.Password)
 		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖1")
 		Screenshot_element(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 		time.Sleep(3 * time.Second)
@@ -84,12 +86,12 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
 		log.Logrecord("截圖url", url1)
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.dashboardViewport`, &buf)); err != nil {
-			fmt.Println("Screenshot_element - line 82")
+			fmt.Println("Screenshot_element - line 82", err.Error())
 			// log.Fatal(err)
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.jpg", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
-			fmt.Println("Screenshot_element - line 87")
+			fmt.Println("Screenshot_element - line 87", err.Error())
 			// log.Fatal(err)
 		}
 
