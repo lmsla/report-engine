@@ -82,6 +82,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		}
 	case "dashboard":
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
+		log.Logrecord("截圖url", url1)
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.dashboardViewport`, &buf)); err != nil {
 			fmt.Println("Screenshot_element - line 82")
 			// log.Fatal(err)
