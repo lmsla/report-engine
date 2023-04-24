@@ -56,11 +56,22 @@ func ScreenshotbyReport(reportID int) {
 
 func Screenshot_element(element_type string, url string, space string, uid string, timefrom string, user string, password string) {
 
-	ctx, cancel := chromedp.NewContext(
-		context.Background(),
-		// chromedp.WithDebugf(log.Printf),
+	// ctx, cancel := chromedp.NewContext(
+	// 	context.Background(),
+	// 	// chromedp.WithDebugf(log.Printf),
+	// )
+	// defer cancel()
+
+
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", true),
+		chromedp.ExecPath("/opt/google/chrome/chrome"),
 	)
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	ctx, cancel := chromedp.NewContext(allocCtx)
 	defer cancel()
+
+
 
 	// // 創建超時上下文
 	// ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
