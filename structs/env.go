@@ -18,6 +18,7 @@ type files struct {
 	LogFile string
 	TemplateFile string
 	MigrationsFile string
+	ChromePath string
 }
 
 type other struct {
