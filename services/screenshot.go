@@ -65,7 +65,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
-		chromedp.ExecPath("/opt/google/chrome/chrome"),
+		chromedp.ExecPath("/etc/alternatives/google-chrome"),
 	)
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, cancel := chromedp.NewContext(allocCtx)
