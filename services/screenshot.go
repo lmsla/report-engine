@@ -101,7 +101,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 			fmt.Println("Screenshot_element - line 82", err.Error())
 			// log.Fatal(err)
 		}
-		file := fmt.Sprintf("%s/%s_%s_%s.jpg", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
+		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 87", err.Error())
 			// log.Fatal(err)
