@@ -5,7 +5,7 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/structs"
 	"strings"
-
+	"report-backend-golang/log"
 	"github.com/spf13/viper"
 )
 
@@ -28,6 +28,9 @@ func loadConfigFile() {
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 	}
+	log.Logrecord("環境參數", "截圖檔案位置 : "+global.EnvConfig.Files.ScreenshotFile)
+	log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
+	log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
 func viperConfigToModel() {

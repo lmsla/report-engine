@@ -6,7 +6,7 @@ import (
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
 	"report-backend-golang/services"
-	"report-backend-golang/log"
+	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
 	// "report-backend-golang/services"
 	"report-backend-golang/utils"
@@ -56,9 +56,9 @@ func main() {
 	r := router.LoadRouter()
 	r.Run(global.EnvConfig.Server.Port)
 
-	log.Logrecord("環境參數", "截圖檔案位置 : "+global.EnvConfig.Files.ScreenshotFile)
-	log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
-	log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
+	// log.Logrecord("環境參數", "截圖檔案位置 : "+global.EnvConfig.Files.ScreenshotFile)
+	// log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
+	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
 func main1() {
