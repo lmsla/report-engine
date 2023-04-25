@@ -44,15 +44,12 @@ func ExecuteShedulePDF(scheduleID int) {
 	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
 	if err != nil {
 		fmt.Println("crontab PDF 初始化失敗")
-		log.Logrecord("排程 ","PDF排程 初始化失敗")
+		// log.Logrecord("排程 ","PDF排程 初始化失敗")
 		fmt.Println(err.Error())
-		log.Logrecord("ERROR ",err.Error())
+		log.Logrecord("ERROR ","PDF排程 初始化失敗"+err.Error())
 	} else {
-		fmt.Println(global.EnvConfig.Files.ScreenshotFile)
-		fmt.Println(global.EnvConfig.Files.HtmlFile)
-		fmt.Println(global.EnvConfig.Files.ReportFile)
-		fmt.Println("crontab PDF 初始化成功")
 
+		fmt.Println("crontab PDF 初始化成功")
 		log.Logrecord("排程 ","PDF排程 初始化成功")
 		// c.Start()
 		global.Crontab.Start()
@@ -69,29 +66,15 @@ func ExecuteShedulePDF(scheduleID int) {
 func FuncAddToCron(scheduleID int) {
 	inventory,err := GetScheduleBysSheduleID(scheduleID)
 	if err != nil {
+		log.Logrecord("ERROR ","Get Schedule by Schedule Id error" + err.Error())
 		fmt.Println(err)
+		
 	}
 	log.Logrecord("排程","schedule name: "+inventory.Name)
-	fmt.Println("screenshot file at")
-	fmt.Println(global.EnvConfig.Files.ScreenshotFile)
 	ScreenshotbySchedule(scheduleID)
 	// time.Sleep(3 * time.Second) 
 	CreateHtmlbySchedule(scheduleID)
 	CreatePDFbySchedule(scheduleID)
 	SendEmailBySchedule(scheduleID)
-
-	// inventory1,err := GetReportByScheduleID(scheduleID)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// for _,data := range inventory1 {
-	// 	log.Logrecord("排程","report name: "+data.Name + "開始執行截圖")
-	// 	ScreenshotbyReport(data.ID)
-	// 	log.Logrecord("排程","report name: "+data.Name + "開始產出報表")
-	// 	CreateHtml(data.ID)
-	// } 
-
-	// Sendmail(scheduleID,inventory.Recipient)
 
 }

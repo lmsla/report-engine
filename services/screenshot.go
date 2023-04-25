@@ -30,29 +30,36 @@ func ScreenshotbySchedule(scheduleID int) {
 }
 
 func ScreenshotbyReport(reportID int) {
-	log.Logrecord("debug", "screenshot by report in:")
-	fmt.Println("1111")
+
 	report_data, err := GetReportByReportID(reportID)
 	if err != nil {
-		fmt.Println("ScreenshotbyReport - line 33")
-		fmt.Println(err)
+		fmt.Println("ScreenshotbyReport - line 36",err.Error())
+		log.Logrecord("ERROR", "Get Report by Report ID error" + err.Error())
+		// fmt.Println(err)
 	}
 	element_data, err := GetElementsByReportID(reportID)
 	if err != nil {
-		fmt.Println("ScreenshotbyReport - line 38")
-		fmt.Println(err)
+		fmt.Println("ScreenshotbyReport - line 41", err.Error())
+		log.Logrecord("ERROR", "Get Elements by Report ID error" + err.Error())
+		// fmt.Println(err)
 	}
 	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+
 	for _, data := range element_data {
-		fmt.Println("2222")
-		log.Logrecord("截圖", "data.Type: "+data.Name+", data.Instance.URL: "+data.Instance.URL+", SpaceName: "+data.SpaceName+", UID: "+data.UID+" ,timefrom: "+timefrom+" , Instance.User: "+data.Instance.User+" , data.Instance.Password: "+data.Instance.Password)
-		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖1")
+
+		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖")
+
 		Screenshot_element(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
+		
 		time.Sleep(3 * time.Second)
-		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖1")
+
+		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖")
 	}
 
 }
+
+
+
 
 func Screenshot_element(element_type string, url string, space string, uid string, timefrom string, user string, password string) {
 
@@ -61,8 +68,6 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 	// 	// chromedp.WithDebugf(log.Printf),
 	// )
 	// defer cancel()
-
-
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
@@ -87,24 +92,29 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 	case "visualiztion":
 		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:now))", url, space, uid, timefrom)
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.css-zxsb69`, &buf)); err != nil {
-			// log.Fatal(err)
+			fmt.Println("Screenshot_element - line 94", err.Error())
+			log.Logrecord("ERROR", "Visualiztion Screenshot error" + err.Error())
+
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
-			fmt.Println("Screenshot_element - line 76")
-			// log.Fatal(err)
+			fmt.Println("Screenshot_element - line 100", err.Error())
+			log.Logrecord("ERROR", "Write Visualiztion Screenshot file error" + err.Error())
+
 		}
 	case "dashboard":
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
-		log.Logrecord("截圖url", url1)
+
 		if err := chromedp.Run(ctx, kibanaElementScreenshotWithAuth(url1, user, password, `div.dashboardViewport`, &buf)); err != nil {
-			fmt.Println("Screenshot_element - line 82", err.Error())
-			// log.Fatal(err)
+			fmt.Println("Screenshot_element - line 108", err.Error())
+			log.Logrecord("ERROR", "Dashboard Screenshot error" + err.Error())
+
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
-			fmt.Println("Screenshot_element - line 87", err.Error())
-			// log.Fatal(err)
+			fmt.Println("Screenshot_element - line 114", err.Error())
+			log.Logrecord("ERROR", "Write Dashboard Screenshot file error" + err.Error())
+
 		}
 
 	}

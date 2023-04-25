@@ -45,9 +45,11 @@ type dashboard struct {
 }
 
 func CreateHtmlbySchedule(ScheduleID int) {
+	
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
+		log.Logrecord("ERROR ","Get Report by Schedule ID error" + err.Error())
 	}
 	for _, reports := range scheduleData {
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
