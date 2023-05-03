@@ -1,7 +1,7 @@
 # build stage
 FROM golang:1.18.6-bullseye AS build-env
 ADD . /src
-RUN timedatectl set-timezone Asia/Taipei
+# RUN timedatectl set-timezone Asia/Taipei
 RUN apt-get update -y
 RUN apt-get install -y tzdata
 RUN apt-get install -y xfonts-75dpi
