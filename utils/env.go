@@ -20,7 +20,7 @@ func loadConfigFile() {
 	viper.AddConfigPath(".")
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			fmt.Println("沒有發現 config.yml，改抓取環境變數")
+			fmt.Println("沒有發現 config.yml,改抓取環境變數")
 			viper.AutomaticEnv()
 			viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 		} else {
