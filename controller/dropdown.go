@@ -17,9 +17,9 @@ import (
 // @Tags Dropdown
 // @Accept  json
 // @Produce  json
-// @Param id path string true "source_type"
-// @Param id path string true "space_name"
-// @Param id path int true "instance_id"
+// @Param source_type query string true "space,dashboard,visualization"
+// @Param space_name query string true "space_name"
+// @Param instance_id query int true "instance_id"
 // @Success 200 {object}  entities.Dropdown
 // @Security ApiKeyAuth
 // @Router /Dropdown [get]
