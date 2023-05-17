@@ -21,7 +21,7 @@ import (
 // @contact.name Winston
 // @contact.email support@swagger.io
 
-// @host localhost:8005
+// @host 10.99.1.127:8005
 // @BasePath  /api/v1
 
 // @query.collection.format multi
