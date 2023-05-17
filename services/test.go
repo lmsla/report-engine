@@ -27,7 +27,7 @@ func Print() {
 }
 
 func Print1() {
-	fmt.Println(time.Now().String()+"   hi你媽")
+	fmt.Println(time.Now().String()+" hi")
 }
 func CronTest(){
 

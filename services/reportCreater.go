@@ -102,16 +102,6 @@ func CreateHtml(ReportId int) {
 
 	now := time.Now().Format("2006-01-02")
 	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
-	//----------------------------------------
-	// data1 := []dashboard{}
-	// for _, elements := range elementData {
-	// 	uu := new(dashboard)
-	// 	uu.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
-	// 	uu.Name = fmt.Sprintf(elements.Name)
-	// 	data1 = append(data1, *uu)
-	// }
-	// fmt.Println(data1)
-	//----------------------------------------
 
 	data1 := Report{}
 	uu := new(Report)
@@ -130,7 +120,6 @@ func CreateHtml(ReportId int) {
 		Name:     uu.Name,
 		Elements: data1.Elements,
 	}
-	log.Logrecord("test", "testlog")
 	fmt.Println(data1.Name)
 	fmt.Println(data1.Elements)
 
