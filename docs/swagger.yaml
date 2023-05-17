@@ -219,7 +219,6 @@ paths:
       - description: space_name
         in: query
         name: space_name
-        required: true
         type: string
       - description: instance_id
         in: query

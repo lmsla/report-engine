@@ -18,7 +18,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param source_type query string true "space,dashboard,visualization"
-// @Param space_name query string true "space_name"
+// @Param space_name query string false "space_name"
 // @Param instance_id query int true "instance_id"
 // @Success 200 {object}  entities.Dropdown
 // @Security ApiKeyAuth

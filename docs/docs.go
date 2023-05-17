@@ -49,8 +49,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "space_name",
                         "name": "space_name",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
