@@ -25,19 +25,19 @@ import (
 // @Router /Dropdown [get]
 func GetDropdownSource(c *gin.Context) {
 
-	source_type := c.Query("source_type")
+	source_type := c.Param("source_type")
 	if err := c.Error; err != nil {
 		c.JSON(http.StatusBadRequest, c.Error)
 		return
 	}
 
-	space_name := c.Query("space_name")
+	space_name := c.Param("space_name")
 	if err := c.Error; err != nil {
 		c.JSON(http.StatusBadRequest, c.Error)
 		return
 	}
 
-	InstanceID, err := strconv.Atoi(c.Query("instance_id"))
+	InstanceID, err := strconv.Atoi(c.Param("instance_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return

@@ -210,6 +210,22 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: space,dashboard,visualization
+        in: query
+        name: source_type
+        required: true
+        type: string
+      - description: space_name
+        in: query
+        name: space_name
+        required: true
+        type: string
+      - description: instance_id
+        in: query
+        name: instance_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

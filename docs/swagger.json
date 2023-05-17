@@ -33,6 +33,29 @@
                     "Dropdown"
                 ],
                 "summary": "Get Space of Instance by Instance ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "space,dashboard,visualization",
+                        "name": "source_type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "space_name",
+                        "name": "space_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "instance_id",
+                        "name": "instance_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
