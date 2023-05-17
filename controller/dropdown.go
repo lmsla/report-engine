@@ -3,9 +3,11 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"strconv"
+	// "strconv"
+
 	// "report-backend-golang/models"
 	// "report-backend-golang/entities"
+	"report-backend-golang/entities"
 	"report-backend-golang/handler"
 	"report-backend-golang/services"
 
@@ -26,9 +28,13 @@ import (
 func GetDropdownSource(c *gin.Context) {
 
 	////////
-	source_type := c.Param("source_type")
-	space_name := c.Param("space_name")
 
+	body := new(entities.DropdownBody)
+	c.Bind(&body)
+
+	// source_type := c.Param("source_type")
+	// space_name := c.Param("space_name")
+	// fmt.Println(c.Param("instance_id"))
 	// source_type, err := c.Param("source_type")
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, err.Error())
@@ -41,21 +47,22 @@ func GetDropdownSource(c *gin.Context) {
 	// 	return
 	// }
 
-	InstanceID, err := strconv.Atoi(c.Param("instance_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-	fmt.Println(source_type)
-	fmt.Println(space_name)
-	fmt.Println(InstanceID)
+	fmt.Println(body.InstanceID)
+	// InstanceID, err := strconv.Atoi(c.Param("instance_id"))
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, err.Error())
+	// 	return
+	// }
+	fmt.Println(body.SourceType)
+	fmt.Println(body.SpaceName)
+	fmt.Println(body.InstanceID)
 
 	// if err := services.GetDropdownSource(body); err != nil {
 
 	// }
-	switch source_type {
+	switch body.SourceType {
 	case "space":
-		inventory, err := services.GetInstanceByID(InstanceID)
+		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
 			handler.WriteErrorLog(c, "error to get inventory details")
@@ -71,13 +78,13 @@ func GetDropdownSource(c *gin.Context) {
 		c.JSON(http.StatusOK, spaces)
 
 	case "dashboard":
-		inventory, err := services.GetInstanceByID(InstanceID)
+		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
 			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
-		dashboarddata, err := services.GetALLKibanaDashboardTitle1(space_name, inventory)
+		dashboarddata, err := services.GetALLKibanaDashboardTitle1(body.SpaceName, inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get dashboard details")
 			handler.WriteErrorLog(c, "error to get dashboard details")
@@ -86,13 +93,13 @@ func GetDropdownSource(c *gin.Context) {
 		c.JSON(http.StatusOK, dashboarddata)
 
 	case "visualization":
-		inventory, err := services.GetInstanceByID(InstanceID)
+		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get inventory details")
 			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
-		visualdata, err := services.GetALLKibanaVisualizationTitle1(space_name, inventory)
+		visualdata, err := services.GetALLKibanaVisualizationTitle1(body.SpaceName, inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get visualization details")
 			handler.WriteErrorLog(c, "error to get visualization details")
