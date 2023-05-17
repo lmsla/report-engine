@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-"fmt"
 	// "report-backend-golang/models"
 	// "report-backend-golang/entities"
 	"report-backend-golang/handler"
@@ -25,18 +25,21 @@ import (
 // @Router /Dropdown [get]
 func GetDropdownSource(c *gin.Context) {
 
-////////
+	////////
 	source_type := c.Param("source_type")
-	if err := c.Error; err != nil {
-		c.JSON(http.StatusBadRequest, c.Error)
-		return
-	}
-
 	space_name := c.Param("space_name")
-	if err := c.Error; err != nil {
-		c.JSON(http.StatusBadRequest, c.Error)
-		return
-	}
+
+	// source_type, err := c.Param("source_type")
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, err.Error())
+	// 	return
+	// }
+
+	// space_name := c.Param("space_name")
+	// if err := c.Error; err != nil {
+	// 	c.JSON(http.StatusBadRequest, err.Error())
+	// 	return
+	// }
 
 	InstanceID, err := strconv.Atoi(c.Param("instance_id"))
 	if err != nil {
@@ -46,7 +49,6 @@ func GetDropdownSource(c *gin.Context) {
 	fmt.Println(source_type)
 	fmt.Println(space_name)
 	fmt.Println(InstanceID)
-
 
 	// if err := services.GetDropdownSource(body); err != nil {
 
@@ -99,7 +101,7 @@ func GetDropdownSource(c *gin.Context) {
 		c.JSON(http.StatusOK, visualdata)
 
 	}
-////////////////
+	////////////////
 
 	// body := new(entities.DropdownBody)
 	// c.Bind(&body)
