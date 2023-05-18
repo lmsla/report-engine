@@ -9,7 +9,7 @@ import (
 	// "report-backend-golang/schedule"
 	// "github.com/robfig/cron/v3"
 	"report-backend-golang/log"
-	// "time"
+	"time"
 )
 
 // 執行 PDF Schedule by ScheduleID
@@ -82,11 +82,56 @@ func FuncAddToCron(scheduleID int) {
 		fmt.Println(err)
 		
 	}
+	time_execute := time.Now().Format("2006-01-02 15:04:05")
+	fmt.Println("執行時間: ",time_execute)
+	history := entities.History{}
+	history.ScheduleID = scheduleID
+	history.To = inventory.To
+	history.BCC = inventory.BCC
+	history.CC = inventory.CC
+	history.ScheduleName = inventory.Name
+	history.ExecuteTime = time_execute
+	fmt.Println(history.ScheduleID)
+	fmt.Println(history)
+
 	log.Logrecord("排程","schedule name: "+inventory.Name)
-	ScreenshotbySchedule(scheduleID)
-	// time.Sleep(3 * time.Second) 
-	CreateHtmlbySchedule(scheduleID)
-	CreatePDFbySchedule(scheduleID)
-	SendEmailBySchedule(scheduleID)
+
+	err = ScreenshotbySchedule(scheduleID)
+	if err != nil{
+		fmt.Println("发生错误：", err)
+		history.Success = "截圖錯誤"
+	}
+	err = CreateHtmlbySchedule(scheduleID)
+	if err != nil{
+		fmt.Println("发生错误：", err)
+		history.Success = "產生html錯誤"
+	}
+
+	err = CreatePDFbySchedule(scheduleID)
+	if err != nil{
+		fmt.Println("发生错误：", err)
+		history.Success = "產生html錯誤"
+	}
+	
+	err = SendEmailBySchedule(scheduleID)
+	if err != nil{
+		fmt.Println("发生错误：", err)
+		history.Success = "產生html錯誤"
+	}
+	
+	// ScreenshotbySchedule(scheduleID)
+	// // time.Sleep(3 * time.Second) 
+	// CreateHtmlbySchedule(scheduleID)
+	// CreatePDFbySchedule(scheduleID)
+	// SendEmailBySchedule(scheduleID)
+	time_mail := time.Now().Format("2006-01-02 15:04:05")
+	fmt.Println("寄送時間:",time_mail)
+	history.EmailTime = time_mail
+	history.Success = "成功"
+
+	err = global.Mysql.Create(&history).Error
+	if err != nil {
+
+	}
 
 }

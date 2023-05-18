@@ -5,7 +5,8 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
-	"log"
+	log1 "log"
+	"report-backend-golang/log"
 	"mime"
 	"net/smtp"
 	"report-backend-golang/global"
@@ -45,7 +46,13 @@ type Message struct {
 	attachment  Attachment
 }
 
-func SendEmailBySchedule(ScheduleID int) {
+func SendEmailBySchedule(ScheduleID int) error{
+	defer func() {
+		if err := recover(); err != nil {
+			// 处理错误
+			log.Logrecord("ERROR", "func SendEmailBySchedule error")
+		}
+	}()
 
 	user := global.EnvConfig.Email.User
 	password := global.EnvConfig.Email.Password
@@ -136,7 +143,7 @@ func SendEmailBySchedule(ScheduleID int) {
 	} else {
 		fmt.Println("Send mail success!")
 	}
-
+	return nil 
 }
 
 func SendEmail() {
@@ -244,7 +251,7 @@ func (mail SendMail) Send(message Message) error {
 			buffer.WriteString(attachment)
 			defer func() {
 				if err := recover(); err != nil {
-					log.Fatalln(err)
+					log1.Fatalln(err)
 				}
 			}()
 			// mail.writeFile(buffer, message.attachment.name)

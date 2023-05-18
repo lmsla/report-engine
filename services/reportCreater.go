@@ -44,22 +44,38 @@ type dashboard struct {
 	Price string
 }
 
-func CreateHtmlbySchedule(ScheduleID int) {
-	
+func CreateHtmlbySchedule(ScheduleID int) error {
+
+	defer func() {
+		if err := recover(); err != nil {
+			// 处理错误
+			log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
+			// return fmt.Errorf("发生错误：%v", err)
+			// return err
+		}
+	}()
+
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
-		log.Logrecord("ERROR ","Get Report by Schedule ID error" + err.Error())
+		log.Logrecord("ERROR ", "Get Report by Schedule ID error"+err.Error())
 	}
 	for _, reports := range scheduleData {
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
 		CreateHtml(reports.ID)
 		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
 	}
-
+	return nil
 }
 
-func CreatePDFbySchedule(ScheduleID int) {
+func CreatePDFbySchedule(ScheduleID int) error {
+
+	defer func() {
+		if err := recover(); err != nil {
+			// 处理错误
+			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+		}
+	}()
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
@@ -81,7 +97,7 @@ func CreatePDFbySchedule(ScheduleID int) {
 	}
 	pdf.Destroy()
 	// defer pdf.Destroy()
-
+	return nil
 }
 
 func CreateHtml(ReportId int) {

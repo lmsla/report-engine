@@ -17,7 +17,13 @@ import (
 	// "github.com/chromedp/chromedp/device"
 )
 
-func ScreenshotbySchedule(scheduleID int) {
+func ScreenshotbySchedule(scheduleID int) error{
+	defer func() {
+        if err := recover(); err != nil {
+            // 处理错误
+            log.Logrecord("ERROR", "func ScreenshotbySchedule error")
+        }
+    }()
 	schedule_data, err := GetReportByScheduleID(scheduleID)
 	if err != nil {
 		fmt.Println(err)
@@ -26,7 +32,7 @@ func ScreenshotbySchedule(scheduleID int) {
 
 		ScreenshotbyReport(data.ID)
 	}
-
+	return nil
 }
 
 func ScreenshotbyReport(reportID int) {
