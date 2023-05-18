@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	// "report-backend-golang/entities"
 	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	// "report-backend-golang/models"
@@ -15,14 +14,26 @@ import (
 
 // 執行 PDF Schedule by ScheduleID
 func ExecuteShedulePDF(scheduleID int) {
+
 	inventory,err := GetScheduleBysSheduleID(scheduleID)
 	if err != nil {
 		fmt.Println(err)
 	}
+	history := entities.History{}
+	history.ScheduleID = scheduleID
+	history.To = inventory.To
+	fmt.Println(history.ScheduleID)
+	fmt.Println(history)
+
 	// inventory1,err := services.GetReportByReportName(inventory.Report)
 
 	// inventory.CronID
 	EntryID,err := global.Crontab.AddFunc(inventory.CronTime,func(){
+		fmt.Println("執行排程")
+		err := global.Mysql.Create(&history).Error
+		if err != nil {
+
+		}
 		FuncAddToCron(scheduleID)
 	}) 
 	fmt.Println("entryID: ")

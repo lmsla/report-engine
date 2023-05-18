@@ -16,9 +16,12 @@ type Schedule struct {
 	// CronList CronList
 }
 
+
 type To []string
 type CC []string
 type BCC []string
+
+
 
 // foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;
 
