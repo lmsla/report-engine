@@ -30,6 +30,7 @@ func ExecuteShedulePDF(scheduleID int) {
 	// inventory.CronID
 	EntryID,err := global.Crontab.AddFunc(inventory.CronTime,func(){
 		fmt.Println("執行排程")
+		
 		err := global.Mysql.Create(&history).Error
 		if err != nil {
 
