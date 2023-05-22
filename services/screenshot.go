@@ -19,6 +19,7 @@ import (
 
 func ScreenshotbySchedule(scheduleID int) error{
 	defer func() {
+		log.Logrecord("ERROR", "func ScreenshotbySchedule1 error")
         if err := recover(); err != nil {
             // 处理错误
             log.Logrecord("ERROR", "func ScreenshotbySchedule error")
