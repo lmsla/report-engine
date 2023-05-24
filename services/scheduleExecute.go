@@ -95,28 +95,28 @@ func FuncAddToCron(scheduleID int) {
 	fmt.Println(history)
 
 	log.Logrecord("排程","schedule name: "+inventory.Name)
-
+	history.Success = "成功"
 	err = ScreenshotbySchedule(scheduleID)
 	if err != nil{
-		fmt.Println("发生错误：", err)
+		fmt.Println("截圖錯誤", err)
 		history.Success = "截圖錯誤"
 	}
 	err = CreateHtmlbySchedule(scheduleID)
 	if err != nil{
-		fmt.Println("发生错误：", err)
+		fmt.Println("產生html錯誤", err)
 		history.Success = "產生html錯誤"
 	}
 
 	err = CreatePDFbySchedule(scheduleID)
 	if err != nil{
-		fmt.Println("发生错误：", err)
-		history.Success = "產生html錯誤"
+		fmt.Println("產生pdf錯誤", err)
+		history.Success = "產生pdf錯誤"
 	}
 	
 	err = SendEmailBySchedule(scheduleID)
 	if err != nil{
-		fmt.Println("发生错误：", err)
-		history.Success = "產生html錯誤"
+		fmt.Println("發送mail錯誤", err)
+		history.Success = "發送mail錯誤"
 	}
 	
 	// ScreenshotbySchedule(scheduleID)
@@ -127,7 +127,7 @@ func FuncAddToCron(scheduleID int) {
 	time_mail := time.Now().Format("2006-01-02 15:04:05")
 	fmt.Println("寄送時間:",time_mail)
 	history.EmailTime = time_mail
-	history.Success = "成功"
+	// history.Success = "成功"
 
 	err = global.Mysql.Create(&history).Error
 	if err != nil {

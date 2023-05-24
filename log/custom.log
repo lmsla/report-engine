@@ -125,3 +125,98 @@ ERROR  2023/02/21 16:48:36 unsupported data
 截圖 2023/03/03 15:36:55 element name: Elasticsearch_Api_Nodes開始執行截圖
 截圖 2023/03/03 15:37:18 element name: Elasticsearch_Api_Nodes完成截圖
 test 2023/03/03 15:37:18 testlog
+排程  2023/05/22 17:59:29 PDF排程 初始化成功
+排程 2023/05/22 18:00:00 schedule name: schedule001_0522_test
+截圖 2023/05/22 18:00:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/05/22 18:00:00 Dashboard Screenshot errorfork/exec /usr/bin/google-chrome: no such file or directory
+截圖 2023/05/22 18:00:03 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/05/22 18:00:03 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/05/22 18:00:03 Dashboard Screenshot errorfork/exec /usr/bin/google-chrome: no such file or directory
+截圖 2023/05/22 18:00:06 element name: Elasticsearch_Api_Nodes完成截圖
+ERROR 2023/05/22 18:00:06 func ScreenshotbyReport normal error
+ERROR 2023/05/22 18:00:06 func ScreenshotbySchedule normal error
+排程  2023/05/22 18:02:08 PDF排程 初始化成功
+排程 2023/05/22 18:03:00 schedule name: schedule001_0522_test
+截圖 2023/05/22 18:03:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/05/22 18:03:21 func Screenshot_element panic error
+截圖 2023/05/22 18:03:24 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/05/22 18:03:24 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/05/22 18:03:38 func Screenshot_element panic error
+截圖 2023/05/22 18:03:41 element name: Elasticsearch_Api_Nodes完成截圖
+ERROR 2023/05/22 18:03:41 func ScreenshotbyReport normal error
+ERROR 2023/05/22 18:03:41 func ScreenshotbySchedule normal error
+排程  2023/05/22 18:05:43 PDF排程 初始化成功
+排程 2023/05/22 18:06:00 schedule name: schedule001_0522_test
+截圖 2023/05/22 18:06:00 element name: Elasticsearch_Api_Indices開始執行截圖
+排程  2023/05/24 14:47:57 PDF排程 初始化成功
+排程 2023/05/24 14:48:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 14:48:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 14:48:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 14:48:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 14:48:34 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 14:48:37 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 14:48:37 func ScreenshotbyReport normal error
+ERROR 2023/05/24 14:48:37 func ScreenshotbySchedule normal error
+排程  2023/05/24 14:54:28 PDF排程 初始化成功
+排程 2023/05/24 14:55:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 14:55:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 14:55:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 14:55:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 14:55:34 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 14:55:37 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 14:55:37 func ScreenshotbyReport normal error
+ERROR 2023/05/24 14:55:37 func ScreenshotbySchedule normal error
+排程  2023/05/24 14:57:16 PDF排程 初始化成功
+排程 2023/05/24 14:58:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 14:58:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 14:58:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 14:58:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 14:58:34 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 14:58:37 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 14:58:37 func ScreenshotbyReport normal error
+ERROR 2023/05/24 14:58:37 func ScreenshotbySchedule normal error
+排程  2023/05/24 15:04:34 PDF排程 初始化成功
+排程 2023/05/24 15:05:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 15:05:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 15:05:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 15:05:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 15:05:34 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 15:05:37 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 15:05:37 func ScreenshotbyReport normal error
+ERROR 2023/05/24 15:05:37 func ScreenshotbySchedule normal error
+排程  2023/05/24 15:09:32 PDF排程 初始化成功
+排程 2023/05/24 15:10:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 15:10:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 15:10:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 15:10:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 15:10:34 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 15:10:37 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 15:10:37 func ScreenshotbyReport normal error
+ERROR 2023/05/24 15:10:37 func ScreenshotbySchedule normal error
+排程  2023/05/24 15:12:45 PDF排程 初始化成功
+排程 2023/05/24 15:13:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 15:13:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+截圖 2023/05/24 15:13:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 15:13:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 15:14:04 Dashboard Screenshot errorcontext deadline exceeded
+截圖 2023/05/24 15:14:07 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 15:14:07 func ScreenshotbyReport normal error
+ERROR 2023/05/24 15:14:07 func ScreenshotbySchedule normal error
+排程  2023/05/24 15:17:32 PDF排程 初始化成功
+排程 2023/05/24 15:18:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 15:18:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+ERROR 2023/05/24 15:18:01 func Screenshot_element normal error
+截圖 2023/05/24 15:18:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 15:18:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
+ERROR 2023/05/24 15:18:04 Dashboard Screenshot errorfork/exec /usr/bin/google-chrome: no such file or directory
+ERROR 2023/05/24 15:18:04 func Screenshot_element normal error
+截圖 2023/05/24 15:18:07 element name: cht_vsm_MD_track_dashboard完成截圖
+ERROR 2023/05/24 15:18:07 func ScreenshotbyReport normal error
+ERROR 2023/05/24 15:18:07 func ScreenshotbySchedule normal error
+排程  2023/05/24 15:19:49 PDF排程 初始化成功
+排程  2023/05/24 15:20:15 PDF排程 初始化成功
+排程 2023/05/24 15:21:00 schedule name: schedule001_0524_test
+截圖 2023/05/24 15:21:01 element name: [eCommerce] Promotion Tracking開始執行截圖
+ERROR 2023/05/24 15:21:01 func Screenshot_element normal error
+截圖 2023/05/24 15:21:04 element name: [eCommerce] Promotion Tracking完成截圖
+截圖 2023/05/24 15:21:04 element name: cht_vsm_MD_track_dashboard開始執行截圖
