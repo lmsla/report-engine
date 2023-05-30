@@ -5,7 +5,7 @@ type History struct {
 	ScheduleID   int      `gorm:"type:int"`
 	ScheduleName string   `gorm:"type:varchar(50)"`
 	// Schedule     Schedule `gorm:"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Schedule     Schedule `gorm:"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
+	Schedule     Schedule `gorm:"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	// ReportID     int      `gorm:"type:int"`
 	// Report       Report   `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	To           To       `gorm:"serializer:json"`
