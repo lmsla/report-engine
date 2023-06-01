@@ -26,7 +26,7 @@ func ScreenshotbySchedule(scheduleID int) (err error) {
 			err = errors.New("panic error")
 		} else {
 			log.Logrecord("ERROR", "func ScreenshotbySchedule normal error")
-			err = errors.New("normal error")
+			// err = errors.New("normal error")
 		}
 	}()
 	schedule_data, err := GetReportByScheduleID(scheduleID)

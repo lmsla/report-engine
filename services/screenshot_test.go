@@ -1,5 +1,4 @@
 package services
-
 import (
 	"context"
 	"errors"
@@ -9,9 +8,7 @@ import (
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-
 	"github.com/chromedp/cdproto/emulation"
-
 	// "github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
