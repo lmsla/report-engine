@@ -239,7 +239,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
-		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
+		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
 
 	fmt.Println("kibanaElementScreenshotWithAuth in 2")
