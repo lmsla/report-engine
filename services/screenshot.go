@@ -19,31 +19,6 @@ import (
 )
 
 func ScreenshotbySchedule(scheduleID int) (err error) {
-	// defer func() {
-	// 	if panicError := recover(); panicError != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func ScreenshotbySchedule panic error")
-	// 		err, ok := panicError.(error)
-	// 		if ok {
-	// 			// 處理錯誤
-	// 			fmt.Println("捕獲到 panic 錯誤：", err)
-	// 		} else {
-	// 			log.Logrecord("ERROR", "func ScreenshotbySchedule normal error")
-	// 			// err = errors.New("normal error")
-	// 		}
-	// 	}
-	// }()
-
-	// defer func() {
-	// 	if panicError := recover(); panicError != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func ScreenshotbySchedule panic error")
-	// 		err = errors.New("panic error")
-	// 	} else {
-	// 		log.Logrecord("ERROR", "func ScreenshotbySchedule normal error")
-	// 		// err = errors.New("normal error")
-	// 	}
-	// }()
 
 	defer func() {
 		if err != nil {
@@ -63,37 +38,28 @@ func ScreenshotbySchedule(scheduleID int) (err error) {
 			fmt.Println("ScreenshotbyReport - line 47", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
 		}
+		return err
 	}
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// }
 	return err
 }
 
 func ScreenshotbyReport(reportID int) (err error) {
 
-	defer func() {
-		if panicError := recover(); panicError != nil {
-			// 处理错误
-			log.Logrecord("ERROR", "func ScreenshotbyReport panic error")
-			err, ok := panicError.(error)
-			if ok {
-				// 處理錯誤
-				fmt.Println("捕獲到 ScreenshotbyReport panic 錯誤：", err)
-			} else {
-				log.Logrecord("ERROR", "func ScreenshotbyReport normal error")
-				// err = errors.New("normal error")
-			}
-		}
-	}()
 	// defer func() {
 	// 	if panicError := recover(); panicError != nil {
 	// 		// 处理错误
 	// 		log.Logrecord("ERROR", "func ScreenshotbyReport panic error")
-	// 		err = errors.New("panic error")
-	// 	} else {
-	// 		log.Logrecord("ERROR", "func ScreenshotbyReport normal error")
-	// 		err = errors.New("normal error")
+	// 		err, ok := panicError.(error)
+	// 		if ok {
+	// 			// 處理錯誤
+	// 			fmt.Println("捕獲到 ScreenshotbyReport panic 錯誤：", err)
+	// 		} else {
+	// 			log.Logrecord("ERROR", "func ScreenshotbyReport normal error")
+	// 			// err = errors.New("normal error")
+	// 		}
 	// 	}
 	// }()
 
@@ -127,51 +93,22 @@ func ScreenshotbyReport(reportID int) (err error) {
 			fmt.Println("ScreenshotbyReport - line 88", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
 		}
-		// Screenshot_element1(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 
 		time.Sleep(3 * time.Second)
 
 		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖")
 
+		return err
 	}
 	if err != nil {
-		fmt.Println(err.Error())
+		// fmt.Println("在 ScreenshotbyReport 的錯誤")
+		fmt.Println( "在 ScreenshotbyReport 的錯誤" + err.Error())
 	}
 	return err
 }
 
 func Screenshot_element1(element_type string, url string, space string, uid string, timefrom string, user string, password string) (err error) {
 
-	// defer func() {
-	// 	if panicError := recover(); panicError != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func Screenshot_element1 panic error")
-	// 		err, ok := panicError.(error)
-	// 		if ok {
-	// 			// 處理錯誤
-	// 			fmt.Println("捕獲到 Screenshot_element1 panic 錯誤：", err)
-	// 		} else {
-	// 			log.Logrecord("ERROR", "func Screenshot_element1 normal error")
-	// 			// err = errors.New("normal error")
-	// 		}
-	// 	}
-	// }()
-
-	// /// ----------------error handle----------------//////
-	// defer func() {
-	// 	if panicError := recover(); panicError != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func Screenshot_element panic error")
-	// 		err = errors.New("panic error")
-	// 	} else {
-	// 		if err != nil {
-	// 			log.Logrecord("ERROR", "func Screenshot_element normal error")
-	// 			err = errors.New("normal error")
-	// 		} else {
-	// 			fmt.Println("Screenshot_element OK")
-	// 		}
-	// 	}
-	// }()
 	// /// ----------------error handle----------------//////
 
 	defer func() {
@@ -203,7 +140,7 @@ func Screenshot_element1(element_type string, url string, space string, uid stri
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
 
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
-			if err != nil {
+		if err != nil {
 			fmt.Println("Screenshot_element - line 155", err)
 			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
 
@@ -214,11 +151,15 @@ func Screenshot_element1(element_type string, url string, space string, uid stri
 			log.Logrecord("ERROR", "Write Dashboard Screenshot file error"+err.Error())
 
 		}
-
+		if err != nil {
+			// fmt.Println("在 Screenshot_element1 ")
+			fmt.Println("在 Screenshot_element1 發生錯誤 " + err.Error())
+		}
+		return err
 	}
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// }
 	return err
 }
 
@@ -241,7 +182,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
-		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
+		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
 
 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(ctx, opts...)
@@ -267,7 +208,6 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// fmt.Println(err.Error())
 	return err
 }
 

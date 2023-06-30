@@ -399,3 +399,40 @@ ERROR 2023/06/12 15:27:00 Dashboard Screenshot error context deadline exceeded
 截圖 2023/06/12 15:27:03 element name: Elasticsearch_Api_Nodes開始執行截圖
 ERROR 2023/06/12 15:28:03 Dashboard Screenshot error context deadline exceeded
 截圖 2023/06/12 15:28:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程  2023/06/29 12:09:55 PDF排程 初始化成功
+排程 2023/06/29 12:10:00 schedule name: schedule001
+截圖 2023/06/29 12:10:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/29 12:11:00 Dashboard Screenshot error context deadline exceeded
+截圖 2023/06/29 12:11:03 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/29 12:11:03 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/06/29 12:12:03 Dashboard Screenshot error context deadline exceeded
+截圖 2023/06/29 12:12:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程  2023/06/29 12:15:41 PDF排程 初始化成功
+排程 2023/06/29 12:16:00 schedule name: schedule001
+截圖 2023/06/29 12:16:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/29 12:17:00 Dashboard Screenshot error context deadline exceeded
+截圖 2023/06/29 12:17:03 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/29 12:17:03 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/06/29 12:18:03 Dashboard Screenshot error context deadline exceeded
+截圖 2023/06/29 12:18:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程  2023/06/30 10:46:13 PDF排程 初始化成功
+排程 2023/06/30 10:47:00 schedule name: schedule001
+截圖 2023/06/30 10:47:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 10:48:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 10:48:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 10:48:03 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 10:48:03 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/06/30 10:49:03 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 10:49:03 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 10:49:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程  2023/06/30 10:54:38 PDF排程 初始化成功
+排程 2023/06/30 10:55:00 schedule name: schedule001
+截圖 2023/06/30 10:55:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 10:56:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 10:56:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 10:56:03 element name: Elasticsearch_Api_Indices完成截圖
+ERROR 2023/06/30 10:56:03 ScreenshotbyReport errorcontext deadline exceeded
+排程  2023/06/30 11:00:15 PDF排程 初始化成功
+排程 2023/06/30 11:01:00 schedule name: schedule001
+截圖 2023/06/30 11:01:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 11:01:36 element name: Elasticsearch_Api_Indices完成截圖
