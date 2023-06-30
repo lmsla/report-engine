@@ -37,11 +37,11 @@ type email struct {
 }
 
 type sso struct {
-	SsoUrl         string
-	SsoRealm       string
-	SsoUser        string
-	SsoPassword    string
-	SsoLicense_key string
+	Url         string
+	Realm       string
+	User        string
+	Password    string
+	License_key string
 }
 
 type server struct {

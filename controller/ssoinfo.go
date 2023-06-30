@@ -30,7 +30,7 @@ func GetSsoURL(c *gin.Context) {
 func GetSsoUrl() models.Response {
 	res := models.Response{}
 	res.Success = false
-	res.Body = global.EnvConfig.SSO.SsoUrl
+	res.Body = global.EnvConfig.SSO.Url
 	// fmt.Println(global.EnvConfig.SSO.SsoUrl)
 	// fmt.Println(res)
 	res.Success = true
