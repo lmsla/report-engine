@@ -714,6 +714,28 @@ const docTemplate = `{
                 }
             }
         },
+        "/SSO/GetURL": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SSO"
+                ],
+                "summary": "Get SSOUrl",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/Schedule/Create": {
             "post": {
                 "consumes": [

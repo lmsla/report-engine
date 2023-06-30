@@ -641,6 +641,20 @@ paths:
       summary: Update Report
       tags:
       - Report
+  /SSO/GetURL:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get SSOUrl
+      tags:
+      - SSO
   /Schedule/Create:
     post:
       consumes:

@@ -46,10 +46,10 @@ type Message struct {
 	attachment  Attachment
 }
 
-func SendEmailBySchedule(ScheduleID int) error{
+func SendEmailBySchedule(ScheduleID int) (err error){
+
 	defer func() {
-		if err := recover(); err != nil {
-			// 处理错误
+		if err != nil {
 			log.Logrecord("ERROR", "func SendEmailBySchedule error")
 		}
 	}()
@@ -143,75 +143,9 @@ func SendEmailBySchedule(ScheduleID int) error{
 	} else {
 		fmt.Println("Send mail success!")
 	}
-	return nil 
+	return err
 }
 
-func SendEmail() {
-
-	user := global.EnvConfig.Email.User
-	password := global.EnvConfig.Email.Password
-	host := global.EnvConfig.Email.Host
-	port := global.EnvConfig.Email.Port
-	// send := viper.Get("send")
-	fmt.Println(user, password, host, port)
-	// tolist := send.(map[string]interface{})["to"]
-	// cclist := send.(map[string]interface{})["cc"]
-	// bcclist := send.(map[string]interface{})["bcc"]
-
-	// var reciver_list []string
-	// var cc_list []string
-	// var bcc_list []string
-	// for _, receiver := range tolist.([]interface{}) {
-	// 	reciver_list = append(reciver_list, receiver.(string))
-	// }
-	// for _, cc := range cclist.([]interface{}) {
-	// 	cc_list = append(cc_list, cc.(string))
-	// }
-	// for _, bcc := range bcclist.([]interface{}) {
-	// 	bcc_list = append(bcc_list, bcc.(string))
-	// }
-	var mail Mail
-
-	if user == "" {
-		mail = &SendMail{host: host, port: port}
-	} else {
-		mail = &SendMail{user: user, password: password, host: host, port: port}
-	}
-	// fmt.Println("mail",mail)
-
-	message := Message{from: global.EnvConfig.Email.Sender,
-		to:  []string{"rabot6201@gmail.com"},
-		cc:  []string{"russell.chen@bimap.co"},
-		bcc: []string{"russell.chen@bimap.co"},
-		// to:          reciver_list,
-		// cc:          cc_list,
-		// bcc:         bcc_list,
-		subject:     "test_subject",
-		body:        "test_body",
-		contentType: "text/plain;charset=utf-8",
-		// attachment: Attachment{
-		//     name:        "test.jpg",
-		//     contentType: "image/jpg",
-		//     withFile:    true,
-		// },
-		attachment: Attachment{
-			// name:        "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/pdf_file/report01 2022-09-07 08:00:00~2022-09-07 16:24:25.pdf",
-			name:        []string{"/Users/chen/Downloads/00個人研究/test/report_files/report01.pdf", "/Users/chen/Downloads/00個人研究/test/report_files/report02.pdf"},
-			contentType: "application/octet-stream",
-			withFile:    true,
-		},
-	}
-
-	// mail.Send(message)
-	err := newFunction(mail, message)
-	if err != nil {
-		fmt.Println("Send mail error!")
-		fmt.Println(err)
-	} else {
-		fmt.Println("Send mail success!")
-	}
-
-}
 
 func newFunction(mail Mail, message Message) error {
 	err := mail.Send(message)

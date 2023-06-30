@@ -22,8 +22,9 @@ func ExecuteShedulePDF(scheduleID int) {
 	history := entities.History{}
 	history.ScheduleID = scheduleID
 	history.To = inventory.To
+	fmt.Println("ScheduleID in history: ")
 	fmt.Println(history.ScheduleID)
-	fmt.Println(history)
+	// fmt.Println(history)
 
 	// inventory1,err := services.GetReportByReportName(inventory.Report)
 
@@ -83,7 +84,7 @@ func FuncAddToCron(scheduleID int) {
 		
 	}
 	time_execute := time.Now().Format("2006-01-02 15:04:05")
-	fmt.Println("執行時間: ",time_execute)
+	fmt.Println("排程執行時間: ",time_execute)
 	history := entities.History{}
 	history.ScheduleID = scheduleID
 	history.To = inventory.To
@@ -91,8 +92,8 @@ func FuncAddToCron(scheduleID int) {
 	history.CC = inventory.CC
 	history.ScheduleName = inventory.Name
 	history.ExecuteTime = time_execute
-	fmt.Println(history.ScheduleID)
-	fmt.Println(history)
+	// fmt.Println(history.ScheduleID)
+	// fmt.Println(history)
 
 	log.Logrecord("排程","schedule name: "+inventory.Name)
 	history.Success = "成功"

@@ -436,3 +436,98 @@ ERROR 2023/06/30 10:56:03 ScreenshotbyReport errorcontext deadline exceeded
 排程 2023/06/30 11:01:00 schedule name: schedule001
 截圖 2023/06/30 11:01:00 element name: Elasticsearch_Api_Indices開始執行截圖
 截圖 2023/06/30 11:01:36 element name: Elasticsearch_Api_Indices完成截圖
+排程  2023/06/30 11:14:11 PDF排程 初始化成功
+排程 2023/06/30 11:15:00 schedule name: schedule001
+截圖 2023/06/30 11:15:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 11:15:33 element name: Elasticsearch_Api_Indices完成截圖
+排程 2023/06/30 11:15:43 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 11:15:44 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 11:48:42 PDF排程 初始化成功
+排程 2023/06/30 11:49:00 schedule name: schedule001
+截圖 2023/06/30 11:49:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 11:49:32 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 11:49:32 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 11:50:04 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 11:50:14 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 11:50:16 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 11:53:44 PDF排程 初始化成功
+排程 2023/06/30 11:54:00 schedule name: schedule001
+截圖 2023/06/30 11:54:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 11:55:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 11:55:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 11:55:03 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 11:55:03 element name: Elasticsearch_Api_Nodes開始執行截圖
+ERROR 2023/06/30 11:56:03 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 11:56:03 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 11:56:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 11:56:16 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 11:56:17 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 11:58:32 PDF排程 初始化成功
+排程 2023/06/30 11:59:00 schedule name: schedule001
+截圖 2023/06/30 11:59:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 11:59:32 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 11:59:32 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 12:00:05 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 12:00:15 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 12:00:16 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 12:49:11 PDF排程 初始化成功
+排程 2023/06/30 12:50:00 schedule name: schedule001
+截圖 2023/06/30 12:50:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 12:51:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 12:51:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 12:51:03 element name: Elasticsearch_Api_Indices完成截圖
+ERROR 2023/06/30 12:51:03 ScreenshotbyReport errorcontext deadline exceeded
+排程 2023/06/30 12:51:13 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 12:51:14 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 12:53:18 PDF排程 初始化成功
+排程 2023/06/30 12:54:00 schedule name: schedule001
+截圖 2023/06/30 12:54:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 12:55:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 12:55:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 12:55:03 element name: Elasticsearch_Api_Indices完成截圖
+ERROR 2023/06/30 12:55:03 ScreenshotbyReport errorcontext deadline exceeded
+排程 2023/06/30 12:55:13 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 12:55:17 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 12:56:18 PDF排程 初始化成功
+排程 2023/06/30 12:57:00 schedule name: schedule001
+截圖 2023/06/30 12:57:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 12:57:33 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 12:57:33 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 12:58:10 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 12:58:20 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 12:58:21 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 13:00:38 PDF排程 初始化成功
+排程 2023/06/30 13:01:00 schedule name: schedule001
+截圖 2023/06/30 13:01:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 13:01:37 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 13:01:37 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 13:02:10 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 13:02:21 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 13:02:22 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 13:23:11 PDF排程 初始化成功
+排程  2023/06/30 13:23:15 PDF排程 初始化成功
+排程 2023/06/30 13:24:00 schedule name: schedule001
+截圖 2023/06/30 13:24:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 13:24:33 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 13:24:33 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 13:25:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 13:25:16 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 13:25:18 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 13:39:06 PDF排程 初始化成功
+排程  2023/06/30 13:39:17 PDF排程 初始化成功
+排程 2023/06/30 13:40:00 schedule name: schedule001
+截圖 2023/06/30 13:40:00 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/06/30 13:40:33 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/06/30 13:40:33 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/06/30 13:41:06 element name: Elasticsearch_Api_Nodes完成截圖
+排程 2023/06/30 13:41:16 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 13:41:17 report name: esinsight_report_part2 完成產出
+排程  2023/06/30 13:46:39 PDF排程 初始化成功
+排程 2023/06/30 13:47:00 schedule name: schedule001
+截圖 2023/06/30 13:47:00 element name: Elasticsearch_Api_Indices開始執行截圖
+ERROR 2023/06/30 13:48:00 Dashboard Screenshot error context deadline exceeded
+ERROR 2023/06/30 13:48:00 ScreenshotbyReport errorcontext deadline exceeded
+截圖 2023/06/30 13:48:03 element name: Elasticsearch_Api_Indices完成截圖
+ERROR 2023/06/30 13:48:03 ScreenshotbyReport errorcontext deadline exceeded
+排程 2023/06/30 13:48:13 report name: esinsight_report_part2 開始產出
+排程 2023/06/30 13:48:13 report name: esinsight_report_part2 完成產出

@@ -30,5 +30,5 @@ func test() (err error) {
 	}()
 
 	panic("fff")
-	return nil
+	// return nil
 }

@@ -8,17 +8,18 @@ type EnviromentModel struct {
 	Email    email
 	Other    other
 	Files    files
+	SSO      sso
 }
 
 type files struct {
-	FontFile string
+	FontFile       string
 	ScreenshotFile string
-	ReportFile string
-	HtmlFile string
-	LogFile string
-	TemplateFile string
+	ReportFile     string
+	HtmlFile       string
+	LogFile        string
+	TemplateFile   string
 	MigrationsFile string
-	ChromePath string
+	ChromePath     string
 }
 
 type other struct {
@@ -33,6 +34,14 @@ type email struct {
 	Sender   string
 	Auth     bool
 	SMTP     []string
+}
+
+type sso struct {
+	SsoUrl         string
+	SsoRealm       string
+	SsoUser        string
+	SsoPassword    string
+	SsoLicense_key string
 }
 
 type server struct {

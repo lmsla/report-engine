@@ -9,3 +9,9 @@ type Instance struct {
 	Password string `json:"password" form:"password"`
 	Auth     int   `json:"auth" form:"auth"`
 }
+
+
+type SSO struct {
+	SsoUrl string `json:"url" form:"url"`
+
+}

@@ -44,16 +44,25 @@ type dashboard struct {
 	Price string
 }
 
-func CreateHtmlbySchedule(ScheduleID int) error {
+func CreateHtmlbySchedule(ScheduleID int) (err error) {
+
+	// defer func() {
+	// 	if err := recover(); err != nil {
+	// 		// 处理错误
+	// 		log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
+	// 		// return fmt.Errorf("发生错误：%v", err)
+	// 		// return err
+	// 	}
+	// }()
 
 	defer func() {
-		if err := recover(); err != nil {
-			// 处理错误
+		if err != nil {
+			// 进行错误处理，例如记录日志或返回错误信息给调用方
 			log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
-			// return fmt.Errorf("发生错误：%v", err)
-			// return err
+			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
 		}
 	}()
+
 
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
@@ -62,18 +71,27 @@ func CreateHtmlbySchedule(ScheduleID int) error {
 	}
 	for _, reports := range scheduleData {
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
-		CreateHtml(reports.ID)
+		// CreateHtml(reports.ID)
 		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
+		err := CreateHtml(reports.ID)
+		if err != nil {
+			fmt.Println("CreateHtml - line 78", err)
+			log.Logrecord("ERROR", "CreateHtml error "+err.Error())
+			return err
+		}
+
+
 	}
-	return nil
+	return err
 }
 
-func CreatePDFbySchedule(ScheduleID int) error {
+func CreatePDFbySchedule(ScheduleID int) (err error) {
 
 	defer func() {
-		if err := recover(); err != nil {
-			// 处理错误
+		if err != nil {
+			// 进行错误处理，例如记录日志或返回错误信息给调用方
 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+
 		}
 	}()
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
@@ -87,22 +105,34 @@ func CreatePDFbySchedule(ScheduleID int) error {
 		now := time.Now().Format("2006-01-02")
 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
-		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
+		log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
 		// defer pdf.Destroy()
-		GeneratePDF(outputPath, pdfname)
-		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
+		err := GeneratePDF(outputPath, pdfname)
+		if err != nil {
+			fmt.Println("GeneratePDF - line 111", err)
+			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
+			return err
+		}
+		log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
 	pdf.Destroy()
 	// defer pdf.Destroy()
-	return nil
+	return err
 }
 
-func CreateHtml(ReportId int) {
+func CreateHtml(ReportId int) (err error){
 
-	// ScreenshotbyReport(ReportId)
+	defer func() {
+		if err != nil {
+			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
+		}
+	}()
+
 
 	//	用 ReportID 取出 Report 的相關資料
 	report_data, err := GetReportByReportID(ReportId)
@@ -197,10 +227,16 @@ func CreateHtml(ReportId int) {
 	// // 新增 pdf history
 	// file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
 	// global.Mysql.Create(&file)
-
+	return err
 }
 
-func GeneratePDF(htmlpath string, pdfname string) {
+func GeneratePDF(htmlpath string, pdfname string) (err error){
+
+	defer func() {
+		if err != nil {
+			log.Logrecord("ERROR", "func GeneratePDF error")
+		}
+	}()
 
 	pdf.Init()
 	// defer pdf.Destroy()
@@ -249,4 +285,6 @@ func GeneratePDF(htmlpath string, pdfname string) {
 	}
 	converter.Destroy()
 	outFile.Close()
+
+	return err
 }

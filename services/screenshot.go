@@ -37,31 +37,14 @@ func ScreenshotbySchedule(scheduleID int) (err error) {
 		if err != nil {
 			fmt.Println("ScreenshotbyReport - line 47", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
+			return err
 		}
-		return err
+		
 	}
-	// if err != nil {
-	// 	fmt.Println(err.Error())
-	// }
 	return err
 }
 
 func ScreenshotbyReport(reportID int) (err error) {
-
-	// defer func() {
-	// 	if panicError := recover(); panicError != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func ScreenshotbyReport panic error")
-	// 		err, ok := panicError.(error)
-	// 		if ok {
-	// 			// 處理錯誤
-	// 			fmt.Println("捕獲到 ScreenshotbyReport panic 錯誤：", err)
-	// 		} else {
-	// 			log.Logrecord("ERROR", "func ScreenshotbyReport normal error")
-	// 			// err = errors.New("normal error")
-	// 		}
-	// 	}
-	// }()
 
 	defer func() {
 		if err != nil {
@@ -98,7 +81,9 @@ func ScreenshotbyReport(reportID int) (err error) {
 
 		log.Logrecord("截圖", "element name: "+data.Name+"完成截圖")
 
-		return err
+		if err!= nil {
+			return err
+		}
 	}
 	if err != nil {
 		// fmt.Println("在 ScreenshotbyReport 的錯誤")
@@ -182,7 +167,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
-		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
+		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
 
 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(ctx, opts...)

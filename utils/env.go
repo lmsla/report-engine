@@ -77,11 +77,14 @@ func viperConfigToModel() {
 	config.Files.MigrationsFile = viper.GetString("files.migrations_file")
 	config.Files.ChromePath = viper.GetString("files.chrome_path")
 
+	config.SSO.SsoUrl = viper.GetString("sso.sso_url")
+	config.SSO.SsoRealm = viper.GetString("sso.sso_realm")
+	config.SSO.SsoUser = viper.GetString("sso.sso_user")
+	config.SSO.SsoPassword = viper.GetString("sso.sso_password")
+	config.SSO.SsoLicense_key = viper.GetString("sso.sso_license_key")
 
-	// config.Email.User = viper.GetString("email.user")
-	// config.Email.Password = viper.GetString("email.password")
-	// config.Email.Port = viper.GetString("email.port")
-	// config.Email.Host = viper.GetString("email.host")
+
+
 
 	global.EnvConfig = &config
 }
