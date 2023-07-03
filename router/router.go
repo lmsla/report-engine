@@ -67,10 +67,7 @@ func LoadRouter() *gin.Engine {
 
 	apiv1.POST("/Mail/Send/:id", SendEmailBySchedule)
 
-	apiv1.GET("/SSO/GetURL", GetSsoURL)
-
-
-
+	apiv1.GET("/get-sso-url", GetSsoURL)
 
 	return router
 }
