@@ -2,7 +2,10 @@ package tools
 
 import (
 	"fmt"
+	"image/png"
+	"os"
 	"time"
+
 )
 
 func Timeconverter(time_unit string, time_period int) string {
@@ -25,4 +28,32 @@ func Timeconverter(time_unit string, time_period int) string {
 func Toools() {
 	now := time.Now().Format("2006-01-02")
 	fmt.Println(now)
+}
+
+
+
+func GetImageHW(image string) (width int ,height int){
+	// 打开 PNG 文件
+	file, err := os.Open(image)
+	if err != nil {
+		fmt.Println("无法打开文件:", err)
+		return
+	}
+	defer file.Close()
+
+	// 解码 PNG 图像
+	img, err := png.Decode(file)
+	if err != nil {
+		fmt.Println("无法解码图像:", err)
+		return
+	}
+
+	// 获取图像的长宽
+	width = img.Bounds().Dx()
+	height = img.Bounds().Dy()
+
+	fmt.Println("宽度:", width)
+	fmt.Println("高度:", height)
+
+	return width , height
 }

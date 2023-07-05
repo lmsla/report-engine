@@ -1,12 +1,12 @@
 {{define "content" -}}
-<div class="container">
+<div class="container" style="font-size: 45px;text-align:center;">
    <h1 class="Report"> {{.Name}} </h1>
    <div class="products-container">
 {{range .Elements}}
-      <div class="element" style="display:block;clear:both;page-break-after:auto;page-break-inside:avoid;">
-         <h3>儀表板名稱</h3>
+      <div class="element" style="font-size: 30px;text-align:center;display:block;clear:both;page-break-after:auto;page-break-inside:avoid;">
          <h3>{{.Name}}</h3>
-         <div class="img">報表期間:{{.Period}}</div>
+         <h3 style="text-align:right;">報表期間:{{.Period}}</h3>
+         <div class="img"></div>
          <img src="{{.Img}}" alt="">        
       </div>
 {{end}}

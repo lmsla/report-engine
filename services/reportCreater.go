@@ -63,7 +63,6 @@ func CreateHtmlbySchedule(ScheduleID int) (err error) {
 		}
 	}()
 
-
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
@@ -79,7 +78,6 @@ func CreateHtmlbySchedule(ScheduleID int) (err error) {
 			log.Logrecord("ERROR", "CreateHtml error "+err.Error())
 			return err
 		}
-
 
 	}
 	return err
@@ -105,15 +103,48 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		now := time.Now().Format("2006-01-02")
 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
-		log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
+		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
 		// defer pdf.Destroy()
-		err := GeneratePDF(outputPath, pdfname)
+		//--------------------------------------------------
+		//	用 ReportID 取出 Report 的相關資料
+		report_data, err := GetReportByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(report_data.Name)
+		element_data, err := GetElementsByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		now = time.Now().Format("2006-01-02")
+		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+		var images []string
+		for _, element := range element_data {
+			fmt.Println(element.UID)
+			img  := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
+			fmt.Println(img)
+			images = append(images,img )
+		}
+		total_height := 0
+		for _, image := range images {
+			width, height := tools.GetImageHW(image)
+			width = width
+			total_height +=  height
+			
+
+		}
+		total_height = total_height + 74
+		fmt.Println(total_height)
+		//--------------------------------------------------
+
+		err = GeneratePDF(total_height,outputPath, pdfname)
 		if err != nil {
 			fmt.Println("GeneratePDF - line 111", err)
 			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
 			return err
 		}
-		log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
+		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
@@ -123,7 +154,7 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 	return err
 }
 
-func CreateHtml(ReportId int) (err error){
+func CreateHtml(ReportId int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -132,7 +163,6 @@ func CreateHtml(ReportId int) (err error){
 			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
 		}
 	}()
-
 
 	//	用 ReportID 取出 Report 的相關資料
 	report_data, err := GetReportByReportID(ReportId)
@@ -166,6 +196,7 @@ func CreateHtml(ReportId int) (err error){
 		Name:     uu.Name,
 		Elements: data1.Elements,
 	}
+	fmt.Println("CreateHtml-169")
 	fmt.Println(data1.Name)
 	fmt.Println(data1.Elements)
 
@@ -202,35 +233,10 @@ func CreateHtml(ReportId int) (err error){
 	w.WriteString(string(processed.Bytes()))
 	w.Flush()
 
-	// pdf的名稱
-	// pdfname := fmt.Sprintf("%s/%s_%s~%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name, str1, str2)
-
-	// pdfname := fmt.Sprintf("%s/%s.pdf", global.EnvConfig.Files.ReportFile, inventory.Name)
-
-	// pdfshortname := fmt.Sprintf("%s",htmlName)
-	// time.Sleep(5 * time.Second)
-	// 執行產出pdf的程式
-
-	// GeneratePDF(outputPath, pdfname)
-
-	// var wg sync.WaitGroup
-	// go func() {
-	// 	wg.Add(1)//計數器+1
-	// 	defer wg.Done()
-
-	// }()
-
-	// time.Sleep(time.Millisecond * 30)//休息30 ms
-	// log.Println("wait a goroutine")
-	// wg.Wait()//等待計數器歸0
-
-	// // 新增 pdf history
-	// file := entities.FileHistory{ScheduleID:ScheduleID,PdfName: pdfshortname,Filetype: "pdf" }
-	// global.Mysql.Create(&file)
 	return err
 }
 
-func GeneratePDF(htmlpath string, pdfname string) (err error){
+func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -262,14 +268,21 @@ func GeneratePDF(htmlpath string, pdfname string) (err error){
 	converter.Add(object)
 	// converter.Add(object2)
 	// converter.Add(object3)
-
+	//1cm = 38.34px
 	// Set converter options.
+	// var total_height_cm float64
+	
+	total_height_cm := float64(total_height)/40
+	total_height_string := fmt.Sprintf("%.1fcm",total_height_cm)
+	fmt.Println(total_height_string)
 	converter.Title = "Sample document"
 	converter.PaperSize = pdf.A4
+	converter.Width = "48cm"
+	converter.Height = total_height_string
 	//橫向展示
 	// converter.Orientation = pdf.Landscape
-	converter.MarginTop = "1cm"
-	converter.MarginBottom = "1cm"
+	converter.MarginTop = "10mm"
+	converter.MarginBottom = "10mm"
 	converter.MarginLeft = "10mm"
 	converter.MarginRight = "10mm"
 

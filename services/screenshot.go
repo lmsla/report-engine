@@ -167,7 +167,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
-		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
+		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
 
 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(ctx, opts...)
@@ -186,6 +186,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 		chromedp.Sleep(2 * time.Second),
 		chromedp.Click(`.euiButton`),
 		chromedp.Sleep(3 * time.Second),
+		chromedp.EmulateViewport(1920,1080),
 		emulation.SetDeviceMetricsOverride(0, 0, 1.0, false),
 		chromedp.Sleep(15 * time.Second),
 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
