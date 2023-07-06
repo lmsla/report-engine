@@ -5,9 +5,9 @@ CREATE TABLE `schedules` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `cron_time` varchar(50) DEFAULT NULL,
-  `to` varchar(50) DEFAULT NULL,
-  `cc` varchar(50) DEFAULT NULL,
-  `bcc` varchar(50) DEFAULT NULL,
+  `to` varchar(255) DEFAULT NULL,
+  `cc` varchar(255) DEFAULT NULL,
+  `bcc` varchar(255) DEFAULT NULL,
   `cron_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_schedules_id` (`id`)
