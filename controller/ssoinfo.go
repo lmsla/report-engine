@@ -13,7 +13,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Response
-// @Router /SSO/GetURL [get]
+// @Router /get-sso-url [get]
 func GetSsoURL(c *gin.Context) {
 
 	res := GetSsoUrl()

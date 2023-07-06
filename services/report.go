@@ -11,14 +11,15 @@ func GetAllReports() models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []models.Report{}
 
-	err := global.Mysql.Find(&res.Body).Error
+	var body = []models.Report{}
+	err := global.Mysql.Debug().Preload("Elements").Find(&body).Error
+
 	if err != nil {
 		res.Msg = err.Error()
 		return res
 	}
-
+	res.Body = body
 	res.Success = true
 	res.Msg = "Get All Report Success"
 	return res
