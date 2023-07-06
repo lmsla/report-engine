@@ -100,12 +100,12 @@ func DeleteOldHistory() models.Response {
 	//刪除 element 中相應的圖表
 	err := global.Mysql.Where("created_at < ?",oneMonthAgo).Delete(&entities.History{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting Old Instance , err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting Old History , err: %s", err)
 		return res
 	}
 
 	res.Success = true
-	res.Msg = "Delete Success"
+	res.Msg = "Delete Old History Success"
 
 	return res
 
