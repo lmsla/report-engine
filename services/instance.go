@@ -25,23 +25,6 @@ func GetAllInstances() models.Response {
 }
 
 // 新增instance
-// func CreateInstance(instance entities.Instance) models.Response {
-
-// 	res := models.Response{}
-// 	// err := global.Mysql.Create(&instance).Error
-// 	err := global.Mysql.Create(&instance).Error
-
-// 	if err != nil {
-// 		res.Msg = fmt.Sprintf("Error: %v", err)
-// 		res.Success = false
-// 		return res
-// 	}
-// 	res.Msg = "Create Success"
-// 	res.Success = true
-// 	return res
-// }
-
-// 新增instance
 func CreateInstance(instance entities.Instance) models.Response {
 
 	res := models.Response{}

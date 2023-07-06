@@ -335,6 +335,34 @@ paths:
       summary: Update Element
       tags:
       - Element
+  /History/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get history
+      tags:
+      - History
+  /History/GetOldHistory:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get Old history
+      tags:
+      - History
   /Html/Create/{id}:
     post:
       consumes:

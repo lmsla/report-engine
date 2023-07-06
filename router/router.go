@@ -67,6 +67,9 @@ func LoadRouter() *gin.Engine {
 
 	apiv1.POST("/Mail/Send/:id", SendEmailBySchedule)
 
+	apiv1.GET("/History/GetAll", GetAllHitory)
+	apiv1.GET("/History/GetOldHistory", GetOldHitory)
+
 	apiv1.GET("/get-sso-url", GetSsoURL)
 
 	return router

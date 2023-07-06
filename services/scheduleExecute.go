@@ -135,6 +135,8 @@ func FuncAddToCron(scheduleID int) {
 
 	}
 
+	DeleteOldHistory()
+
 }
 
 
