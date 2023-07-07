@@ -83,7 +83,8 @@ func FuncAddToCron(scheduleID int) {
 		fmt.Println(err)
 		
 	}
-	time_execute := time.Now().Format("2006-01-02 15:04:05")
+	// time_execute := time.Now().Format("2006-01-02 15:04:05")
+	time_execute := time.Now().Unix()
 	fmt.Println("排程執行時間: ",time_execute)
 	history := entities.History{}
 	history.ScheduleID = scheduleID
@@ -120,12 +121,8 @@ func FuncAddToCron(scheduleID int) {
 		history.Success = "發送mail錯誤"
 	}
 	
-	// ScreenshotbySchedule(scheduleID)
-	// // time.Sleep(3 * time.Second) 
-	// CreateHtmlbySchedule(scheduleID)
-	// CreatePDFbySchedule(scheduleID)
-	// SendEmailBySchedule(scheduleID)
-	time_mail := time.Now().Format("2006-01-02 15:04:05")
+	// time_mail := time.Now().Format("2006-01-02 15:04:05")
+	time_mail := time.Now().Unix()
 	fmt.Println("寄送時間:",time_mail)
 	history.EmailTime = time_mail
 	// history.Success = "成功"

@@ -11,8 +11,8 @@ type History struct {
 	To           To       `gorm:"serializer:json"`
 	CC           CC       `gorm:"serializer:json"`
 	BCC          BCC      `gorm:"serializer:json"`
-	ExecuteTime  string
-	EmailTime    string
+	ExecuteTime  int64
+	EmailTime    int64
 	Success      string `gorm:"type:varchar(50)"`
 }
 

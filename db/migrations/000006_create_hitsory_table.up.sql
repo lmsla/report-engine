@@ -7,8 +7,8 @@ CREATE TABLE `histories` (
   `to` varchar(50) DEFAULT NULL,
   `cc` varchar(50) DEFAULT NULL,
   `bcc` varchar(50) DEFAULT NULL,
-  `execute_time` varchar(50) DEFAULT NULL,
-  `email_time` varchar(50) DEFAULT NULL,
+  `execute_time` bigint unsigned DEFAULT NULL,
+  `email_time` bigint unsigned DEFAULT NULL,
   `success` varchar(50) DEFAULT NULL,
   KEY `fk_histories_schedule` (`schedule_id`),
   CONSTRAINT `fk_histories_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
