@@ -72,7 +72,7 @@ func viperConfigToModel() {
 	config.Files.ScreenshotFile = viper.GetString("files.screenshot_file")
 	config.Files.ReportFile = viper.GetString("files.report_file")
 	config.Files.HtmlFile = viper.GetString("files.html_file")
-	config.Files.LogFile = viper.GetString("files.log_file")
+	config.Files.LogPath = viper.GetString("files.log_path")
 	config.Files.TemplateFile = viper.GetString("files.template_file")
 	config.Files.MigrationsFile = viper.GetString("files.migrations_file")
 	config.Files.ChromePath = viper.GetString("files.chrome_path")

@@ -98,6 +98,7 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 	}
 	time.Sleep(10 * time.Second)
 	for _, reports := range scheduleData {
+		defer pdf.Destroy()
 		fmt.Println(reports.Name)
 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
 		now := time.Now().Format("2006-01-02")
@@ -130,12 +131,10 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		for _, image := range images {
 			width, height := tools.GetImageHW(image)
 			width = width
-			total_height +=  height
-			
-
+			total_height +=  (height+98)			
 		}
-		total_height = total_height + 74
-		fmt.Println(total_height)
+		total_height = total_height + 126
+		fmt.Println("total_height",total_height)
 		//--------------------------------------------------
 
 		err = GeneratePDF(total_height,outputPath, pdfname)
@@ -149,7 +148,7 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
-	pdf.Destroy()
+	// pdf.Destroy()
 	// defer pdf.Destroy()
 	return err
 }
@@ -248,7 +247,6 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	// defer pdf.Destroy()
 
 	// Create object from file.
-	// object, err := pdf.NewObject("/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html")
 	object, err := pdf.NewObject(htmlpath)
 	if err != nil {
 		log1.Fatal(err)
@@ -262,7 +260,7 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	if err != nil {
 		log1.Fatal(err)
 	}
-	// defer converter.Destroy()
+	defer converter.Destroy()
 
 	// Add created objects to the converter.
 	converter.Add(object)
@@ -274,7 +272,7 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	
 	total_height_cm := float64(total_height)/40
 	total_height_string := fmt.Sprintf("%.1fcm",total_height_cm)
-	fmt.Println(total_height_string)
+	fmt.Println("total_height_string",total_height_string)
 	converter.Title = "Sample document"
 	converter.PaperSize = pdf.A4
 	converter.Width = "48cm"
@@ -292,11 +290,14 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 		log1.Fatal(err)
 	}
 	// defer outFile.Close()
+	fmt.Println("執行到292行")
+
+	// converter.Run(outFile)
 
 	if err := converter.Run(outFile); err != nil {
 		log1.Fatal(err)
 	}
-	converter.Destroy()
+
 	outFile.Close()
 
 	return err

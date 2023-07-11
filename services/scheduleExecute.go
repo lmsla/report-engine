@@ -59,11 +59,11 @@ func ExecuteShedulePDF(scheduleID int) {
 		fmt.Println("crontab PDF 初始化失敗")
 		// log.Logrecord("排程 ","PDF排程 初始化失敗")
 		fmt.Println(err.Error())
-		log.Logrecord("ERROR ","PDF排程 初始化失敗"+err.Error())
+		log.Logrecord("ERROR","PDF排程 初始化失敗"+err.Error())
 	} else {
 
 		fmt.Println("crontab PDF 初始化成功")
-		log.Logrecord("排程 ","PDF排程 初始化成功")
+		log.Logrecord("排程","PDF排程 初始化成功")
 		// c.Start()
 		global.Crontab.Start()
 
