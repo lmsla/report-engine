@@ -11,7 +11,7 @@ import (
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-
+	"sync"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
@@ -97,7 +97,16 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		fmt.Println(err)
 	}
 	time.Sleep(10 * time.Second)
+//--------------多執行緒------------------
+	// 设置等待组，以便等待所有 goroutine 完成
+	var wg sync.WaitGroup
+
+	// 创建通道，用于接收 goroutine 中的错误
+	errCh := make(chan error)
+
+//--------------多執行緒------------------
 	for _, reports := range scheduleData {
+
 		defer pdf.Destroy()
 		fmt.Println(reports.Name)
 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
@@ -135,19 +144,50 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		}
 		total_height = total_height + 126
 		fmt.Println("total_height",total_height)
-		//--------------------------------------------------
+//--------------多執行緒------------------
+		// go GeneratePDF(total_height,outputPath, pdfname)
+		
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 
-		err = GeneratePDF(total_height,outputPath, pdfname)
-		if err != nil {
-			fmt.Println("GeneratePDF - line 111", err)
-			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
-			return err
-		}
+			// 调用 GeneratePDF 函数，并将错误发送到错误通道
+			err := GeneratePDF1(total_height,outputPath, pdfname)
+			if err != nil {
+				errCh <- err
+			}
+		}()
+//--------------多執行緒--------------------------------------------------
+
+		//------------------------原除錯--------------------------
+		// err = GeneratePDF(total_height,outputPath, pdfname)
+		// if err != nil {
+		// 	fmt.Println("GeneratePDF - line 111", err)
+		// 	log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
+		// 	return err
+		// }
+		//------------------------------------------------------
 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
+//--------------多執行緒---------------------------------------------
+	// // 等待所有 goroutine 完成
+	// wg.Wait()
+
+	// // 关闭错误通道，以便不再接收错误
+	// close(errCh)
+
+	// // 检查错误通道是否有错误，如果有则输出错误信息
+	// for err := range errCh {
+	// 	if err != nil {
+	// 		fmt.Println("Error:", err)
+	// 	}
+	// }
+	
+	// fmt.Println("All executions have completed.")
+//--------------多執行緒------------------
 	// pdf.Destroy()
 	// defer pdf.Destroy()
 	return err
@@ -302,3 +342,72 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 
 	return err
 }
+
+
+
+func GeneratePDF1(total_height int ,htmlpath string, pdfname string) error {
+
+
+
+	pdf.Init()
+	// defer pdf.Destroy()
+
+	// Create object from file.
+	object, err := pdf.NewObject(htmlpath)
+	if err != nil {
+		log1.Fatal(err)
+	}
+	object.Header.ContentCenter = "[title]"
+	// object.Header.DisplaySeparator = true
+	object.Header.DisplaySeparator = false
+
+	// Create converter.
+	converter, err := pdf.NewConverter()
+	if err != nil {
+		log1.Fatal(err)
+	}
+	defer converter.Destroy()
+
+	// Add created objects to the converter.
+	converter.Add(object)
+	// converter.Add(object2)
+	// converter.Add(object3)
+	//1cm = 38.34px
+	// Set converter options.
+	// var total_height_cm float64
+	
+	total_height_cm := float64(total_height)/40
+	total_height_string := fmt.Sprintf("%.1fcm",total_height_cm)
+	fmt.Println("total_height_string",total_height_string)
+	converter.Title = "Sample document"
+	converter.PaperSize = pdf.A4
+	converter.Width = "48cm"
+	converter.Height = total_height_string
+	//橫向展示
+	// converter.Orientation = pdf.Landscape
+	converter.MarginTop = "10mm"
+	converter.MarginBottom = "10mm"
+	converter.MarginLeft = "10mm"
+	converter.MarginRight = "10mm"
+
+	// Convert objects and save the output PDF document.
+	outFile, err := os.Create(pdfname)
+	if err != nil {
+		log1.Fatal(err)
+	}
+	// defer outFile.Close()
+	fmt.Println("執行到292行")
+
+	// converter.Run(outFile)
+
+	if err := converter.Run(outFile); err != nil {
+		log1.Fatal(err)
+	}
+
+	outFile.Close()
+
+	return nil
+}
+
+
+
