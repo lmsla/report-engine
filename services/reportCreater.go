@@ -11,7 +11,6 @@ import (
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-	"sync"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
@@ -97,14 +96,7 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		fmt.Println(err)
 	}
 	time.Sleep(10 * time.Second)
-//--------------多執行緒------------------
-	// 设置等待组，以便等待所有 goroutine 完成
-	var wg sync.WaitGroup
 
-	// 创建通道，用于接收 goroutine 中的错误
-	errCh := make(chan error)
-
-//--------------多執行緒------------------
 	for _, reports := range scheduleData {
 
 		defer pdf.Destroy()
@@ -144,50 +136,22 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		}
 		total_height = total_height + 126
 		fmt.Println("total_height",total_height)
-//--------------多執行緒------------------
-		// go GeneratePDF(total_height,outputPath, pdfname)
-		
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
 
-			// 调用 GeneratePDF 函数，并将错误发送到错误通道
-			err := GeneratePDF1(total_height,outputPath, pdfname)
-			if err != nil {
-				errCh <- err
-			}
-		}()
-//--------------多執行緒--------------------------------------------------
 
-		//------------------------原除錯--------------------------
-		// err = GeneratePDF(total_height,outputPath, pdfname)
-		// if err != nil {
-		// 	fmt.Println("GeneratePDF - line 111", err)
-		// 	log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
-		// 	return err
-		// }
-		//------------------------------------------------------
+
+		err = GeneratePDF(total_height,outputPath, pdfname)
+		if err != nil {
+			fmt.Println("GeneratePDF - line 111", err)
+			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
+			return err
+		}
+
 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
-//--------------多執行緒---------------------------------------------
-	// // 等待所有 goroutine 完成
-	// wg.Wait()
 
-	// // 关闭错误通道，以便不再接收错误
-	// close(errCh)
-
-	// // 检查错误通道是否有错误，如果有则输出错误信息
-	// for err := range errCh {
-	// 	if err != nil {
-	// 		fmt.Println("Error:", err)
-	// 	}
-	// }
-	
-	// fmt.Println("All executions have completed.")
-//--------------多執行緒------------------
 	// pdf.Destroy()
 	// defer pdf.Destroy()
 	return err
