@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	pdf "github.com/adrg/go-wkhtmltopdf"
 	"html/template"
 	log1 "log"
 	"os"
@@ -11,7 +12,6 @@ import (
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-	pdf "github.com/adrg/go-wkhtmltopdf"
 )
 
 func subtr(a, b float64) float64 {
@@ -99,14 +99,14 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 
 	for _, reports := range scheduleData {
 
-		defer pdf.Destroy()
+		// defer pdf.Destroy()
 		fmt.Println(reports.Name)
 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
 		now := time.Now().Format("2006-01-02")
 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
 		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
-		// defer pdf.Destroy()
+
 		//--------------------------------------------------
 		//	用 ReportID 取出 Report 的相關資料
 		report_data, err := GetReportByReportID(reports.ID)
@@ -124,34 +124,30 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		var images []string
 		for _, element := range element_data {
 			fmt.Println(element.UID)
-			img  := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
+			img := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
 			fmt.Println(img)
-			images = append(images,img )
+			images = append(images, img)
 		}
 		total_height := 0
 		for _, image := range images {
 			width, height := tools.GetImageHW(image)
 			width = width
-			total_height +=  (height+98)			
+			total_height += (height + 98)
 		}
 		total_height = total_height + 126
-		fmt.Println("total_height",total_height)
+		fmt.Println("total_height", total_height)
 
-		//------------------------原除錯--------------------------
-		err = GeneratePDF(total_height,outputPath, pdfname)
+		err = GeneratePDF(total_height, outputPath, pdfname)
 		if err != nil {
 			fmt.Println("GeneratePDF - line 111", err)
 			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
 			return err
 		}
-		//------------------------------------------------------
 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
-	// pdf.Destroy()
-	// defer pdf.Destroy()
 	return err
 }
 
@@ -201,11 +197,6 @@ func CreateHtml(ReportId int) (err error) {
 	fmt.Println(data1.Name)
 	fmt.Println(data1.Elements)
 
-	// fromtimeconverted := Timeconverter(inventory.From + "+8h")
-	// totimeconverted := Timeconverter(inventory.To + "+8h")
-	// str1 := fromtimeconverted[0:16]
-	// str2 := totimeconverted[0:16]
-
 	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
 
 	var allPaths []string
@@ -221,13 +212,6 @@ func CreateHtml(ReportId int) (err error) {
 	}
 	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
 	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, report_data.Name, timefrom, now)
-	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name, str1, str2)
-	// htmlName := fmt.Sprintf("%s_%s~%s", inventory.Name)
-	// outputPath := "/Users/chen/Documents/gitlab/git-out/product/report-backend/pdf/index.html"
-
-	// 新增 html history
-	// Htmlfile := entities.FileHistory{ScheduleID:ScheduleID, HtmlName: htmlName,Filetype: "html"}
-	// global.Mysql.Create(&Htmlfile)
 
 	f, _ := os.Create(outputPath)
 	w := bufio.NewWriter(f)
@@ -237,7 +221,7 @@ func CreateHtml(ReportId int) (err error) {
 	return err
 }
 
-func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) {
+func GeneratePDF(total_height int, htmlpath string, pdfname string) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -246,7 +230,7 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	}()
 
 	pdf.Init()
-	// defer pdf.Destroy()
+	defer pdf.Destroy()
 
 	// Create object from file.
 	object, err := pdf.NewObject(htmlpath)
@@ -271,10 +255,10 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	//1cm = 38.34px
 	// Set converter options.
 	// var total_height_cm float64
-	
-	total_height_cm := float64(total_height)/40
-	total_height_string := fmt.Sprintf("%.1fcm",total_height_cm)
-	fmt.Println("total_height_string",total_height_string)
+
+	total_height_cm := float64(total_height) / 40
+	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
+	fmt.Println("total_height_string", total_height_string)
 	converter.Title = "Sample document"
 	converter.PaperSize = pdf.A4
 	converter.Width = "48cm"
@@ -301,15 +285,10 @@ func GeneratePDF(total_height int ,htmlpath string, pdfname string) (err error) 
 	}
 
 	outFile.Close()
-
 	return err
 }
 
-
-
-func GeneratePDF1(total_height int ,htmlpath string, pdfname string) error {
-
-
+func GeneratePDF1(total_height int, htmlpath string, pdfname string) error {
 
 	pdf.Init()
 	// defer pdf.Destroy()
@@ -337,10 +316,10 @@ func GeneratePDF1(total_height int ,htmlpath string, pdfname string) error {
 	//1cm = 38.34px
 	// Set converter options.
 	// var total_height_cm float64
-	
-	total_height_cm := float64(total_height)/40
-	total_height_string := fmt.Sprintf("%.1fcm",total_height_cm)
-	fmt.Println("total_height_string",total_height_string)
+
+	total_height_cm := float64(total_height) / 40
+	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
+	fmt.Println("total_height_string", total_height_string)
 	converter.Title = "Sample document"
 	converter.PaperSize = pdf.A4
 	converter.Width = "48cm"
@@ -370,6 +349,3 @@ func GeneratePDF1(total_height int ,htmlpath string, pdfname string) error {
 
 	return nil
 }
-
-
-
