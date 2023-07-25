@@ -74,7 +74,7 @@ func ScreenshotbyReport(reportID int) (err error) {
 		err := Screenshot_element1(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 		if err != nil {
 			fmt.Println("ScreenshotbyReport - line 88", err.Error())
-			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
+			log.Logrecord("ERROR", "ScreenshotbyReport error "+err.Error())
 		}
 
 		time.Sleep(3 * time.Second)

@@ -137,21 +137,19 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 		total_height = total_height + 126
 		fmt.Println("total_height",total_height)
 
-
-
+		//------------------------原除錯--------------------------
 		err = GeneratePDF(total_height,outputPath, pdfname)
 		if err != nil {
 			fmt.Println("GeneratePDF - line 111", err)
 			log.Logrecord("ERROR", "GeneratePDF error "+err.Error())
 			return err
 		}
-
+		//------------------------------------------------------
 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
 		// time.Sleep(5 * time.Second)
 		// pdf.Destroy()
 		// defer pdf.Destroy()
 	}
-
 	// pdf.Destroy()
 	// defer pdf.Destroy()
 	return err
