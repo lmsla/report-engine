@@ -138,9 +138,11 @@ func SendEmailBySchedule(ScheduleID int) (err error){
 	// mail.Send(message)
 	err = newFunction(mail, message)
 	if err != nil {
+		log.Logrecord("排程", "信件送出失敗")
 		fmt.Println("Send mail error!")
 		fmt.Println(err)
 	} else {
+		log.Logrecord("排程", "信件送出成功")
 		fmt.Println("Send mail success!")
 	}
 	return err
