@@ -74,3 +74,22 @@
 排程 2023/07/31 14:19:03 report name: esinsight_report_part1 開始產出
 排程 2023/07/31 14:19:06 report name: esinsight_report_part1 完成產出lolololo
 排程 2023/07/31 14:19:06 report name: esinsight_report_part2 開始產出
+排程 2023/07/31 14:40:34 PDF排程 初始化成功
+排程 2023/07/31 14:41:00 schedule name: schedule_test001
+截圖 2023/07/31 14:41:00 element name: Elasticsearch_Api_Health開始執行截圖
+截圖 2023/07/31 14:41:42 element name: Elasticsearch_Api_Health完成截圖
+截圖 2023/07/31 14:41:42 element name: Elasticsearch_Api_Indices開始執行截圖
+截圖 2023/07/31 14:42:24 element name: Elasticsearch_Api_Indices完成截圖
+截圖 2023/07/31 14:42:24 element name: Elasticsearch_Api_Thread_Pool開始執行截圖
+截圖 2023/07/31 14:43:08 element name: Elasticsearch_Api_Thread_Pool完成截圖
+截圖 2023/07/31 14:43:08 element name: Elasticsearch_Api_Pending_Tasks開始執行截圖
+截圖 2023/07/31 14:43:49 element name: Elasticsearch_Api_Pending_Tasks完成截圖
+截圖 2023/07/31 14:43:49 element name: Elasticsearch_Api_Stats_Indices開始執行截圖
+截圖 2023/07/31 14:44:32 element name: Elasticsearch_Api_Stats_Indices完成截圖
+截圖 2023/07/31 14:44:32 element name: Elasticsearch_Api_Nodes開始執行截圖
+截圖 2023/07/31 14:45:14 element name: Elasticsearch_Api_Nodes完成截圖
+截圖 2023/07/31 14:45:14 element name: Elasticsearch_Api_Main開始執行截圖
+截圖 2023/07/31 14:45:55 element name: Elasticsearch_Api_Main完成截圖
+排程 2023/07/31 14:46:05 report name: esinsight_report_part1 開始產出
+排程 2023/07/31 14:46:08 report name: esinsight_report_part1 完成產出
+排程 2023/07/31 14:46:08 report name: esinsight_report_part2 開始產出

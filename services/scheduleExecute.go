@@ -108,12 +108,12 @@ func FuncAddToCron(scheduleID int) {
 		fmt.Println("產生html錯誤", err)
 		history.Success = "產生html錯誤"
 	}
-
-	err = CreatePDFbySchedule(scheduleID)
-	if err != nil{
-		fmt.Println("產生pdf錯誤", err)
-		history.Success = "產生pdf錯誤"
-	}
+	CreatePDFbySchedule(scheduleID)
+	// err = CreatePDFbySchedule(scheduleID)
+	// if err != nil{
+	// 	fmt.Println("產生pdf錯誤", err)
+	// 	history.Success = "產生pdf錯誤"
+	// }
 	
 	err = SendEmailBySchedule(scheduleID)
 	if err != nil{
