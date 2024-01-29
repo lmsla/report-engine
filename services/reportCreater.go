@@ -17,7 +17,7 @@ import (
 	"time"
 
 	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
-	pdf "github.com/adrg/go-wkhtmltopdf"
+	// pdf "github.com/adrg/go-wkhtmltopdf"
 
 	"context"
 
@@ -211,79 +211,79 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 	return err
 }
 
-func CreatePDFbySchedule_old_v(ScheduleID int) (err error) {
+// func CreatePDFbySchedule_old_v(ScheduleID int) (err error) {
 
-	defer func() {
-		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
-			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+// 	defer func() {
+// 		if err != nil {
+// 			// 进行错误处理，例如记录日志或返回错误信息给调用方
+// 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
 
-		}
-	}()
-	scheduleData, err := GetReportByScheduleID(ScheduleID)
-	if err != nil {
-		fmt.Println(err)
-	}
-	time.Sleep(10 * time.Second)
+// 		}
+// 	}()
+// 	scheduleData, err := GetReportByScheduleID(ScheduleID)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	time.Sleep(10 * time.Second)
 
-	// Initialize library.
-	if err := pdf.Init(); err != nil {
-		fmt.Println("init error")
-	}
-	// defer pdf.Destroy()
+// 	// Initialize library.
+// 	if err := pdf.Init(); err != nil {
+// 		fmt.Println("init error")
+// 	}
+// 	// defer pdf.Destroy()
 
-	// // Create converter.
-	// converter, err := pdf.NewConverter()
-	// if err != nil {
-	// 	log1.Fatal(err)
-	// }
-	// defer converter.Destroy()
+// 	// // Create converter.
+// 	// converter, err := pdf.NewConverter()
+// 	// if err != nil {
+// 	// 	log1.Fatal(err)
+// 	// }
+// 	// defer converter.Destroy()
 
-	for _, reports := range scheduleData {
-		// defer pdf.Destroy()
-		fmt.Println(reports.Name)
-		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
-		now := time.Now().Format("2006-01-02")
-		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
-		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
-		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
+// 	for _, reports := range scheduleData {
+// 		// defer pdf.Destroy()
+// 		fmt.Println(reports.Name)
+// 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
+// 		now := time.Now().Format("2006-01-02")
+// 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
+// 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
+// 		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
 
-		//	用 ReportID 取出 Report 的相關資料
-		report_data, err := GetReportByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(report_data.Name)
-		element_data, err := GetElementsByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
+// 		//	用 ReportID 取出 Report 的相關資料
+// 		report_data, err := GetReportByReportID(reports.ID)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		fmt.Println(report_data.Name)
+// 		element_data, err := GetElementsByReportID(reports.ID)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
 
-		now = time.Now().Format("2006-01-02")
-		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
-		var images []string
-		for _, element := range element_data {
-			fmt.Println(element.UID)
-			img := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
-			fmt.Println(img)
-			images = append(images, img)
-		}
-		total_height := 0
-		// var width float64
-		for _, image := range images {
-			_, height := tools.GetImageHW(image)
-			// width = width
-			total_height += (height + 98)
-		}
-		total_height = total_height + 126
-		fmt.Println("total_height", total_height)
+// 		now = time.Now().Format("2006-01-02")
+// 		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+// 		var images []string
+// 		for _, element := range element_data {
+// 			fmt.Println(element.UID)
+// 			img := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
+// 			fmt.Println(img)
+// 			images = append(images, img)
+// 		}
+// 		total_height := 0
+// 		// var width float64
+// 		for _, image := range images {
+// 			_, height := tools.GetImageHW(image)
+// 			// width = width
+// 			total_height += (height + 98)
+// 		}
+// 		total_height = total_height + 126
+// 		fmt.Println("total_height", total_height)
 
-		GeneratePDF(total_height, outputPath, pdfname)
-		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
-	}
-	pdf.Destroy()
-	return err
-}
+// 		GeneratePDF(total_height, outputPath, pdfname)
+// 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
+// 	}
+// 	pdf.Destroy()
+// 	return err
+// }
 
 // 不分頁
 func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_name string, timefrom string, now string) {
@@ -545,61 +545,61 @@ func GeneratePDF_by_Chromedp(htmlpath string, pdfpath string) {
 	}
 }
 
-func GeneratePDF(total_height int, htmlpath string, pdfname string) {
+// func GeneratePDF(total_height int, htmlpath string, pdfname string) {
 
-	// Create object from file.
-	object, err := pdf.NewObject(htmlpath)
-	if err != nil {
-		log1.Fatal(err)
-	}
-	object.Header.ContentCenter = "[title]"
-	// object.Header.DisplaySeparator = true
-	object.Header.DisplaySeparator = false
+// 	// Create object from file.
+// 	object, err := pdf.NewObject(htmlpath)
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	object.Header.ContentCenter = "[title]"
+// 	// object.Header.DisplaySeparator = true
+// 	object.Header.DisplaySeparator = false
 
-	// Create converter.
-	converter, err := pdf.NewConverter()
-	if err != nil {
-		log1.Fatal(err)
-	}
-	// defer converter.Destroy()
+// 	// Create converter.
+// 	converter, err := pdf.NewConverter()
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	// defer converter.Destroy()
 
-	// Add created objects to the converter.
-	converter.Add(object)
-	// converter.Add(object2)
-	// converter.Add(object3)
-	//1cm = 38.34px
-	// Set converter options.
-	// var total_height_cm float64
+// 	// Add created objects to the converter.
+// 	converter.Add(object)
+// 	// converter.Add(object2)
+// 	// converter.Add(object3)
+// 	//1cm = 38.34px
+// 	// Set converter options.
+// 	// var total_height_cm float64
 
-	total_height_cm := float64(total_height) / 40
-	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
-	fmt.Println("total_height_string", total_height_string)
-	converter.Title = "Sample document"
-	converter.PaperSize = pdf.A4
-	converter.Width = "48cm"
-	converter.Height = total_height_string
-	//橫向展示
-	// converter.Orientation = pdf.Landscape
-	converter.MarginTop = "10mm"
-	converter.MarginBottom = "10mm"
-	converter.MarginLeft = "10mm"
-	converter.MarginRight = "10mm"
+// 	total_height_cm := float64(total_height) / 40
+// 	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
+// 	fmt.Println("total_height_string", total_height_string)
+// 	converter.Title = "Sample document"
+// 	converter.PaperSize = pdf.A4
+// 	converter.Width = "48cm"
+// 	converter.Height = total_height_string
+// 	//橫向展示
+// 	// converter.Orientation = pdf.Landscape
+// 	converter.MarginTop = "10mm"
+// 	converter.MarginBottom = "10mm"
+// 	converter.MarginLeft = "10mm"
+// 	converter.MarginRight = "10mm"
 
-	// Convert objects and save the output PDF document.
-	outFile, err := os.Create(pdfname)
-	if err != nil {
-		log1.Fatal(err)
-	}
-	defer outFile.Close()
-	fmt.Println("401")
+// 	// Convert objects and save the output PDF document.
+// 	outFile, err := os.Create(pdfname)
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	defer outFile.Close()
+// 	fmt.Println("401")
 
-	if err := converter.Run(outFile); err != nil {
-		fmt.Println("converter.Run error")
-	}
-	fmt.Println("407")
+// 	if err := converter.Run(outFile); err != nil {
+// 		fmt.Println("converter.Run error")
+// 	}
+// 	fmt.Println("407")
 
-	converter.Destroy()
-}
+// 	converter.Destroy()
+// }
 
 // Helper function to read HTML content from a file
 func readFileContent(filePath string) (string, error) {
@@ -625,58 +625,58 @@ func readerFromStr(s string) io.Reader {
 	return strings.NewReader(s)
 }
 
-func GeneratePDF1(total_height int, htmlpath string, pdfname string) {
+// func GeneratePDF1(total_height int, htmlpath string, pdfname string) {
 
-	fmt.Println(htmlpath)
-	fmt.Println(pdfname)
+// 	fmt.Println(htmlpath)
+// 	fmt.Println(pdfname)
 
-	// Create object from file.
-	object, err := pdf.NewObject(htmlpath)
-	if err != nil {
-		log1.Fatal(err)
-	}
-	object.Header.ContentCenter = "[title]"
-	// object.Header.DisplaySeparator = true
-	object.Header.DisplaySeparator = false
+// 	// Create object from file.
+// 	object, err := pdf.NewObject(htmlpath)
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	object.Header.ContentCenter = "[title]"
+// 	// object.Header.DisplaySeparator = true
+// 	object.Header.DisplaySeparator = false
 
-	// Create converter.
-	converter, err := pdf.NewConverter()
-	if err != nil {
-		log1.Fatal(err)
-	}
-	defer converter.Destroy()
+// 	// Create converter.
+// 	converter, err := pdf.NewConverter()
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	defer converter.Destroy()
 
-	// Add created objects to the converter.
-	converter.Add(object)
+// 	// Add created objects to the converter.
+// 	converter.Add(object)
 
-	total_height_cm := float64(total_height) / 40
-	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
-	fmt.Println("total_height_string", total_height_string)
-	converter.Title = "Sample document"
-	converter.PaperSize = pdf.A4
-	converter.Width = "48cm"
-	converter.Height = total_height_string
-	//橫向展示
-	// converter.Orientation = pdf.Landscape
-	converter.MarginTop = "10mm"
-	converter.MarginBottom = "10mm"
-	converter.MarginLeft = "10mm"
-	converter.MarginRight = "10mm"
+// 	total_height_cm := float64(total_height) / 40
+// 	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
+// 	fmt.Println("total_height_string", total_height_string)
+// 	converter.Title = "Sample document"
+// 	converter.PaperSize = pdf.A4
+// 	converter.Width = "48cm"
+// 	converter.Height = total_height_string
+// 	//橫向展示
+// 	// converter.Orientation = pdf.Landscape
+// 	converter.MarginTop = "10mm"
+// 	converter.MarginBottom = "10mm"
+// 	converter.MarginLeft = "10mm"
+// 	converter.MarginRight = "10mm"
 
-	// Convert objects and save the output PDF document.
-	outFile, err := os.Create(pdfname)
-	if err != nil {
-		log1.Fatal(err)
-	}
-	defer outFile.Close()
+// 	// Convert objects and save the output PDF document.
+// 	outFile, err := os.Create(pdfname)
+// 	if err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	defer outFile.Close()
 
-	fmt.Println("執行到355行")
+// 	fmt.Println("執行到355行")
 
-	// converter.Run(outFile)
+// 	// converter.Run(outFile)
 
-	if err := converter.Run(outFile); err != nil {
-		log1.Fatal(err)
-	}
-	fmt.Println("執行到362行")
-	// defer outFile.Close()
-}
+// 	if err := converter.Run(outFile); err != nil {
+// 		log1.Fatal(err)
+// 	}
+// 	fmt.Println("執行到362行")
+// 	// defer outFile.Close()
+// }
