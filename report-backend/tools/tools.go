@@ -52,8 +52,8 @@ func GetImageHW(image string) (width int ,height int){
 	width = img.Bounds().Dx()
 	height = img.Bounds().Dy()
 
-	fmt.Println("宽度:", width)
-	fmt.Println("高度:", height)
+	// fmt.Println("宽度:", width)
+	// fmt.Println("高度:", height)
 
 	return width , height
 }

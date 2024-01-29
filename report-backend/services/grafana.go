@@ -71,6 +71,7 @@ func GetAllGrafanaDashboardTitle(instance models.Instance) ([]entities.Element, 
 		var dashboard entities.Element
 		dashboard.Name = fdsr.Title
 		dashboard.UID = fdsr.UID
+
 		dashboards = append(dashboards, dashboard)
 	}
 

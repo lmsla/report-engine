@@ -3,13 +3,11 @@ package controller
 import (
 	"net/http"
 	"strconv"
-
+	"report-backend-golang/handler"
 	"report-backend-golang/models"
 	"report-backend-golang/services"
-	"report-backend-golang/handler"
-
-	"github.com/gin-gonic/gin"
 	"report-backend-golang/entities"
+	"github.com/gin-gonic/gin"
 )
 
 // @Summary Get Instance
@@ -142,6 +140,7 @@ func GetDBDashboardByInstanceID(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, r)
 	case "kibana":
+
 		r, err := services.GetALLKibanaDashboardTitle(inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err.Error())
