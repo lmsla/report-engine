@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	pdf "github.com/adrg/go-wkhtmltopdf"
 
 	"context"
@@ -679,65 +679,4 @@ func GeneratePDF1(total_height int, htmlpath string, pdfname string) {
 	}
 	fmt.Println("執行到362行")
 	// defer outFile.Close()
-}
-
-func GeneratePDF_new(htmlPath string, pdfPath string) {
-
-	htmlFilePath := htmlPath
-	// fmt.Println("htmlFilePath", htmlFilePath)
-	// htmlContent, err := readFileContent(htmlFilePath)
-	// if err != nil {
-	// 	// log.Fatal(err)
-	// }
-	path := "/usr/local/bin/wkhtmltopdf"
-	wkhtmltopdf.SetPath(path)
-
-	pdfg, err := wkhtmltopdf.NewPDFGenerator()
-	if err != nil {
-		// log.Fatal(err)
-		fmt.Println("error NewPDFGenerator")
-	}
-
-	html, err := ioutil.ReadFile(htmlFilePath)
-	if err != nil {
-		// return err
-		fmt.Println("error ReadFile")
-	}
-
-	// create a new page based on the HTML
-	page := wkhtmltopdf.NewPageReader(bytes.NewReader(html))
-	page.NoBackground.Set(true)
-	page.DisableExternalLinks.Set(false)
-
-	pdfg.AddPage(page)
-
-	// Optional: Set global options
-	pdfg.Dpi.Set(300)
-	pdfg.Orientation.Set(wkhtmltopdf.OrientationPortrait)
-	pdfg.Grayscale.Set(false)
-	pdfg.MarginBottom.Set(0)
-	pdfg.MarginTop.Set(5)
-	pdfg.MarginLeft.Set(5)
-	pdfg.MarginRight.Set(5)
-
-	// cmToPixel := func(cm float64, dpi int) int {
-	// 	inch := cm / 2.54
-	// 	return int(inch * float64(dpi))
-	// }
-	// pdfg.PageWidth.Set(uint(cmToPixel(48,300)))
-	// pdfg.PageWidthUnit.Set("100cm")
-
-	err = pdfg.Create()
-	if err != nil {
-		log.Logrecord("ERROR", fmt.Sprintf("pdf create failed: %s", err.Error()))
-	}
-
-	outputPDFPath := fmt.Sprintf("%s.pdf", pdfPath)
-	err = pdfg.WriteFile(outputPDFPath)
-	if err != nil {
-		log.Logrecord("ERROR", fmt.Sprintf("output to pdf failed: %s", err.Error()))
-	}
-
-	fmt.Printf("PDF created successfully at: %s\n", outputPDFPath)
-
 }
