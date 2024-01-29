@@ -308,8 +308,8 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	}
 	total_height = total_height + 27
 	pdf.AddPageFormat("P", gofpdf.SizeType{Wd: width1, Ht: total_height})
-
-	pdf.AddUTF8Font("Taipei Sans TC Beta", "", "/src/TaipeiSansTCBeta-Regular.ttf")
+	pdf.SetFontLocation("/src")
+	pdf.AddUTF8Font("Taipei Sans TC Beta", "", "TaipeiSansTCBeta-Regular.ttf")
 	// pdf.AddFont("Georgia", "", "/System/Library/Fonts/Supplemental/Georgia.ttf")
 	pdf.SetFont("Taipei Sans TC Beta", "", 20)
 	pdf.CellFormat(0, 0, report_name, "", 0, "C", false, 0, "")
