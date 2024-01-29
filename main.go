@@ -6,8 +6,6 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
-	"report-backend-golang/services"
-	pdf "github.com/adrg/go-wkhtmltopdf"
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
 	// "report-backend-golang/services"
@@ -66,33 +64,7 @@ func main() {
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
-func main3() {
-	utils.LoadEnvironment()
-	// utils.LoadCrontab()
-	htmlPaths := []string{"esinsight_report_part1_2024-01-18_2024-01-25", "esinsight_report_part2_2024-01-20_2024-01-25", "esinsight_report_part3_2024-01-15_2024-01-25"}
 
-
-	// Initialize library.
-	if err := pdf.Init(); err != nil {
-		fmt.Println("init error")
-	}
-
-	defer pdf.Destroy()
-
-	for _, path := range htmlPaths {
-
-		htmlpath := fmt.Sprintf("/Users/chen/Downloads/personal_re/test/html_files/%s.html",path)
-		pdfpath :=  fmt.Sprintf("/Users/chen/Downloads/personal_re/test/report_files/%s.pdf",path)
-		// fmt.Println(htmlpath)
-		// services.GeneratePDF_new(htmlpath,path)
-
-		// services.GeneratePDF1(2000,htmlpath,pdfpath)
-
-		services.GeneratePDF_by_Chromedp(htmlpath,pdfpath)
-	}
-	
-
-}
 
 
 func main2() {
