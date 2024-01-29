@@ -1,6 +1,6 @@
 # build stage
 FROM golang:1.18.6-bullseye AS build-env
-ADD ./report-backend /src
+ADD . /src
 
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
@@ -14,6 +14,7 @@ RUN rm -f /src/google-chrome-stable_current_amd64.deb
 RUN apt-get install fonts-wqy-microhei ttf-wqy-microhei
 
 WORKDIR /app
+RUN mkdir /app/files
 RUN mkdir /app/files/screenshot_files
 RUN mkdir /app/files/html_files
 RUN mkdir /app/files/report_files
@@ -21,6 +22,8 @@ RUN mkdir /app/log_record
 # RUN apt-get install fonts-wqy-microhei ttf-wqy-microhei fonts-wqy-zenhei ttf-wqy-zenhei
 RUN fc-cache -f -v
 RUN ldconfig
+
+
 RUN cd /src && go build -buildvcs=false -o report_backend
 ENTRYPOINT /src/report_backend
 # fonts-cwtex-yen
