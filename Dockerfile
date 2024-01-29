@@ -1,6 +1,6 @@
 # build stage
 FROM golang:1.18.6-bullseye AS build-env
-ADD ./report-backend /src
+ADD . /src
 
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
