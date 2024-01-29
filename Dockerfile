@@ -1,7 +1,7 @@
 # build stage
 FROM golang:1.18.6-bullseye AS build-env
 ADD . /src
-RUN cd /src && go mod tidy && go build -buildvcs=false -o report-backend
+RUN cd /src/report-backend && go mod tidy && go build -buildvcs=false -o report-backend
 
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
