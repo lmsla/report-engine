@@ -18,7 +18,9 @@ RUN mkdir /app/files
 RUN mkdir /app/files/screenshot_files
 RUN mkdir /app/files/html_files
 RUN mkdir /app/files/report_files
+RUN mkdir /app/files/logo
 RUN mkdir /app/log_record
+
 # RUN apt-get install fonts-wqy-microhei ttf-wqy-microhei fonts-wqy-zenhei ttf-wqy-zenhei
 RUN fc-cache -f -v
 RUN ldconfig

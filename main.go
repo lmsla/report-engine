@@ -1,18 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"report-backend-golang/clients"
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
+	"report-backend-golang/utils"
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
 	// "report-backend-golang/services"
-	"report-backend-golang/utils"
 	// "report-backend-golang/entities"
-	"io/ioutil"
-	"encoding/base64"
 )
 
 // @title Report Engine Golang API
@@ -62,29 +59,4 @@ func main() {
 	// log.Logrecord("環境參數", "截圖檔案位置 : "+global.EnvConfig.Files.ScreenshotFile)
 	// log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
-}
-
-
-
-
-func main2() {
-		// 讀取圖片文件
-		imagePath := "/Users/chen/Downloads/personal_re/test/html_files/3001c560-7949-11ee-992a-e1aa9b0ae3ae_2024-01-14_2024-01-24.png"
-		imageData, err := ioutil.ReadFile(imagePath)
-		if err != nil {
-			fmt.Println("Error reading image file:", err)
-			return
-		}
-	
-		// 將圖片轉換為 base64 編碼
-		base64Encoded := base64.StdEncoding.EncodeToString(imageData)
-	
-		// 將 base64 字符串輸出或用於其他地方
-		fmt.Println("Base64 Encoded Image:")
-		fmt.Println(base64Encoded)
-}
-
-
-func main1() {
-	// services.GeneratePDF_by_gofpdf_No_seprate()
 }

@@ -20,6 +20,7 @@ type files struct {
 	TemplateFile   string
 	MigrationsFile string
 	ChromePath     string
+	LogoFile       string
 }
 
 type other struct {

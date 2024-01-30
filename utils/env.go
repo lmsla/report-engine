@@ -76,6 +76,7 @@ func viperConfigToModel() {
 	config.Files.TemplateFile = viper.GetString("files.template_file")
 	config.Files.MigrationsFile = viper.GetString("files.migrations_file")
 	config.Files.ChromePath = viper.GetString("files.chrome_path")
+	config.Files.LogoFile = viper.GetString("files.logo_file")
 
 	config.SSO.Url = viper.GetString("sso.url")
 	config.SSO.Realm = viper.GetString("sso.realm")

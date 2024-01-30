@@ -5,8 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"io"
-	"io/ioutil"
 	log1 "log"
 	"os"
 	"report-backend-golang/entities"
@@ -15,15 +13,8 @@ import (
 	"report-backend-golang/tools"
 	"strings"
 	"time"
-
 	// "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	// pdf "github.com/adrg/go-wkhtmltopdf"
-
-	"context"
-
-	"github.com/chromedp/cdproto/page"
-	"github.com/chromedp/chromedp"
-
 	"github.com/jung-kurt/gofpdf"
 )
 
@@ -211,91 +202,10 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 	return err
 }
 
-// func CreatePDFbySchedule_old_v(ScheduleID int) (err error) {
-
-// 	defer func() {
-// 		if err != nil {
-// 			// 进行错误处理，例如记录日志或返回错误信息给调用方
-// 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
-
-// 		}
-// 	}()
-// 	scheduleData, err := GetReportByScheduleID(ScheduleID)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	time.Sleep(10 * time.Second)
-
-// 	// Initialize library.
-// 	if err := pdf.Init(); err != nil {
-// 		fmt.Println("init error")
-// 	}
-// 	// defer pdf.Destroy()
-
-// 	// // Create converter.
-// 	// converter, err := pdf.NewConverter()
-// 	// if err != nil {
-// 	// 	log1.Fatal(err)
-// 	// }
-// 	// defer converter.Destroy()
-
-// 	for _, reports := range scheduleData {
-// 		// defer pdf.Destroy()
-// 		fmt.Println(reports.Name)
-// 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
-// 		now := time.Now().Format("2006-01-02")
-// 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
-// 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
-// 		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
-
-// 		//	用 ReportID 取出 Report 的相關資料
-// 		report_data, err := GetReportByReportID(reports.ID)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 		}
-// 		fmt.Println(report_data.Name)
-// 		element_data, err := GetElementsByReportID(reports.ID)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 		}
-
-// 		now = time.Now().Format("2006-01-02")
-// 		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
-// 		var images []string
-// 		for _, element := range element_data {
-// 			fmt.Println(element.UID)
-// 			img := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
-// 			fmt.Println(img)
-// 			images = append(images, img)
-// 		}
-// 		total_height := 0
-// 		// var width float64
-// 		for _, image := range images {
-// 			_, height := tools.GetImageHW(image)
-// 			// width = width
-// 			total_height += (height + 98)
-// 		}
-// 		total_height = total_height + 126
-// 		fmt.Println("total_height", total_height)
-
-// 		GeneratePDF(total_height, outputPath, pdfname)
-// 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
-// 	}
-// 	pdf.Destroy()
-// 	return err
-// }
-
 // 不分頁
 func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_name string, timefrom string, now string) {
 	pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, report_name, timefrom, now)
-	//添加多張圖片到 PDF
-	// imagePaths := []string{
-	// 	"/Users/chen/Downloads/personal_re/test/screenshot_files/3001c560-7949-11ee-992a-e1aa9b0ae3ae_2024-01-15_2024-01-25.png",
-	// 	"/Users/chen/Downloads/personal_re/test/screenshot_files/2a97f7c0-7949-11ee-992a-e1aa9b0ae3ae_2024-01-15_2024-01-25.png",
-	// 	"/Users/chen/Downloads/personal_re/test/screenshot_files/3001c560-7949-11ee-992a-e1aa9b0ae3ae_2024-01-20_2024-01-25.png",
-	// 	"/Users/chen/Downloads/personal_re/test/screenshot_files/18c9dcc0-7949-11ee-992a-e1aa9b0ae3ae_2024-01-18_2024-01-25.png",
-	// 	// 添加更多圖片路徑...
-	// }
+
 	fontSize := float64(14)
 	// 創建 PDF 文件
 	pdf := gofpdf.New("L", "mm", "A4", "")
@@ -310,16 +220,17 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	pdf.AddPageFormat("P", gofpdf.SizeType{Wd: width1, Ht: total_height})
 	pdf.SetFontLocation("/src")
 	pdf.AddUTF8Font("Taipei Sans TC Beta", "", "TaipeiSansTCBeta-Regular.ttf")
-	// pdf.AddFont("Georgia", "", "/System/Library/Fonts/Supplemental/Georgia.ttf")
+
+	// 報表名稱
 	pdf.SetFont("Taipei Sans TC Beta", "", 20)
 	pdf.CellFormat(0, 0, report_name, "", 0, "C", false, 0, "")
 
 	// set logo
-	pdf.Image("/Users/chen/Downloads/personal_re/test/screenshot_files/bimap.png", 5, 5, 20, 20, false, "", 0, "")
+	pdf.Image(global.EnvConfig.Files.LogoFile, 5, 5, 20, 20, false, "", 0, "")
 
-	//给个空字符串就会去替换默认的 "{nb}"。
-	//如果这里指定了特别的字符串，那么SetFooterFunc() 中的 "nb" 也必须换成这个特别的字符串
-	pdf.AliasNbPages("")
+	// //给个空字符串就会去替换默认的 "{nb}"。
+	// //如果这里指定了特别的字符串，那么SetFooterFunc() 中的 "nb" 也必须换成这个特别的字符串
+	// pdf.AliasNbPages("")
 	pdf.SetTopMargin(25)
 	// Page properties
 	pageWidth, pageHeight := pdf.GetPageSize()
@@ -334,23 +245,20 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	y = topMargin
 	for i, element := range elementData {
 
-		fmt.Println(i)
+		fmt.Println("image:",i)
+
 		image_name := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
 		width, height := tools.GetImageHW(image_name)
 
 		image_width_cm := (float64(width) / 40) * 4
-		// image_width_string := fmt.Sprintf("%.1fcm", image_width_cm)
 
 		image_height_cm := (float64(height) / 40) * 4
-		// image_height_string := fmt.Sprintf("%.1fcm", image_height_cm)
+
 		fmt.Println("width", image_width_cm, "height", image_height_cm)
 
-		// Add title
-		// title := strings.TrimSuffix(strings.TrimPrefix(imagePaths[i], "/Users/chen/Downloads/personal_re/test/screenshot_files/"), ".png")
-
+		// Add 圖表標題
 		fmt.Println("text Y :", y)
 		pdf.SetY(y)
-
 
 		pdf.SetFont("Taipei Sans TC Beta", "", fontSize)
 		pdf.CellFormat(0, 0, element.Name, "", 0, "C", false, 0, "")
@@ -359,8 +267,6 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 		period := fmt.Sprintf("報表期間:%s~%s", timefrom, now)
 		pdf.SetFont("Taipei Sans TC Beta", "", 10)
 		pdf.CellFormat(0, 0, period, "", 0, "R", false, 0, "")
-		// pdf.WriteAligned(0, 14, element.Name, "C")
-		// pdf.Text(50, y, element.Name)
 
 		y = y + 5
 		pdf.Image(image_name, 10, y, image_width_cm, image_height_cm, false, "", 0, "")
@@ -374,11 +280,6 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 
 	}
 
-	// pdf.Text(50, y, "end")
-	// pdf.AddPageFormat("P", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight})
-
-	// pdf.AddPageFormat("P", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight})
-	// Output PDF to file
 	err := pdf.OutputFileAndClose(pdfname)
 	if err != nil {
 		log1.Fatal(err)
@@ -492,11 +393,8 @@ func GeneratePDF_by_gofpdf() {
 		}
 
 	}
-
 	pdf.Text(50, y, "end")
-	// pdf.AddPageFormat("P", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight})
 
-	// pdf.AddPageFormat("P", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight})
 	// Output PDF to file
 	err := pdf.OutputFileAndClose("output.pdf")
 	if err != nil {
@@ -507,43 +405,80 @@ func GeneratePDF_by_gofpdf() {
 
 }
 
-func addImage(pdf *gofpdf.Fpdf, imagePath string) {
-	// fmt.Println(imagePath)
-	// _, y := pdf.GetXY()
+// func CreatePDFbySchedule_old_v(ScheduleID int) (err error) {
 
-	pdf.Image(imagePath, 10, pdf.GetY(), 0, 60, false, "", 0, "")
-}
+// 	defer func() {
+// 		if err != nil {
+// 			// 进行错误处理，例如记录日志或返回错误信息给调用方
+// 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
 
-func GeneratePDF_by_Chromedp(htmlpath string, pdfpath string) {
-	ctx, cancel := chromedp.NewContext(context.Background())
-	defer cancel()
-	// construct your html
+// 		}
+// 	}()
+// 	scheduleData, err := GetReportByScheduleID(ScheduleID)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	time.Sleep(10 * time.Second)
 
-	html, err := readFileContent(htmlpath)
-	if err != nil {
-		fmt.Println("readFileContent error")
-	}
+// 	// Initialize library.
+// 	if err := pdf.Init(); err != nil {
+// 		fmt.Println("init error")
+// 	}
+// 	// defer pdf.Destroy()
 
-	if err := chromedp.Run(ctx,
-		chromedp.Navigate("about:blank"),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			frameTree, err := page.GetFrameTree().Do(ctx)
-			if err != nil {
-				return err
-			}
-			return page.SetDocumentContent(frameTree.Frame.ID, html).Do(ctx)
-		}),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			buf, _, err := page.PrintToPDF().WithPrintBackground(false).Do(ctx)
-			if err != nil {
-				return err
-			}
-			return ioutil.WriteFile(pdfpath, buf, 0644)
-		}),
-	); err != nil {
-		log1.Fatal(err)
-	}
-}
+// 	// // Create converter.
+// 	// converter, err := pdf.NewConverter()
+// 	// if err != nil {
+// 	// 	log1.Fatal(err)
+// 	// }
+// 	// defer converter.Destroy()
+
+// 	for _, reports := range scheduleData {
+// 		// defer pdf.Destroy()
+// 		fmt.Println(reports.Name)
+// 		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
+// 		now := time.Now().Format("2006-01-02")
+// 		outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
+// 		pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, reports.Name, timefrom, now)
+// 		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
+
+// 		//	用 ReportID 取出 Report 的相關資料
+// 		report_data, err := GetReportByReportID(reports.ID)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		fmt.Println(report_data.Name)
+// 		element_data, err := GetElementsByReportID(reports.ID)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+
+// 		now = time.Now().Format("2006-01-02")
+// 		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+// 		var images []string
+// 		for _, element := range element_data {
+// 			fmt.Println(element.UID)
+// 			img := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
+// 			fmt.Println(img)
+// 			images = append(images, img)
+// 		}
+// 		total_height := 0
+// 		// var width float64
+// 		for _, image := range images {
+// 			_, height := tools.GetImageHW(image)
+// 			// width = width
+// 			total_height += (height + 98)
+// 		}
+// 		total_height = total_height + 126
+// 		fmt.Println("total_height", total_height)
+
+// 		GeneratePDF(total_height, outputPath, pdfname)
+// 		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
+// 	}
+// 	pdf.Destroy()
+// 	return err
+// }
+
 
 // func GeneratePDF(total_height int, htmlpath string, pdfname string) {
 
@@ -610,73 +545,3 @@ func readFileContent(filePath string) (string, error) {
 	return string(file), nil
 }
 
-// Helper function to convert string to io.Reader
-func readerFromStr(s string) io.Reader {
-	tmpfile, err := os.CreateTemp("", "example")
-	if err != nil {
-		log.Logrecord("ERROR", fmt.Sprintf("readerFromStr - CreateTemp : %s", err.Error()))
-		// log.Fatal(err)
-	}
-
-	if _, err := tmpfile.Write([]byte(s)); err != nil {
-		log.Logrecord("ERROR", fmt.Sprintf("readerFromStr - tmpfile.Write : %s", err.Error()))
-	}
-	// fmt.Println(s)
-	return strings.NewReader(s)
-}
-
-// func GeneratePDF1(total_height int, htmlpath string, pdfname string) {
-
-// 	fmt.Println(htmlpath)
-// 	fmt.Println(pdfname)
-
-// 	// Create object from file.
-// 	object, err := pdf.NewObject(htmlpath)
-// 	if err != nil {
-// 		log1.Fatal(err)
-// 	}
-// 	object.Header.ContentCenter = "[title]"
-// 	// object.Header.DisplaySeparator = true
-// 	object.Header.DisplaySeparator = false
-
-// 	// Create converter.
-// 	converter, err := pdf.NewConverter()
-// 	if err != nil {
-// 		log1.Fatal(err)
-// 	}
-// 	defer converter.Destroy()
-
-// 	// Add created objects to the converter.
-// 	converter.Add(object)
-
-// 	total_height_cm := float64(total_height) / 40
-// 	total_height_string := fmt.Sprintf("%.1fcm", total_height_cm)
-// 	fmt.Println("total_height_string", total_height_string)
-// 	converter.Title = "Sample document"
-// 	converter.PaperSize = pdf.A4
-// 	converter.Width = "48cm"
-// 	converter.Height = total_height_string
-// 	//橫向展示
-// 	// converter.Orientation = pdf.Landscape
-// 	converter.MarginTop = "10mm"
-// 	converter.MarginBottom = "10mm"
-// 	converter.MarginLeft = "10mm"
-// 	converter.MarginRight = "10mm"
-
-// 	// Convert objects and save the output PDF document.
-// 	outFile, err := os.Create(pdfname)
-// 	if err != nil {
-// 		log1.Fatal(err)
-// 	}
-// 	defer outFile.Close()
-
-// 	fmt.Println("執行到355行")
-
-// 	// converter.Run(outFile)
-
-// 	if err := converter.Run(outFile); err != nil {
-// 		log1.Fatal(err)
-// 	}
-// 	fmt.Println("執行到362行")
-// 	// defer outFile.Close()
-// }

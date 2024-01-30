@@ -28,7 +28,6 @@ import (
 
 func Logrecord(title,msg string) string{
 
-
     fileName := fmt.Sprintf("%s/ReportEngine-%s.log", global.EnvConfig.Files.LogPath, time.Now().Format("20060102"))    
     // open file and create if non-existent
     file, err := os.OpenFile( fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
