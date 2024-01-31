@@ -18,7 +18,7 @@ import (
 	// "github.com/chromedp/chromedp/device"
 )
 
-func ScreenshotbySchedule(scheduleID int) (err error) {
+func ScreenshotbySchedule(nowtime int64, scheduleID int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -33,7 +33,7 @@ func ScreenshotbySchedule(scheduleID int) (err error) {
 	}
 	for _, data := range schedule_data {
 
-		err := ScreenshotbyReport(data.ID)
+		err := ScreenshotbyReport(nowtime, data.ID)
 		if err != nil {
 			fmt.Println("ScreenshotbyReport - line 47", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
@@ -44,7 +44,7 @@ func ScreenshotbySchedule(scheduleID int) (err error) {
 	return err
 }
 
-func ScreenshotbyReport(reportID int) (err error) {
+func ScreenshotbyReport(nowtime int64, reportID int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -65,13 +65,13 @@ func ScreenshotbyReport(reportID int) (err error) {
 		log.Logrecord("ERROR", "Get Elements by Report ID error"+err.Error())
 		// fmt.Println(err)
 	}
-	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+	timefrom := tools.Timeconverter(nowtime,report_data.TimeUnit, report_data.TimePeriod)
 
 	for _, data := range element_data {
 
 		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖")
 
-		err := Screenshot_element1(data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
+		err := Screenshot_element1(nowtime, data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
 		if err != nil {
 			fmt.Println("ScreenshotbyReport - line 88", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error "+err.Error())
@@ -86,13 +86,12 @@ func ScreenshotbyReport(reportID int) (err error) {
 		}
 	}
 	if err != nil {
-		// fmt.Println("在 ScreenshotbyReport 的錯誤")
 		fmt.Println( "在 ScreenshotbyReport 的錯誤" + err.Error())
 	}
 	return err
 }
 
-func Screenshot_element1(element_type string, url string, space string, uid string, timefrom string, user string, password string) (err error) {
+func Screenshot_element1(nowtime int64, element_type string, url string, space string, uid string, timefrom string, user string, password string) (err error) {
 
 	// /// ----------------error handle----------------//////
 
@@ -107,22 +106,25 @@ func Screenshot_element1(element_type string, url string, space string, uid stri
 	var buf []byte
 	// 將取出來的個參數帶入網址中以便截圖
 	var url1 string
-	now := time.Now().Format("2006-01-02")
+	// now := time.Now().Format("2006-01-02")
+	now := nowtime
+	new_ExecuteTime := time.Unix(now, 0)
+	new_ExecuteTime_str := new_ExecuteTime.Format("2006-01-02")
 	switch element_type {
 	case "visualiztion":
-		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:now))", url, space, uid, timefrom)
+		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:%s))", url, space, uid, timefrom,new_ExecuteTime_str)
 		if err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.css-zxsb69`, &buf); err != nil {
 			fmt.Println("Screenshot_element - line 94", err.Error())
 			log.Logrecord("ERROR", "Visualiztion Screenshot error"+err.Error())
 		}
-		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
+		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 100", err.Error())
 			log.Logrecord("ERROR", "Write Visualiztion Screenshot file error"+err.Error())
 
 		}
 	case "dashboard":
-		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:now))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom)
+		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:%s))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom,new_ExecuteTime_str)
 
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {
@@ -130,7 +132,7 @@ func Screenshot_element1(element_type string, url string, space string, uid stri
 			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
 
 		}
-		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
+		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
 		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 161", err.Error())
 			log.Logrecord("ERROR", "Write Dashboard Screenshot file error"+err.Error())

@@ -1,16 +1,15 @@
 package controller
 
-
 import (
 	"net/http"
-	"strconv"
 	"report-backend-golang/services"
+	"strconv"
+	"time"
+
 	// "report-backend-golang/handler"
 	// "report-backend-golang/entities"
 	"github.com/gin-gonic/gin"
 )
-
-
 
 // @Summary Mail
 // @Tags Mail
@@ -28,8 +27,8 @@ func SendEmailBySchedule(c *gin.Context) {
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
-
-	services.SendEmailBySchedule(ScheduleID)
+	nowtime := time.Now().Unix()
+	services.SendEmailBySchedule(nowtime,ScheduleID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, err.Error())
 	// 	handler.WriteErrorLog(c, err.Error())

@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	// "report-backend-golang/models"
+	"report-backend-golang/handler"
+	"report-backend-golang/log"
 	"report-backend-golang/services"
-	// "report-backend-golang/handler"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	// "report-backend-golang/entities"
@@ -29,6 +32,36 @@ func GetAllHitory(c *gin.Context) {
 }
 
 
+
+
+// @Summary Get History by History ID
+// @Tags History
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.History
+// @Router /History/GetHistory/{id} [get]
+// @Security ApiKeyAuth
+func GetHistoryByHistoryID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetHistoryByHistoryID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
+
 // @Summary Get Old history
 // @Tags History
 // @Accept  json
@@ -46,3 +79,30 @@ func GetOldHitory(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
+
+
+
+// @Summary Create History Report by History ID
+// @Tags History
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.History
+// @Router /History/HistoryReport/{id} [post]
+// @Security ApiKeyAuth
+func CreateHistoryReport(c *gin.Context) {
+
+	HistoryID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "HistoryID ID should be int")
+		// handler.WriteErrorLog(c, "report ID should be integer")
+		return
+	}
+	log.Logrecord("排程",fmt.Sprintf("重新寄送歷史報表, History ID : %d",HistoryID))
+
+	services.CreateHistoryReport(HistoryID)
+	
+	log.Logrecord("排程",fmt.Sprintf("歷史報表寄送完成, History ID : %d",HistoryID))
+
+}
+

@@ -47,7 +47,7 @@ type dashboard struct {
 	Price string
 }
 
-func CreateHtmlbySchedule(ScheduleID int) (err error) {
+func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	// defer func() {
 	// 	if err := recover(); err != nil {
@@ -75,7 +75,7 @@ func CreateHtmlbySchedule(ScheduleID int) (err error) {
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
 		// CreateHtml(reports.ID)
 		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
-		err := CreateHtml(reports.ID)
+		err := CreateHtml(nowtime, reports.ID)
 		if err != nil {
 			fmt.Println("CreateHtml - line 78", err)
 			log.Logrecord("ERROR", "CreateHtml error "+err.Error())
@@ -86,7 +86,7 @@ func CreateHtmlbySchedule(ScheduleID int) (err error) {
 	return err
 }
 
-func CreateHtml(ReportId int) (err error) {
+func CreateHtml(nowtime int64, ReportId int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -107,9 +107,9 @@ func CreateHtml(ReportId int) (err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	now := time.Now().Format("2006-01-02")
-	timefrom := tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+	t := time.Unix(nowtime, 0)
+	now := t.Format("2006-01-02")
+	timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod)
 
 	data1 := Report{}
 	uu := new(Report)
@@ -156,7 +156,7 @@ func CreateHtml(ReportId int) (err error) {
 	return err
 }
 
-func CreatePDFbySchedule(ScheduleID int) (err error) {
+func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -174,8 +174,10 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 	for _, reports := range scheduleData {
 		// defer pdf.Destroy()
 		fmt.Println(reports.Name)
-		timefrom := tools.Timeconverter(reports.TimeUnit, reports.TimePeriod)
-		now := time.Now().Format("2006-01-02")
+		timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod)
+		t := time.Unix(nowtime, 0)
+		now := t.Format("2006-01-02")
+
 		// outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
 
 		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
@@ -191,8 +193,7 @@ func CreatePDFbySchedule(ScheduleID int) (err error) {
 			fmt.Println(err)
 		}
 
-		now = time.Now().Format("2006-01-02")
-		timefrom = tools.Timeconverter(report_data.TimeUnit, report_data.TimePeriod)
+		timefrom = tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod)
 
 		GeneratePDF_by_gofpdf_No_seprate(element_data, reports.Name, timefrom, now)
 
@@ -245,7 +246,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	y = topMargin
 	for i, element := range elementData {
 
-		fmt.Println("image:",i)
+		fmt.Println("image:", i)
 
 		image_name := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
 		width, height := tools.GetImageHW(image_name)
@@ -262,7 +263,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 
 		pdf.SetFont("Taipei Sans TC Beta", "", fontSize)
 		pdf.CellFormat(0, 0, element.Name, "", 0, "C", false, 0, "")
-		y = y+5
+		y = y + 5
 		pdf.SetY(y)
 		period := fmt.Sprintf("報表期間:%s~%s", timefrom, now)
 		pdf.SetFont("Taipei Sans TC Beta", "", 10)
@@ -479,7 +480,6 @@ func GeneratePDF_by_gofpdf() {
 // 	return err
 // }
 
-
 // func GeneratePDF(total_height int, htmlpath string, pdfname string) {
 
 // 	// Create object from file.
@@ -535,13 +535,3 @@ func GeneratePDF_by_gofpdf() {
 
 // 	converter.Destroy()
 // }
-
-// Helper function to read HTML content from a file
-func readFileContent(filePath string) (string, error) {
-	file, err := os.ReadFile(filePath)
-	if err != nil {
-		return "", err
-	}
-	return string(file), nil
-}
-

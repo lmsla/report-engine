@@ -20,8 +20,8 @@ import (
 // @contact.name Winston
 // @contact.email support@swagger.io
 
-// @host 10.99.1.133:8005
-//// @host localhost:8005
+//// @host 10.99.1.133:8005
+// @host localhost:8005
 // @BasePath  /api/v1
 
 // @query.collection.format multi
@@ -60,3 +60,4 @@ func main() {
 	// log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
+

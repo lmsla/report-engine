@@ -2,14 +2,15 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 	"report-backend-golang/services"
+	"strconv"
+	"time"
+	"fmt"
 	// "report-backend-golang/handler"
 
-	// "report-backend-golang/entities"
+	"report-backend-golang/log"
 	"github.com/gin-gonic/gin"
 )
-
 
 // @Summary Html
 // @Tags Html
@@ -27,8 +28,8 @@ func CreateHtml(c *gin.Context) {
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
-
-	services.CreateHtml(ReportID)
+	nowtime := time.Now().Unix()
+	services.CreateHtml(nowtime, ReportID)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, err.Error())
 	// 	handler.WriteErrorLog(c, err.Error())
@@ -36,7 +37,6 @@ func CreateHtml(c *gin.Context) {
 	// }
 	// c.JSON(http.StatusOK, r)
 }
-
 
 // @Summary PDF
 // @Tags PDF
@@ -54,12 +54,12 @@ func CreatePDF(c *gin.Context) {
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
+	nowtime := time.Now().Unix()
 
-	services.CreatePDFbySchedule(ScheduleID)
-	// if err != nil {
-	// 	c.JSON(http.StatusBadRequest, err.Error())
-	// 	handler.WriteErrorLog(c, err.Error())
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, r)
+	log.Logrecord("排程",fmt.Sprintf("報表試寄, Schedule ID : %d",ScheduleID))
+	
+	services.CreatePDFbySchedule(nowtime, ScheduleID)
+
+	log.Logrecord("排程",fmt.Sprintf("報表試寄完成, Schedule ID : %d",ScheduleID))
+
 }

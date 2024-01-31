@@ -27,6 +27,17 @@ func GetAllHistory() models.Response {
 	return res
 }
 
+// 查單一 History by History ID
+func GetHistoryByHistoryID(historyID int) (entities.History, error) {
+
+	var history entities.History
+	history.ID = historyID
+	err := global.Mysql.Preload("Schedule").First(&history).Error
+	if err != nil {
+		return history, err
+	}
+	return history, nil
+}
 
 
 // 新增history
@@ -34,7 +45,7 @@ func CreateHistory(history entities.History) models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []models.Instance{}
+	res.Body = []entities.History{}
 
 	err := global.Mysql.Create(&history).Error
 	if err != nil {
@@ -62,7 +73,7 @@ func GetOldHistory() models.Response {
 	// 	return res
 	// }
 
-	// 一个月前的时间戳
+	// 一個月前的時間戳
 	oneMonthAgo := time.Now().AddDate(0, -1, 0).Unix()
 
 	err := global.Mysql.Where("created_at < ?",oneMonthAgo).Find(&res.Body).Error

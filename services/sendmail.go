@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	log1 "log"
-	"report-backend-golang/log"
 	"mime"
 	"net/smtp"
 	"report-backend-golang/global"
+	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"strings"
 	"time"
@@ -46,7 +46,7 @@ type Message struct {
 	attachment  Attachment
 }
 
-func SendEmailBySchedule(ScheduleID int) (err error){
+func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -69,13 +69,22 @@ func SendEmailBySchedule(ScheduleID int) (err error){
 	// timefrom := tools.Timeconverter(report_data.TimeUnit,report_data.TimePeriod)
 	var reportForSendList []string
 	var nameList []string
-	now := time.Now().Format("2006-01-02")
+
+	t := time.Unix(nowtime, 0)
+	now := t.Format("2006-01-02")
+	
 	for _, report := range report_data {
-		timefrom := tools.Timeconverter(report.TimeUnit, report.TimePeriod)
+		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod)
 		reportname := fmt.Sprintf("%s_%s_%s", report.Name, timefrom, now)
 		nameList = append(nameList, reportname)
 		reportForSendList = append(reportForSendList, report_path+reportname)
 
+	}
+	var text string
+	text = "Report Center 排程\n"
+	for _, report := range report_data {
+		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod)
+		text += fmt.Sprintf("%s，報表區間：%s ~ %s\n", report.Name, timefrom, now)
 	}
 
 	var reciver_list []string
@@ -111,15 +120,11 @@ func SendEmailBySchedule(ScheduleID int) (err error){
 	// fmt.Println("mail",mail)
 
 	message := Message{from: global.EnvConfig.Email.Sender,
-		// to:  []string{"rabot6201@gmail.com"},
-		// cc:  []string{"russell.chen@bimap.co"},
-		// bcc: []string{"russell.chen@bimap.co"},
 		to:          reciver_list,
 		cc:          cc_list,
 		bcc:         bcc_list,
-		// subject:     "test_subject",
-		subject:     schedule_data.Name+"_"+ now,
-		body:        "test_body",
+		subject:     schedule_data.Name + schedule_data.Subject,
+		body:        text + schedule_data.Body,
 		contentType: "text/plain;charset=utf-8",
 		// attachment: Attachment{
 		//     name:        "test.jpg",
@@ -127,9 +132,8 @@ func SendEmailBySchedule(ScheduleID int) (err error){
 		//     withFile:    true,
 		// },
 		attachment: Attachment{
-			filepath: reportForSendList,
-			name:     nameList,
-			// name:        []string{"/Users/chen/Downloads/00個人研究/test/report_files/report01.pdf", "/Users/chen/Downloads/00個人研究/test/report_files/report02.pdf"},
+			filepath:    reportForSendList,
+			name:        nameList,
 			contentType: "application/octet-stream",
 			withFile:    true,
 		},
@@ -147,7 +151,6 @@ func SendEmailBySchedule(ScheduleID int) (err error){
 	}
 	return err
 }
-
 
 func newFunction(mail Mail, message Message) error {
 	err := mail.Send(message)

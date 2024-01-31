@@ -60,15 +60,18 @@ func LoadRouter() *gin.Engine {
 	apiv1.DELETE("/Schedule/Delete/:id", DeleteSchedule)
 	apiv1.PUT("/Schedule/Update", UpdateSchedule)
 
-	apiv1.POST("Screenshot/Create/:id", GetScreenShot)
+	// apiv1.POST("Screenshot/Create/:id", GetScreenShot)
 
-	apiv1.POST("Html/Create/:id", CreateHtml)
-	apiv1.POST("PDF/Create/:id", CreatePDF)
+	apiv1.POST("/Html/Create/:id", CreateHtml)
+	apiv1.POST("/PDF/Create/:id", CreatePDF)
 
 	apiv1.POST("/Mail/Send/:id", SendEmailBySchedule)
 
 	apiv1.GET("/History/GetAll", GetAllHitory)
 	apiv1.GET("/History/GetOldHistory", GetOldHitory)
+	apiv1.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
+	apiv1.POST("/History/HistoryReport/:id", CreateHistoryReport)
+
 
 	apiv1.GET("/get-sso-url", GetSsoURL)
 

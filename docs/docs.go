@@ -246,6 +246,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/History/GetHistory/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get History by History ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.History"
+                        }
+                    }
+                }
+            }
+        },
         "/History/GetOldHistory": {
             "get": {
                 "consumes": [
@@ -263,6 +299,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/History/HistoryReport/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "History"
+                ],
+                "summary": "Create History Report by History ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.History"
                         }
                     }
                 }
@@ -913,42 +985,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/Screenshot/Create/{id}": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ScreenShot"
-                ],
-                "summary": "ScreenShot",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/get-sso-url": {
             "get": {
                 "consumes": [
@@ -1022,6 +1058,61 @@ const docTemplate = `{
                 },
                 "uid": {
                     "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.History": {
+            "type": "object",
+            "properties": {
+                "bcc": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cc": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "emailTime": {
+                    "type": "integer"
+                },
+                "executeTime": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "schedule": {
+                    "description": "Schedule     Schedule ` + "`" + `gorm:\"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;\"` + "`" + `",
+                    "$ref": "#/definitions/entities.Schedule"
+                },
+                "scheduleID": {
+                    "type": "integer"
+                },
+                "scheduleName": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "to": {
+                    "description": "ReportID     int      ` + "`" + `gorm:\"type:int\"` + "`" + `\nReport       Report   ` + "`" + `gorm:\"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;\"` + "`" + `",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "updated_at": {
                     "type": "integer"
@@ -1110,6 +1201,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "body": {
+                    "type": "string"
+                },
                 "cc": {
                     "type": "array",
                     "items": {
@@ -1140,8 +1234,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/entities.Report"
                     }
                 },
+                "subject": {
+                    "type": "string"
+                },
                 "to": {
-                    "description": "To       []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"to\" form:\"to\"` + "`" + `\nCC       []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"cc\" form:\"cc\"` + "`" + `\nBCC      []string ` + "`" + `gorm:\"type:varchar(50)\" json:\"bcc\" form:\"bcc\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -1279,7 +1375,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "10.99.1.133:8005",
+	Host:             "localhost:8005",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},
 	Title:            "Report Engine Golang API",
