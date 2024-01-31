@@ -112,7 +112,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 	new_ExecuteTime_str := new_ExecuteTime.Format("2006-01-02")
 	switch element_type {
 	case "visualiztion":
-		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:%s))", url, space, uid, timefrom,new_ExecuteTime_str)
+		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:'%s'))", url, space, uid, timefrom,new_ExecuteTime_str)
 		if err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.css-zxsb69`, &buf); err != nil {
 			fmt.Println("Screenshot_element - line 94", err.Error())
 			log.Logrecord("ERROR", "Visualiztion Screenshot error"+err.Error())
@@ -124,7 +124,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 
 		}
 	case "dashboard":
-		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:%s))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom,new_ExecuteTime_str)
+		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:'%s'))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom,new_ExecuteTime_str)
 
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {

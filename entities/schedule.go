@@ -22,11 +22,13 @@ type BCC []string
 // foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;
 
 type ReportsSchedules struct {
+	Common
 	ReportID   int `gorm:"primaryKey" form:"report_id"`
 	ScheduleID int `gorm:"primaryKey" form:"schedule_id"`
 }
 
 type CronList struct {
+	Common
 	EntryID    int `gorm:"primaryKey" form:"entry_id"`
 	ScheduleID int `gorm:"primaryKey" form:"schedule_id"`
 }
