@@ -54,11 +54,10 @@ func CreatePDF(c *gin.Context) {
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
-	nowtime := time.Now().Unix()
 
 	log.Logrecord("排程",fmt.Sprintf("報表試寄, Schedule ID : %d",ScheduleID))
-	
-	services.CreatePDFbySchedule(nowtime, ScheduleID)
+
+	services.FuncAddToCron(ScheduleID)
 
 	log.Logrecord("排程",fmt.Sprintf("報表試寄完成, Schedule ID : %d",ScheduleID))
 

@@ -49,15 +49,6 @@ type dashboard struct {
 
 func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 
-	// defer func() {
-	// 	if err := recover(); err != nil {
-	// 		// 处理错误
-	// 		log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
-	// 		// return fmt.Errorf("发生错误：%v", err)
-	// 		// return err
-	// 	}
-	// }()
-
 	defer func() {
 		if err != nil {
 			// 进行错误处理，例如记录日志或返回错误信息给调用方
