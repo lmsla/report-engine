@@ -4,8 +4,9 @@ type Report struct {
 	Common
 	ID         int        `gorm:"primaryKey;index" json:"id" form:"id"`
 	Name       string     `gorm:"type:varchar(50)" json:"name" form:"name"`
-	TimeUnit   string        `gorm:"type:varchar(50)" json:"time_unit" form:"time_unit"`
-	TimePeriod int     `gorm:"type:int" json:"time_period" form:"time_period"`
+	TimeUnit   string     `gorm:"type:varchar(50)" json:"time_unit" form:"time_unit"`
+	TimePeriod int        `gorm:"type:int" json:"time_period" form:"time_period"`
+	Alias      string     `gorm:"type:varchar(45)" json:"alias" form:"alias"`
 	Elements   []Element  `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 	Schedules  []Schedule `gorm:"many2many:reports_schedules;"`
 }
@@ -21,5 +22,5 @@ type Element struct {
 	ColumnType string   `gorm:"type:varchar(50)" json:"column_type" form:"column_type"`
 	InstanceID int      `gorm:"type:int" json:"instance_id" form:"instance_id"`
 	Instance   Instance `json:"instance" gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	SpaceName string   `gorm:"type:varchar(50)" json:"space_name" form:"space_name"`
+	SpaceName  string   `gorm:"type:varchar(50)" json:"space_name" form:"space_name"`
 }

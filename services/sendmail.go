@@ -72,9 +72,9 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	t := time.Unix(nowtime, 0)
 	now := t.Format("2006-01-02")
-	
+
 	for _, report := range report_data {
-		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod)
+		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod, report.Alias)
 		reportname := fmt.Sprintf("%s_%s_%s", report.Name, timefrom, now)
 		nameList = append(nameList, reportname)
 		reportForSendList = append(reportForSendList, report_path+reportname)
@@ -83,7 +83,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 	var text string
 	text = "Report Center 排程\n"
 	for _, report := range report_data {
-		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod)
+		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod, report.Alias)
 		text += fmt.Sprintf("%s，報表區間：%s ~ %s\n", report.Name, timefrom, now)
 	}
 
