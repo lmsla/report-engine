@@ -165,7 +165,7 @@ func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
 	for _, reports := range scheduleData {
 		// defer pdf.Destroy()
 		fmt.Println(reports.Name)
-		timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
+		// timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
 		t := time.Unix(nowtime, 0)
 		now := t.Format("2006-01-02")
 
@@ -184,7 +184,7 @@ func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
 			fmt.Println(err)
 		}
 
-		timefrom = tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
+		timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
 
 		GeneratePDF_by_gofpdf_No_seprate(element_data, reports.Name, timefrom, now)
 

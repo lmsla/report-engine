@@ -194,7 +194,8 @@ func (mail SendMail) Send(message Message) error {
 				}
 			}()
 			// mail.writeFile(buffer, message.attachment.name)
-			mail.writeFile(buffer, global.EnvConfig.Files.ReportFile+"/"+name+".pdf")
+			mail.writeFile(buffer, global.EnvConfig.Files.ReportFile+"/"+name)
+			// mail.writeFile(buffer, global.EnvConfig.Files.ReportFile+"/"+name+".pdf")
 		}
 	}
 
