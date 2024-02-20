@@ -57,7 +57,7 @@ func CreatePDF(c *gin.Context) {
 
 	log.Logrecord("排程",fmt.Sprintf("報表試寄, Schedule ID : %d",ScheduleID))
 
-	services.FuncAddToCron(ScheduleID)
+	go services.FuncAddToCron(ScheduleID)
 
 	log.Logrecord("排程",fmt.Sprintf("報表試寄完成, Schedule ID : %d",ScheduleID))
 

@@ -76,7 +76,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 	for _, report := range report_data {
 		timefrom := tools.Timeconverter(nowtime, report.TimeUnit, report.TimePeriod, report.Alias)
 		reportname := fmt.Sprintf("%s_%s_%s", report.Name, timefrom, now)
-		nameList = append(nameList, reportname)
+		nameList = append(nameList, reportname+".pdf")
 		reportForSendList = append(reportForSendList, report_path+reportname)
 
 	}

@@ -211,6 +211,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	total_height = total_height + 27
 	pdf.AddPageFormat("P", gofpdf.SizeType{Wd: width1, Ht: total_height})
 	pdf.SetFontLocation("/src")
+	// pdf.SetFontLocation("/Users/chen/Documents/gitlab/git-out/product/report-backend-intergration")
 	pdf.AddUTF8Font("Taipei Sans TC Beta", "", "TaipeiSansTCBeta-Regular.ttf")
 
 	// 報表名稱
