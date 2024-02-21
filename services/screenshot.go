@@ -293,7 +293,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
 		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
-	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, cancel := chromedp.NewContext(allocCtx)
 	defer cancel()
 

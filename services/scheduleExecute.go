@@ -112,7 +112,8 @@ func FuncAddToCron(scheduleID int) {
 
 	err = global.Mysql.Create(&history).Error
 	if err != nil {
-
+		msg := fmt.Sprintf("create history error: %s",err.Error())
+		log.Logrecord("ERROR",msg)
 	}
 
 	DeleteOldHistory()
@@ -181,6 +182,7 @@ func CreateHistoryReport(historyID int) {
 
 	err = global.Mysql.Create(&history).Error
 	if err != nil {
-
+		msg := fmt.Sprintf("create history error: %s",err.Error())
+		log.Logrecord("ERROR",msg)
 	}
 }

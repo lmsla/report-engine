@@ -37,15 +37,15 @@ type Element struct {
 	Period string
 }
 
-type title struct {
-	Name string
-}
+// type title struct {
+// 	Name string
+// }
 
-type dashboard struct {
-	Img   string
-	Name  string
-	Price string
-}
+// type dashboard struct {
+// 	Img   string
+// 	Name  string
+// 	Price string
+// }
 
 func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 
@@ -141,7 +141,9 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 
 	f, _ := os.Create(outputPath)
 	w := bufio.NewWriter(f)
-	w.WriteString(string(processed.Bytes()))
+	// 1.18 時的舊寫法
+	// w.WriteString(string(processed.Bytes()))
+	w.WriteString(processed.String())
 	w.Flush()
 
 	return err
@@ -210,8 +212,8 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, report_nam
 	}
 	total_height = total_height + 27
 	pdf.AddPageFormat("P", gofpdf.SizeType{Wd: width1, Ht: total_height})
-	pdf.SetFontLocation("/src")
-	// pdf.SetFontLocation("/Users/chen/Documents/gitlab/git-out/product/report-backend-intergration")
+	// pdf.SetFontLocation("/src")
+	pdf.SetFontLocation(global.EnvConfig.Files.FontFile)
 	pdf.AddUTF8Font("Taipei Sans TC Beta", "", "TaipeiSansTCBeta-Regular.ttf")
 
 	// 報表名稱
