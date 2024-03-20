@@ -1092,7 +1092,11 @@
                 },
                 "schedule": {
                     "description": "Schedule     Schedule `gorm:\"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;\"`",
-                    "$ref": "#/definitions/entities.Schedule"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/entities.Schedule"
+                        }
+                    ]
                 },
                 "scheduleID": {
                     "type": "integer"
@@ -1153,6 +1157,9 @@
         "entities.Report": {
             "type": "object",
             "properties": {
+                "alias": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "integer"
                 },
@@ -1217,6 +1224,9 @@
                 },
                 "deleted_at": {
                     "type": "integer"
+                },
+                "enable": {
+                    "type": "boolean"
                 },
                 "id": {
                     "type": "integer"
@@ -1317,6 +1327,9 @@
         "models.Report": {
             "type": "object",
             "properties": {
+                "alias": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "integer"
                 },
