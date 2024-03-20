@@ -1394,8 +1394,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Golang API 專案描述",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
+	// LeftDelim:        "{{",
+	// RightDelim:       "}}",
 }
 
 func init() {
