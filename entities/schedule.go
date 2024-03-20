@@ -11,6 +11,7 @@ type Schedule struct {
 	Subject  string   `gorm:"type:varchar(255)" json:"subject" form:"subject"`
 	Body     string   `gorm:"type:varchar(255)" json:"body" form:"body"`
 	CronID   int      `gorm:"type:int" json:"cron_id" form:"cron_id"`
+	Enable   bool     `gorm:"type:bool" json:"enable" form:"enable"`
 	Reports  []Report `gorm:"many2many:reports_schedules;foreignKey:ID;reference:ID;"`
 	// CronList CronList
 }
