@@ -1,5 +1,5 @@
 # build stage
-FROM golang:1.18.6-bullseye AS build-env
+FROM golang:1.22.0-bullseye AS build-env
 ADD . /src
 
 RUN rm /etc/localtime
