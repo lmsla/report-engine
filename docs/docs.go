@@ -303,6 +303,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/History/HistoryReport": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "History"
+                ],
+                "summary": "Create History Report by History ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.History"
+                        }
+                    }
+                }
+            }
+        },
         "/History/HistoryReport/{id}": {
             "post": {
                 "security": [
@@ -1394,8 +1430,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Golang API 專案描述",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	// LeftDelim:        "{{",
-	// RightDelim:       "}}",
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

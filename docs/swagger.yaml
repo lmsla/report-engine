@@ -432,6 +432,28 @@ paths:
       summary: Get Old history
       tags:
       - History
+  /History/HistoryReport:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.History'
+      security:
+      - ApiKeyAuth: []
+      summary: Create History Report by History ID
+      tags:
+      - History
   /History/HistoryReport/{id}:
     post:
       consumes:
