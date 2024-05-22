@@ -454,28 +454,6 @@ paths:
       summary: Create History Report by History ID
       tags:
       - History
-  /History/HistoryReport/{id}:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entities.History'
-      security:
-      - ApiKeyAuth: []
-      summary: Create History Report by History ID
-      tags:
-      - History
   /Html/Create/{id}:
     post:
       consumes:

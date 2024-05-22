@@ -65,7 +65,7 @@ func GetImageHW(image string) (width int, height int) {
 	// 解码 PNG 图像
 	img, err := png.Decode(file)
 	if err != nil {
-		fmt.Println("無碼解碼圖片:", err)
+		fmt.Println("無法解碼圖片:", err)
 		return
 	}
 

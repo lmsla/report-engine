@@ -339,42 +339,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/History/HistoryReport/{id}": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "History"
-                ],
-                "summary": "Create History Report by History ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entities.History"
-                        }
-                    }
-                }
-            }
-        },
         "/Html/Create/{id}": {
             "post": {
                 "security": [
