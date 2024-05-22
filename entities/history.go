@@ -16,3 +16,5 @@ type History struct {
 	EmailTime   int64
 	Success     string `gorm:"type:varchar(50)"`
 }
+
+

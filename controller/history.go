@@ -90,7 +90,7 @@ func GetOldHitory(c *gin.Context) {
 // @Success 200 {object} entities.History
 // @Router /History/HistoryReport/{id} [post]
 // @Security ApiKeyAuth
-func CreateHistoryReport(c *gin.Context) {
+func CreateHistoryReport1(c *gin.Context) {
 
 	HistoryID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -106,3 +106,30 @@ func CreateHistoryReport(c *gin.Context) {
 
 }
 
+
+
+// @Summary Create History Report by History ID
+// @Tags History
+// @Accept  json
+// @Produce  json
+// @Param id query int true "id"
+// @Success 200 {object} entities.History
+// @Router /History/HistoryReport [post]
+// @Security ApiKeyAuth
+func CreateHistoryReport(c *gin.Context) {
+
+	idParam := c.Query("id")
+
+	HistoryID, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "HistoryID ID should be int")
+		// handler.WriteErrorLog(c, "report ID should be integer")
+		return
+	}
+	log.Logrecord("排程",fmt.Sprintf("重新寄送歷史報表, History ID : %d",HistoryID))
+
+	services.CreateHistoryReport(HistoryID)
+	
+	log.Logrecord("排程",fmt.Sprintf("歷史報表寄送完成, History ID : %d",HistoryID))
+
+}
