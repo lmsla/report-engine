@@ -28,53 +28,59 @@ func LoadRouter() *gin.Engine {
 	router.GET("healthcheck", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "")
 	})
+
+	//*** 不需要驗證 Token ***//
 	apiv1 := router.Group("api/v1")
+	{
+		apiv1.GET("/get-sso-url", GetSsoURL)
+	}
 
-	apiv1.GET("/testdefer", TestDefer)
+	//*** 驗證 Token 跟 SSO 取 UserInfo AccessHosts ***//
+	apiv1_auth := router.Group("api/v1")
+	apiv1_auth.Use(GetUserInfo)
+	{
+		apiv1_auth.GET("/Instance/GetAll", GetAllInstances)
+		apiv1_auth.POST("/Instance/Create", CreateInstance)
+		apiv1_auth.PUT("/Instance/Update", UpdateInstance)
+		apiv1_auth.DELETE("/Instance/Delete/:id", DeleteInstance)
+		apiv1_auth.GET("/Instance/GetDashboards/:id", GetDBDashboardByInstanceID)
+		apiv1_auth.GET("/Instance/GetVisualizations/:id", GetDBVisualizationByInstanceID)
 
-	apiv1.GET("/Instance/GetAll", GetAllInstances)
-	apiv1.POST("/Instance/Create", CreateInstance)
-	apiv1.PUT("/Instance/Update", UpdateInstance)
-	apiv1.DELETE("/Instance/Delete/:id", DeleteInstance)
-	apiv1.GET("/Instance/GetDashboards/:id", GetDBDashboardByInstanceID)
-	apiv1.GET("/Instance/GetVisualizations/:id", GetDBVisualizationByInstanceID)
+		apiv1_auth.GET("/Dropdown", GetDropdownSource)
 
-	apiv1.GET("/Dropdown", GetDropdownSource)
+		apiv1_auth.GET("/Report/GetAll", GetAllReports)
+		apiv1_auth.POST("/Report/Create", CreateReport)
+		apiv1_auth.PUT("/Report/Update", UpdateReport)
+		apiv1_auth.DELETE("/Report/Delete/:id", DeleteReport)
+		apiv1_auth.GET("/Report/GetReportByScheduleID/:id", GetReportByScheduleID)
+		apiv1_auth.GET("/Report/GetReport/:id", GetReportByReportID)
 
-	apiv1.GET("/Report/GetAll", GetAllReports)
-	apiv1.POST("/Report/Create", CreateReport)
-	apiv1.PUT("/Report/Update", UpdateReport)
-	apiv1.DELETE("/Report/Delete/:id", DeleteReport)
-	apiv1.GET("/Report/GetReportByScheduleID/:id", GetReportByScheduleID)
-	apiv1.GET("/Report/GetReport/:id", GetReportByReportID)
+		apiv1_auth.GET("/Element/GetAll", GetAllElements)
+		apiv1_auth.POST("/Element/Create", CreateElement)
+		apiv1_auth.PUT("/Element/Update", UpdateElement)
+		apiv1_auth.DELETE("/Element/Delete/:id", DeleteElement)
+		apiv1_auth.GET("/Element/GetElementByReportID/:id", GetElementByReportID)
 
-	apiv1.GET("/Element/GetAll", GetAllElements)
-	apiv1.POST("/Element/Create", CreateElement)
-	apiv1.PUT("/Element/Update", UpdateElement)
-	apiv1.DELETE("/Element/Delete/:id", DeleteElement)
-	apiv1.GET("/Element/GetElementByReportID/:id", GetElementByReportID)
+		apiv1_auth.GET("/Schedule/GetAll", GetAllSchedule)
+		apiv1_auth.GET("/Schedule/GetSchedule/:id", GetScheduleByScheduleID)
+		apiv1_auth.POST("/Schedule/Create", CreateSchedule)
+		apiv1_auth.DELETE("/Schedule/Delete/:id", DeleteSchedule)
+		apiv1_auth.PUT("/Schedule/Update", UpdateSchedule)
 
-	apiv1.GET("/Schedule/GetAll", GetAllSchedule)
-	apiv1.GET("/Schedule/GetSchedule/:id", GetScheduleByScheduleID)
-	apiv1.POST("/Schedule/Create", CreateSchedule)
-	apiv1.DELETE("/Schedule/Delete/:id", DeleteSchedule)
-	apiv1.PUT("/Schedule/Update", UpdateSchedule)
+		// apiv1_auth.POST("Screenshot/Create/:id", GetScreenShot)
 
-	// apiv1.POST("Screenshot/Create/:id", GetScreenShot)
+		apiv1_auth.POST("/Html/Create/:id", CreateHtml)
+		apiv1_auth.POST("/PDF/Create/:id", CreatePDF)
 
-	apiv1.POST("/Html/Create/:id", CreateHtml)
-	apiv1.POST("/PDF/Create/:id", CreatePDF)
+		apiv1_auth.POST("/Mail/Send/:id", SendEmailBySchedule)
 
-	apiv1.POST("/Mail/Send/:id", SendEmailBySchedule)
+		apiv1_auth.GET("/History/GetAll", GetAllHitory)
+		apiv1_auth.GET("/History/GetOldHistory", GetOldHitory)
+		apiv1_auth.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
+		// apiv1_auth.POST("/History/HistoryReport/:id", CreateHistoryReport)
+		apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
 
-	apiv1.GET("/History/GetAll", GetAllHitory)
-	apiv1.GET("/History/GetOldHistory", GetOldHitory)
-	apiv1.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
-	// apiv1.POST("/History/HistoryReport/:id", CreateHistoryReport)
-	apiv1.POST("/History/HistoryReport", CreateHistoryReport)
-
-
-	apiv1.GET("/get-sso-url", GetSsoURL)
+	}
 
 	return router
 }

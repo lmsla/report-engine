@@ -90,7 +90,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 	var reciver_list []string
 	var cc_list []string
 	var bcc_list []string
-	schedule_data, err := GetScheduleBysSheduleID(ScheduleID)
+	schedule_data, err := GetScheduleBySheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
 	}

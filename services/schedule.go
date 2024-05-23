@@ -32,7 +32,7 @@ func GetAllSchedule() models.Response {
 }
 
 // 查單一Schedule by schedule ID
-func GetScheduleBysSheduleID(scheduleID int) (entities.Schedule, error) {
+func GetScheduleBySheduleID(scheduleID int) (entities.Schedule, error) {
 
 	var instance entities.Schedule
 	instance.ID = scheduleID

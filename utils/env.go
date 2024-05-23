@@ -82,9 +82,10 @@ func viperConfigToModel() {
 	config.SSO.Realm = viper.GetString("sso.realm")
 	config.SSO.User = viper.GetString("sso.user")
 	config.SSO.Password = viper.GetString("sso.password")
-	config.SSO.License_key = viper.GetString("sso.license_key")
-
-
+	config.SSO.LicenseKey = viper.GetString("sso.license_key")
+	config.SSO.AdminRole = viper.GetString("sso.admin_role")
+	config.SSO.UserRole = viper.GetString("sso.user_role")
+	config.SSO.ClientID = viper.GetString("sso.client_id")
 
 
 	global.EnvConfig = &config

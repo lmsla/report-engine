@@ -42,7 +42,10 @@ type sso struct {
 	Realm       string
 	User        string
 	Password    string
-	License_key string
+	LicenseKey string
+	ClientID   string
+	AdminRole  string
+	UserRole   string
 }
 
 type server struct {

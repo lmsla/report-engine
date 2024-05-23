@@ -47,7 +47,7 @@ func GetScheduleByScheduleID(c *gin.Context) {
 	}
 
 	// inventory, err := screenshot.GetInstanceByID(id)
-	inventory, err := services.GetScheduleBysSheduleID(id)
+	inventory, err := services.GetScheduleBySheduleID(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error to get inventory details")
 		handler.WriteErrorLog(c, "error to get inventory details")

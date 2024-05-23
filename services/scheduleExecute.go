@@ -11,7 +11,7 @@ import (
 // 執行 PDF Schedule by ScheduleID
 func ExecuteShedulePDF(scheduleID int) {
 
-	inventory, err := GetScheduleBysSheduleID(scheduleID)
+	inventory, err := GetScheduleBySheduleID(scheduleID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -61,7 +61,7 @@ func ExecuteShedulePDF(scheduleID int) {
 }
 
 func FuncAddToCron(scheduleID int) {
-	inventory, err := GetScheduleBysSheduleID(scheduleID)
+	inventory, err := GetScheduleBySheduleID(scheduleID)
 	if err != nil {
 		log.Logrecord("ERROR ", "Get Schedule by Schedule Id error"+err.Error())
 		fmt.Println(err)
@@ -131,7 +131,7 @@ func CreateHistoryReport(historyID int) {
 
 	}
 
-	inventory, err := GetScheduleBysSheduleID(historydata.ScheduleID)
+	inventory, err := GetScheduleBySheduleID(historydata.ScheduleID)
 	if err != nil {
 		log.Logrecord("ERROR ", "Get Schedule by Schedule Id error"+err.Error())
 		fmt.Println(err)
