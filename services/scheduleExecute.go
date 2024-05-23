@@ -4,10 +4,6 @@ import (
 	"fmt"
 	"report-backend-golang/entities"
 	"report-backend-golang/global"
-	// "report-backend-golang/models"
-	// "report-backend-golang/screenshot"
-	// "report-backend-golang/schedule"
-	// "github.com/robfig/cron/v3"
 	"report-backend-golang/log"
 	"time"
 )
@@ -87,23 +83,28 @@ func FuncAddToCron(scheduleID int) {
 	if err != nil {
 		fmt.Println("截圖錯誤", err)
 		history.Success = "截圖錯誤"
-	}
-	err = CreateHtmlbySchedule(time_execute, scheduleID)
-	if err != nil {
-		fmt.Println("產生html錯誤", err)
-		history.Success = "產生html錯誤"
-	}
-	// CreatePDFbySchedule(scheduleID)
-	err = CreatePDFbySchedule(time_execute, scheduleID)
-	if err != nil {
-		fmt.Println("產生pdf錯誤", err)
-		history.Success = "產生pdf錯誤"
-	}
+	} else {
+		err = CreateHtmlbySchedule(time_execute, scheduleID)
+		if err != nil {
+			fmt.Println("產生html錯誤", err)
+			history.Success = "產生html錯誤"
+		} else {
+			// CreatePDFbySchedule(scheduleID)
+			err = CreatePDFbySchedule(time_execute, scheduleID)
+			if err != nil {
+				fmt.Println("產生pdf錯誤", err)
+				history.Success = "產生pdf錯誤"
+			} else {
+				err = SendEmailBySchedule(time_execute, scheduleID)
+				if err != nil {
+					fmt.Println("發送mail錯誤", err)
+					history.Success = "發送mail錯誤"
+				}
 
-	err = SendEmailBySchedule(time_execute, scheduleID)
-	if err != nil {
-		fmt.Println("發送mail錯誤", err)
-		history.Success = "發送mail錯誤"
+			}
+
+		}
+
 	}
 
 	time_mail := time.Now().Unix()
@@ -112,14 +113,15 @@ func FuncAddToCron(scheduleID int) {
 
 	err = global.Mysql.Create(&history).Error
 	if err != nil {
-		msg := fmt.Sprintf("create history error: %s",err.Error())
-		log.Logrecord("ERROR",msg)
+		msg := fmt.Sprintf("create history error: %s", err.Error())
+		log.Logrecord("ERROR", msg)
 	}
 
 	DeleteOldHistory()
 
 }
 
+// report 重寄by 歷史紀錄
 func CreateHistoryReport(historyID int) {
 
 	historydata, err := GetHistoryByHistoryID(historyID)
@@ -152,37 +154,43 @@ func CreateHistoryReport(historyID int) {
 
 	log.Logrecord("排程", "schedule name: "+inventory.Name)
 	history.Success = "成功"
+
 	err = ScreenshotbySchedule(history_ExecuteTime, historydata.ScheduleID)
+	fmt.Println("ScreenshotbySchedule err", err)
 	if err != nil {
 		fmt.Println("截圖錯誤", err)
 		history.Success = "截圖錯誤"
-	}
-	err = CreateHtmlbySchedule(history_ExecuteTime, historydata.ScheduleID)
-	if err != nil {
-		fmt.Println("產生html錯誤", err)
-		history.Success = "產生html錯誤"
-	}
-	// CreatePDFbySchedule(scheduleID)
-	err = CreatePDFbySchedule(history_ExecuteTime, historydata.ScheduleID)
-	if err != nil {
-		fmt.Println("產生pdf錯誤", err)
-		history.Success = "產生pdf錯誤"
-	}
+	} else {
+		err = CreateHtmlbySchedule(history_ExecuteTime, historydata.ScheduleID)
+		if err != nil {
+			fmt.Println("產生html錯誤", err)
+			history.Success = "產生html錯誤"
+		} else {
+			err = CreatePDFbySchedule(history_ExecuteTime, historydata.ScheduleID)
+			if err != nil {
+				fmt.Println("產生pdf錯誤", err)
+				history.Success = "產生pdf錯誤"
+			} else {
+				err = SendEmailBySchedule(history_ExecuteTime, historydata.ScheduleID)
+				if err != nil {
+					fmt.Println("發送mail錯誤", err)
+					history.Success = "發送mail錯誤"
+				}
 
-	err = SendEmailBySchedule(history_ExecuteTime, historydata.ScheduleID)
-	if err != nil {
-		fmt.Println("發送mail錯誤", err)
-		history.Success = "發送mail錯誤"
-	}
+			}
 
+		}
+
+	}
 	// time_mail := time.Now().Format("2006-01-02 15:04:05")
+	//寄送時間
 	time_mail := time.Now().Unix()
-	fmt.Println("寄送時間:", time_mail)
 	history.EmailTime = time_mail
 
 	err = global.Mysql.Create(&history).Error
 	if err != nil {
-		msg := fmt.Sprintf("create history error: %s",err.Error())
-		log.Logrecord("ERROR",msg)
+		msg := fmt.Sprintf("create history error: %s", err.Error())
+		log.Logrecord("ERROR", msg)
 	}
+
 }

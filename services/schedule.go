@@ -136,14 +136,8 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 	// 	return res
 	// }
 
-	err := global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.ReportsSchedules{}).Error
-	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting report, err: %s", err)
-		return res
-	}
-
 	//先刪除 ReportsSchedule 中相應的圖表
-	err = global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.ReportsSchedules{}).Error
+	err := global.Mysql.Where("schedule_id = ?", schedule.ID).Delete(&entities.ReportsSchedules{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting data in ReportsSchedule, err: %s", err)
 		return res
@@ -174,9 +168,13 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 	if err != nil {
 		res.Msg = "Update Fail"
 		return res
-	}else {
+	} else {
 		res.Msg = "Update Success"
-		ExecuteShedulePDF(schedule.ID)
+		// enable = true 時才啟用排程
+		if schedule.Enable {
+			ExecuteShedulePDF(schedule.ID)
+		}
+
 	}
 
 	res.Success = true

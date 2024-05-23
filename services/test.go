@@ -1,6 +1,5 @@
 package services
 
-
 import (
 	// "fmt"
 	// "report-backend-golang/entities"
@@ -9,7 +8,6 @@ import (
 	"fmt"
 	"time"
 )
-
 
 type EntryID int
 
@@ -23,23 +21,23 @@ type Entry struct {
 }
 
 func Print() {
-	fmt.Println(time.Now().String()+"  hello")
+	fmt.Println(time.Now().String() + "  hello")
 }
 
 func Print1() {
-	fmt.Println(time.Now().String()+" hi")
+	fmt.Println(time.Now().String() + " hi")
 }
-func CronTest(){
+func CronTest() {
 
-	EntryID,err := global.Crontab.AddFunc("*/1 * * * *",func(){
+	EntryID, err := global.Crontab.AddFunc("*/1 * * * *", func() {
 		Print()
 	})
-	fmt.Println(EntryID,err)
+	fmt.Println(EntryID, err)
 
-	EntryID1,err := global.Crontab.AddFunc("*/1 * * * *",func(){
+	EntryID1, err := global.Crontab.AddFunc("*/1 * * * *", func() {
 		Print1()
-	}) 
-	fmt.Println(EntryID1,err)
+	})
+	fmt.Println(EntryID1, err)
 	global.Crontab.Entries()
 	fmt.Println(global.Crontab.Entries())
 	// global.Crontab.Remove(EntryID)

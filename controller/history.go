@@ -2,15 +2,12 @@ package controller
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
-	// "report-backend-golang/models"
 	"report-backend-golang/handler"
 	"report-backend-golang/log"
 	"report-backend-golang/services"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
-	// "report-backend-golang/entities"
 )
 
 // @Summary Get history
@@ -30,9 +27,6 @@ func GetAllHitory(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
-
-
-
 
 // @Summary Get History by History ID
 // @Tags History
@@ -61,7 +55,6 @@ func GetHistoryByHistoryID(c *gin.Context) {
 	c.JSON(http.StatusOK, inventory)
 }
 
-
 // @Summary Get Old history
 // @Tags History
 // @Accept  json
@@ -79,8 +72,6 @@ func GetOldHitory(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
-
-
 
 // // @Summary Create History Report by History ID
 // // @Tags History
@@ -101,12 +92,10 @@ func GetOldHitory(c *gin.Context) {
 // 	log.Logrecord("排程",fmt.Sprintf("重新寄送歷史報表, History ID : %d",HistoryID))
 
 // 	services.CreateHistoryReport(HistoryID)
-	
+
 // 	log.Logrecord("排程",fmt.Sprintf("歷史報表寄送完成, History ID : %d",HistoryID))
 
 // }
-
-
 
 // @Summary Create History Report by History ID
 // @Tags History
@@ -119,20 +108,19 @@ func GetOldHitory(c *gin.Context) {
 func CreateHistoryReport(c *gin.Context) {
 
 	idParam := c.Query("id")
-	fmt.Println("idParam")
+
 	HistoryID, err := strconv.Atoi(idParam)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "HistoryID ID should be int")
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
-	log.Logrecord("排程",fmt.Sprintf("重新寄送歷史報表, History ID : %d",HistoryID))
+	c.JSON(http.StatusOK, "重新寄送報表中，請稍候")
+
+	log.Logrecord("排程", fmt.Sprintf("重新寄送歷史報表, History ID : %d", HistoryID))
 
 	services.CreateHistoryReport(HistoryID)
-	
-	log.Logrecord("排程",fmt.Sprintf("歷史報表寄送完成, History ID : %d",HistoryID))
 
-
-	c.JSON(http.StatusOK, "重新寄送報表中，請稍候")
+	log.Logrecord("排程", fmt.Sprintf("歷史報表寄送完成, History ID : %d", HistoryID))
 
 }

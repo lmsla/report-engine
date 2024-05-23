@@ -52,18 +52,20 @@ func ScreenshotbyReport(nowtime int64, reportID int) (err error) {
 			fmt.Println("ScreenshotbyReport 發生錯誤：", err)
 		}
 	}()
-
-	report_data, err := GetReportByReportID(reportID)
-	if err != nil {
-		fmt.Println("ScreenshotbyReport - line 36", err.Error())
-		log.Logrecord("ERROR", "Get Report by Report ID error"+err.Error())
+	
+	report_data, err1 := GetReportByReportID(reportID)
+	if err1 != nil {
+		fmt.Println("ScreenshotbyReport - line 36", err1.Error())
+		log.Logrecord("ERROR", "Get Report by Report ID error"+err1.Error())
+		err = err1
 		// fmt.Println(err)
 	}
-	element_data, err := GetElementsByReportID(reportID)
-	if err != nil {
-		fmt.Println("ScreenshotbyReport - line 41", err.Error())
-		log.Logrecord("ERROR", "Get Elements by Report ID error"+err.Error())
+	element_data, err2 := GetElementsByReportID(reportID)
+	if err2 != nil {
+		fmt.Println("ScreenshotbyReport - line 41", err2.Error())
+		log.Logrecord("ERROR", "Get Elements by Report ID error"+err2.Error())
 		// fmt.Println(err)
+		err = err2
 	}
 	timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
 
@@ -71,10 +73,11 @@ func ScreenshotbyReport(nowtime int64, reportID int) (err error) {
 
 		log.Logrecord("截圖", "element name: "+data.Name+"開始執行截圖")
 
-		err := Screenshot_element1(nowtime, data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
-		if err != nil {
-			fmt.Println("ScreenshotbyReport - line 88", err.Error())
-			log.Logrecord("ERROR", "ScreenshotbyReport error "+err.Error())
+		err3 := Screenshot_element1(nowtime, data.Type, data.Instance.URL, data.SpaceName, data.UID, timefrom, data.Instance.User, data.Instance.Password)
+		if err3 != nil {
+			fmt.Println("ScreenshotbyReport - line 88", err3.Error())
+			log.Logrecord("ERROR", "ScreenshotbyReport error "+err3.Error())
+			err = err3
 		}
 
 		time.Sleep(3 * time.Second)
@@ -129,7 +132,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {
 			fmt.Println("Screenshot_element - line 155", err)
-			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
+			log.Logrecord("ERROR", "Dashboard Screenshot error "+ err.Error())
 
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
