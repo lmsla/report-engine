@@ -17,6 +17,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /Schedule/GetAll [get]
+// @Security ApiKeyAuth
 func GetAllSchedule(c *gin.Context) {
 
 	res := services.GetAllSchedule()
@@ -65,6 +66,7 @@ func GetScheduleByScheduleID(c *gin.Context) {
 // @Param Schedule body entities.Schedule true "schedule"
 // @Success 200 {object} models.Response
 // @Router /Schedule/Create [post]
+// @Security ApiKeyAuth
 func CreateSchedule(c *gin.Context) {
 
 	// body := new(models.Instance)
@@ -93,6 +95,7 @@ func CreateSchedule(c *gin.Context) {
 // @Param Schedule body entities.Schedule true "schedule"
 // @Success 200 {object} string
 // @Router /Schedule/Update [put]
+// @Security ApiKeyAuth
 func UpdateSchedule(c *gin.Context) {
 
 	body := new(entities.Schedule)
@@ -122,6 +125,7 @@ func UpdateSchedule(c *gin.Context) {
 // @Param id path int true "id"
 // @Success 200 {object} string
 // @Router /Schedule/Delete/{id} [delete]
+// @Security ApiKeyAuth
 func DeleteSchedule(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))

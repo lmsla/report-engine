@@ -16,6 +16,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /History/GetAll [get]
+// @Security ApiKeyAuth
 func GetAllHitory(c *gin.Context) {
 
 	res := services.GetAllHistory()
@@ -61,6 +62,7 @@ func GetHistoryByHistoryID(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /History/GetOldHistory [get]
+// @Security ApiKeyAuth
 func GetOldHitory(c *gin.Context) {
 
 	res := services.GetOldHistory()

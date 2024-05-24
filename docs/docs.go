@@ -70,6 +70,11 @@ const docTemplate = `{
         },
         "/Element/Create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -103,6 +108,11 @@ const docTemplate = `{
         },
         "/Element/Delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -134,6 +144,11 @@ const docTemplate = `{
         },
         "/Element/GetAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -192,6 +207,11 @@ const docTemplate = `{
         },
         "/Element/Update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -225,6 +245,11 @@ const docTemplate = `{
         },
         "/History/GetAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -283,6 +308,11 @@ const docTemplate = `{
         },
         "/History/GetOldHistory": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -377,6 +407,11 @@ const docTemplate = `{
         },
         "/Instance/Create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -410,6 +445,11 @@ const docTemplate = `{
         },
         "/Instance/Delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -441,6 +481,11 @@ const docTemplate = `{
         },
         "/Instance/GetAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -535,6 +580,11 @@ const docTemplate = `{
         },
         "/Instance/Update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -640,6 +690,11 @@ const docTemplate = `{
         },
         "/Report/Create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -673,6 +728,11 @@ const docTemplate = `{
         },
         "/Report/Delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -704,6 +764,11 @@ const docTemplate = `{
         },
         "/Report/GetAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -798,6 +863,11 @@ const docTemplate = `{
         },
         "/Report/Update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -831,6 +901,11 @@ const docTemplate = `{
         },
         "/Schedule/Create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -864,6 +939,11 @@ const docTemplate = `{
         },
         "/Schedule/Delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -895,6 +975,11 @@ const docTemplate = `{
         },
         "/Schedule/GetAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -953,6 +1038,11 @@ const docTemplate = `{
         },
         "/Schedule/Update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -1389,7 +1479,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "10.99.1.133:8005",
 	BasePath:         "/api/v1",
-	Schemes:          []string{"http"},
+	Schemes:          []string{},
 	Title:            "Report Engine Golang API",
 	Description:      "Golang API 專案描述",
 	InfoInstanceName: "swagger",

@@ -23,13 +23,10 @@ import (
 // @host 10.99.1.133:8005
 //// @host localhost:8005
 // @BasePath  /api/v1
-
 // @query.collection.format multi
-
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-
 // @schemes http
 func main() {
 

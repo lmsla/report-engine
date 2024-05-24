@@ -21,6 +21,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /Element/GetAll [get]
+// @Security ApiKeyAuth
 func GetAllElements(c *gin.Context) { 
 
 	res := services.GetAllElements()
@@ -41,6 +42,7 @@ func GetAllElements(c *gin.Context) {
 // @Param Element body entities.Element true "element"
 // @Success 200 {object} models.Response
 // @Router /Element/Create [post]
+// @Security ApiKeyAuth
 func CreateElement(c *gin.Context) {
 
 	body := new(entities.Element)
@@ -68,6 +70,7 @@ func CreateElement(c *gin.Context) {
 // @Param Instacne body entities.Element true "instance"
 // @Success 200 {object} string
 // @Router /Element/Update [put]
+// @Security ApiKeyAuth
 func UpdateElement(c *gin.Context) {
 
 	body := new(entities.Element)
@@ -97,6 +100,7 @@ func UpdateElement(c *gin.Context) {
 // @Param id path int true "id"
 // @Success 200 {object} string
 // @Router /Element/Delete/{id} [delete]
+// @Security ApiKeyAuth
 func DeleteElement(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))

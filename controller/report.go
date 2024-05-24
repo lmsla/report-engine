@@ -19,6 +19,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Response
 // @Router /Report/GetAll [get]
+// @Security ApiKeyAuth
 func GetAllReports(c *gin.Context) {
 
 	res := services.GetAllReports()
@@ -70,6 +71,7 @@ func GetReportByReportID(c *gin.Context) {
 // @Param Report body models.Report true "report"
 // @Success 200 {object} models.Response
 // @Router /Report/Create [post]
+// @Security ApiKeyAuth
 func CreateReport(c *gin.Context) {
 
 	// body := new(models.Instance)
@@ -97,6 +99,7 @@ func CreateReport(c *gin.Context) {
 // @Param Instacne body models.Report true "report"
 // @Success 200 {object} string
 // @Router /Report/Update [put]
+// @Security ApiKeyAuth
 func UpdateReport(c *gin.Context) {
 
 	body := new(models.Report)
@@ -124,6 +127,7 @@ func UpdateReport(c *gin.Context) {
 // @Param id path int true "id"
 // @Success 200 {object} string
 // @Router /Report/Delete/{id} [delete]
+// @Security ApiKeyAuth
 func DeleteReport(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))

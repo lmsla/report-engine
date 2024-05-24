@@ -22,12 +22,17 @@ func GetUserInfo(c *gin.Context) {
 
 	// 取 token 驗證
 	tokens := c.Request.Header["Authorization"]
+
+	fmt.Println("tokens",tokens)
+
 	if len(tokens) == 0 {
 		// c.JSON(http.StatusUnauthorized, "auhorization token is required")
-		c.AbortWithStatusJSON(http.StatusUnauthorized, "auhorization token is required")
+		c.AbortWithStatusJSON(http.StatusUnauthorized, "authorization token is required")
 		return
 	}
 	token := tokens[0]
+
+	fmt.Println("token",tokens[0])
 
 	// 取 realm 驗證
 	realms := c.Request.Header["Realm"]
