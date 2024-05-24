@@ -34,13 +34,14 @@ func GetUserInfo(c *gin.Context) {
 
 	fmt.Println("token",tokens[0])
 
-	// 取 realm 驗證
-	realms := c.Request.Header["Realm"]
-	if len(realms) == 0 {
-		c.JSON(http.StatusNotFound, "realm is empty")
-		return
-	}
-	realm := realms[0]
+	// // 取 realm 驗證
+	// realms := "master"
+	// // realms := c.Request.Header["Realm"]
+	// if len(realms) == 0 {
+	// 	c.JSON(http.StatusNotFound, "realm is empty")
+	// 	return
+	// }
+	realm := "master"
 
 	// 設定參數
 	ctx := context.Background()
@@ -59,7 +60,7 @@ func GetUserInfo(c *gin.Context) {
 	user.IsAdmin = false
 	user.ID = *(userInfo.Sub)
 	user.Name = *(userInfo.PreferredUsername)
-	user.Realm = realm
+	// user.Realm = realm
 
 	// 取 user group + role
 	params := gocloak.GetGroupsParams{
