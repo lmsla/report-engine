@@ -477,7 +477,7 @@ paths:
       tags:
       - History
   /History/HistoryReport:
-    post:
+    get:
       consumes:
       - application/json
       parameters:
