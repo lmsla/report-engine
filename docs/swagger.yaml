@@ -100,6 +100,38 @@ definitions:
       user:
         type: string
     type: object
+  entities.MainMenu:
+    properties:
+      icon:
+        type: string
+      id:
+        type: integer
+      module:
+        type: string
+      router_path:
+        type: string
+      sort:
+        type: integer
+      title:
+        type: string
+    type: object
+  entities.Module:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      disabled:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: integer
+      url:
+        type: string
+    type: object
   entities.Report:
     properties:
       alias:
@@ -243,7 +275,7 @@ definitions:
       success:
         type: boolean
     type: object
-host: localhost:8005
+host: 10.99.1.133:8005
 info:
   contact:
     email: support@swagger.io
@@ -894,6 +926,22 @@ paths:
       summary: Update Schedule
       tags:
       - Schedule
+  /get-server-module:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Module'
+            type: array
+      summary: Get Server Module
+      tags:
+      - Env
   /get-sso-url:
     get:
       consumes:
@@ -908,6 +956,24 @@ paths:
       summary: Get SSOUrl
       tags:
       - SSO
+  /user/get-server-menu:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.MainMenu'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Log-detect Menu
+      tags:
+      - Env
 securityDefinitions:
   ApiKeyAuth:
     in: header
