@@ -78,7 +78,9 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.GET("/History/GetOldHistory", GetOldHitory)
 		apiv1_auth.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
 		// apiv1_auth.POST("/History/HistoryReport/:id", CreateHistoryReport)
-		apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
+
+		// apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
+		apiv1_auth.GET("/History/HistoryReport", CreateHistoryReport)
 
 	}
 
