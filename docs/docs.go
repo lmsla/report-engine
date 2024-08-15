@@ -334,7 +334,7 @@ const docTemplate = `{
             }
         },
         "/History/HistoryReport": {
-            "get": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
