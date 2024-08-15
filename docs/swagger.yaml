@@ -492,7 +492,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entities.History'
+            $ref: '#/definitions/models.Response'
       security:
       - ApiKeyAuth: []
       summary: Create History Report by History ID

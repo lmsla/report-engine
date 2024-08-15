@@ -363,7 +363,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.History"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }

@@ -53,7 +53,7 @@ func GetUserInfo(c *gin.Context) {
 	// 取 UserInfo
 	userInfo, err := client.GetUserInfo(ctx, token, realm)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, "GetUserInfo"+err.Error())
+		c.JSON(http.StatusUnauthorized, "GetUserInfo: "+ err.Error())
 		return
 	}
 	user := models.SSOUser{}

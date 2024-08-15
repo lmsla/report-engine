@@ -104,7 +104,7 @@ func GetOldHitory(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id query int true "id"
-// @Success 200 {object} entities.History
+// @Success 200 {object} models.Response
 // @Router /History/HistoryReport [get]
 // @Security ApiKeyAuth
 func CreateHistoryReport(c *gin.Context) {
