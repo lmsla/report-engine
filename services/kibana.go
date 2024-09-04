@@ -108,6 +108,7 @@ func GetKibanaDashboardData(inventory models.Instance, space string) (string, er
 	} else {
 		curl = exec.Command("curl", "-XGET", "-k", "-u", inventory.User+":"+inventory.Password, "-s", inventory.URL+"/s/"+space+"/api/saved_objects/_find?type=dashboard&fields=id&fields=title&fields=description&per_page=10000") // 修改了此行
 	}
+	// curl -k -u elastic:12345678 -X GET 10.99.1.242:5601/kibana_iframe/s/default/api/saved_objects/_find?type=dashboard&fields=id&fields=title&fields=description&per_page=10000
 
 	out, err := curl.Output()
 	if err != nil {
@@ -246,4 +247,63 @@ func GetALLKibanaVisualizationTitle1(space string, instance models.Instance) ([]
 		dropdownDatas = append(dropdownDatas, *dropdownData)
 	}
 	return dropdownDatas, nil
+}
+
+
+func GetKibanaDataViews(space string,inventory models.Instance) ([]entities.Dropdown, error) {
+
+	var dropdownDatas []entities.Dropdown
+
+	var curl *exec.Cmd
+	if inventory.User == "" {
+		curl = exec.Command("curl", "-XGET", "-k", "-s", inventory.URL+"/s/"+space+"/api/data_views")
+	} else {
+		curl = exec.Command("curl", "-XGET", "-k", "-u", inventory.User+":"+inventory.Password, "-s", inventory.URL+"/s/"+space+"/api/data_views")
+	}
+
+	out, err := curl.Output()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(string(out))
+
+
+	var mapResult map[string]interface{}
+	err = json.Unmarshal([]byte(string(out)), &mapResult)
+	if err != nil {
+		fmt.Println("JsonToMapDemo err: ", err)
+		return nil, err
+	}
+
+	fmt.Println("mapResult",mapResult["data_view"])
+	fmt.Println(len(mapResult["data_view"].([]interface{})))
+	data := mapResult["data_view"]
+
+	var spaces []string
+
+	for i := range mapResult["data_view"].([]interface{}) {
+		// var dashboard entities.Visualization
+		dropdownData := new(entities.Dropdown)
+		name := data.([]interface{})[i].(map[string]interface{})["title"]
+		uid := data.([]interface{})[i].(map[string]interface{})["id"]
+		dropdownData.Text = name.(string)
+		dropdownData.Value = uid.(string)
+		dropdownDatas = append(dropdownDatas, *dropdownData)
+	}
+
+
+	for i := 0; i < len(mapResult["data_view"].([]interface{})); i++ {
+		fmt.Println(data.([]interface{})[i].(map[string]interface{})["id"].(string))
+		spaces = append(spaces, data.([]interface{})[i].(map[string]interface{})["id"].(string))
+	}
+	fmt.Println("space",spaces)
+	fmt.Println("dropdownDatas",dropdownDatas)
+
+	return dropdownDatas, nil
+}
+
+
+
+func GetDataViewData(){
+	
 }

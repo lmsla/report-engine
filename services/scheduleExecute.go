@@ -17,7 +17,7 @@ func ExecuteShedulePDF(scheduleID int) {
 	}
 	history := entities.History{}
 	history.ScheduleID = scheduleID
-	history.To = inventory.To
+	// history.To = inventory.To
 	fmt.Println("ScheduleID in history: ")
 	fmt.Println(history.ScheduleID)
 

@@ -85,7 +85,24 @@ func GetDropdownSource(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, visualdata)
+	
+	case "data_view":
+		inventory, err := services.GetInstanceByID(body.InstanceID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get inventory details")
+			handler.WriteErrorLog(c, "error to get inventory details")
+			return
+		}
+		visualdata, err := services.GetKibanaDataViews(body.SpaceName, inventory)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get visualization details")
+			handler.WriteErrorLog(c, "error to get visualization details")
+			return
+		}
+		c.JSON(http.StatusOK, visualdata)
 
 	}
+	
+
 
 }

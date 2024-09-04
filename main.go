@@ -8,7 +8,8 @@ import (
 	"report-backend-golang/utils"
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
-	// "report-backend-golang/services"
+	"report-backend-golang/models"
+	"report-backend-golang/services"
 	// "report-backend-golang/entities"
 )
 
@@ -21,7 +22,7 @@ import (
 // @contact.email support@swagger.io
 
 // @host 10.99.1.133:8005
-//// @host localhost:8005
+// // @host localhost:8005
 // @BasePath  /api/v1
 // @query.collection.format multi
 // @securityDefinitions.apikey ApiKeyAuth
@@ -57,4 +58,19 @@ func main() {
 	// log.Logrecord("環境參數", "截圖檔案位置 : "+global.EnvConfig.Files.ScreenshotFile)
 	// log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
+}
+
+func main1() {
+
+	instance := models.Instance{
+		ID:       0,
+		Type:     "",
+		Name:     "",
+		URL:      "10.99.1.93:5601",
+		User:     "elastic",
+		Password: "12345678",
+		Auth:     0,
+	}
+
+	services.GetKibanaDataViews("csc",instance)
 }
