@@ -29,7 +29,7 @@ import (
 // @in header
 // @name Authorization
 // @schemes http
-func main() {
+func main1() {
 
 	utils.LoadEnvironment()
 
@@ -60,7 +60,7 @@ func main() {
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
-func main1() {
+func main() {
 
 	instance := models.Instance{
 		ID:       0,
@@ -72,5 +72,5 @@ func main1() {
 		Auth:     0,
 	}
 
-	services.GetKibanaDataViews("csc",instance)
+	services.GetDataViewData("csc",instance,"bd9283f8-460b-48ab-bd23-f253bca38f12")
 }

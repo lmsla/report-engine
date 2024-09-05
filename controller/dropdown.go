@@ -1,25 +1,20 @@
 package controller
 
 import (
-	"fmt"
+	// "fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
-	// "strconv"
-
-	// "report-backend-golang/models"
-	// "report-backend-golang/entities"
 	"report-backend-golang/entities"
 	"report-backend-golang/handler"
 	"report-backend-golang/services"
-
-	"github.com/gin-gonic/gin"
 	// "report-backend-golang/entities"
 )
 
-// @Summary Get Space of Instance by Instance ID
+// @Summary Get Source of Instance by Instance ID
 // @Tags Dropdown
 // @Accept  json
 // @Produce  json
-// @Param source_type query string true "space,dashboard,visualization"
+// @Param source_type query string true "space,dashboard,visualization,data_view"
 // @Param space_name query string false "space_name"
 // @Param instance_id query int true "instance_id"
 // @Success 200 {object}  entities.Dropdown
@@ -27,14 +22,13 @@ import (
 // @Router /Dropdown [get]
 func GetDropdownSource(c *gin.Context) {
 
-
 	body := new(entities.DropdownBody)
 	c.Bind(&body)
 
-	fmt.Println(body.InstanceID)
-	fmt.Println(body.SourceType)
-	fmt.Println(body.SpaceName)
-	fmt.Println(body.InstanceID)
+	// fmt.Println(body.InstanceID)
+	// fmt.Println(body.SourceType)
+	// fmt.Println(body.SpaceName)
+	// fmt.Println(body.InstanceID)
 
 	// if err := services.GetDropdownSource(body); err != nil {
 
@@ -53,7 +47,7 @@ func GetDropdownSource(c *gin.Context) {
 			handler.WriteErrorLog(c, "error to get space details")
 			return
 		}
-		fmt.Println(spaces)
+		// fmt.Println(spaces)
 		c.JSON(http.StatusOK, spaces)
 
 	case "dashboard":
@@ -85,7 +79,7 @@ func GetDropdownSource(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, visualdata)
-	
+
 	case "data_view":
 		inventory, err := services.GetInstanceByID(body.InstanceID)
 		if err != nil {
@@ -102,7 +96,36 @@ func GetDropdownSource(c *gin.Context) {
 		c.JSON(http.StatusOK, visualdata)
 
 	}
-	
 
+}
+
+// @Summary Get Fields of DataView by DataView ID
+// @Tags Dropdown
+// @Accept  json
+// @Produce  json
+// @Param space_name query string false "space_name"
+// @Param data_view_id query string true "data_view_id"
+// @Param instance_id query int true "instance_id"
+// @Success 200 {object}  entities.Dropdown
+// @Security ApiKeyAuth
+// @Router /DropdownFields [get]
+func DropdownFields(c *gin.Context) {
+
+	body := new(entities.FieldsDropdownBody)
+	c.Bind(&body)
+
+	inventory, err := services.GetInstanceByID(body.InstanceID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	visualdata, err := services.GetDataViewData(body.SpaceName, inventory,body.DataViewID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get visualization details")
+		handler.WriteErrorLog(c, "error to get visualization details")
+		return
+	}
+	c.JSON(http.StatusOK, visualdata)
 
 }

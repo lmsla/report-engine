@@ -290,7 +290,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: space,dashboard,visualization
+      - description: space,dashboard,visualization,data_view
         in: query
         name: source_type
         required: true
@@ -313,7 +313,38 @@ paths:
             $ref: '#/definitions/entities.Dropdown'
       security:
       - ApiKeyAuth: []
-      summary: Get Space of Instance by Instance ID
+      summary: Get Source of Instance by Instance ID
+      tags:
+      - Dropdown
+  /DropdownFields:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: space_name
+        in: query
+        name: space_name
+        type: string
+      - description: data_view_id
+        in: query
+        name: data_view_id
+        required: true
+        type: string
+      - description: instance_id
+        in: query
+        name: instance_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Dropdown'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Fields of DataView by DataView ID
       tags:
       - Dropdown
   /Element/Create:

@@ -249,8 +249,7 @@ func GetALLKibanaVisualizationTitle1(space string, instance models.Instance) ([]
 	return dropdownDatas, nil
 }
 
-
-func GetKibanaDataViews(space string,inventory models.Instance) ([]entities.Dropdown, error) {
+func GetKibanaDataViews(space string, inventory models.Instance) ([]entities.Dropdown, error) {
 
 	var dropdownDatas []entities.Dropdown
 
@@ -265,8 +264,6 @@ func GetKibanaDataViews(space string,inventory models.Instance) ([]entities.Drop
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(out))
-
 
 	var mapResult map[string]interface{}
 	err = json.Unmarshal([]byte(string(out)), &mapResult)
@@ -275,11 +272,7 @@ func GetKibanaDataViews(space string,inventory models.Instance) ([]entities.Drop
 		return nil, err
 	}
 
-	fmt.Println("mapResult",mapResult["data_view"])
-	fmt.Println(len(mapResult["data_view"].([]interface{})))
 	data := mapResult["data_view"]
-
-	var spaces []string
 
 	for i := range mapResult["data_view"].([]interface{}) {
 		// var dashboard entities.Visualization
@@ -290,20 +283,50 @@ func GetKibanaDataViews(space string,inventory models.Instance) ([]entities.Drop
 		dropdownData.Value = uid.(string)
 		dropdownDatas = append(dropdownDatas, *dropdownData)
 	}
-
-
-	for i := 0; i < len(mapResult["data_view"].([]interface{})); i++ {
-		fmt.Println(data.([]interface{})[i].(map[string]interface{})["id"].(string))
-		spaces = append(spaces, data.([]interface{})[i].(map[string]interface{})["id"].(string))
-	}
-	fmt.Println("space",spaces)
-	fmt.Println("dropdownDatas",dropdownDatas)
-
 	return dropdownDatas, nil
 }
 
+/// <kibana host>:<port>/s/<space_id>/api/data_views/data_view/<id>
 
+func GetDataViewData(space string, inventory models.Instance, uid string) ([]entities.Dropdown, error) {
 
-func GetDataViewData(){
+	var curl *exec.Cmd
+	if inventory.User == "" {
+		curl = exec.Command("curl", "-XGET", "-k", "-s", inventory.URL+"/s/"+space+"/api/data_views/data_view/"+uid)
+	} else {
+		curl = exec.Command("curl", "-XGET", "-k", "-u", inventory.User+":"+inventory.Password, "-s", inventory.URL+"/s/"+space+"/api/data_views/data_view/"+uid)
+	}
+
+	out, err := curl.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	var mapResult map[string]interface{}
+	err = json.Unmarshal([]byte(string(out)), &mapResult)
+	if err != nil {
+		fmt.Println("JsonToMapDemo err: ", err)
+		return nil, err
+	}
+
+	// fmt.Println(mapResult)
+
+	data := mapResult["data_view"].(map[string]interface{})["fields"]
+
+	var dropdownDatas []entities.Dropdown
+	// 	遞迴 data_view 中的 fields 部分
+	for _, field := range data.(map[string]interface{}) {
+		dropdownData := new(entities.Dropdown)
+		// 獲取每個 field 的 name 和 type
+		name := field.(map[string]interface{})["name"]
+		uid := field.(map[string]interface{})["type"]
+
+		dropdownData.Text = uid.(string)
+		dropdownData.Value = name.(string)
+
+		dropdownDatas = append(dropdownDatas, *dropdownData)
+	}
 	
+	// fmt.Println("Dropdown Data:", dropdownDatas)
+	return dropdownDatas, nil
 }

@@ -29,11 +29,11 @@
                 "tags": [
                     "Dropdown"
                 ],
-                "summary": "Get Space of Instance by Instance ID",
+                "summary": "Get Source of Instance by Instance ID",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "space,dashboard,visualization",
+                        "description": "space,dashboard,visualization,data_view",
                         "name": "source_type",
                         "in": "query",
                         "required": true
@@ -43,6 +43,55 @@
                         "description": "space_name",
                         "name": "space_name",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "instance_id",
+                        "name": "instance_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Dropdown"
+                        }
+                    }
+                }
+            }
+        },
+        "/DropdownFields": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dropdown"
+                ],
+                "summary": "Get Fields of DataView by DataView ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "space_name",
+                        "name": "space_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "data_view_id",
+                        "name": "data_view_id",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
