@@ -9,7 +9,7 @@ type Report struct {
 	Alias      string      `gorm:"type:varchar(45)" json:"alias" form:"alias"`
 	Elements   []Element   `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 	Schedules  []Schedule  `gorm:"many2many:reports_schedules;"`
-	DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
+	DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 type Element struct {

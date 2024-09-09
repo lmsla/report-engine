@@ -102,7 +102,6 @@ func DeleteDataTable(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
 	res := services.DeleteDataTable(id)
 
 	if !res.Success {
