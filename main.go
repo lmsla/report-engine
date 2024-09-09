@@ -29,7 +29,7 @@ import (
 // @in header
 // @name Authorization
 // @schemes http
-func main1() {
+func main() {
 
 	utils.LoadEnvironment()
 
@@ -60,7 +60,7 @@ func main1() {
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
-func main() {
+func main1() {
 
 	// instance := models.Instance{
 	// 	ID:       0,
