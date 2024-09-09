@@ -1,5 +1,55 @@
 basePath: /api/v1
 definitions:
+  entities.Column:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      order:
+        type: integer
+      table_id:
+        type: integer
+      updated_at:
+        type: integer
+    type: object
+  entities.DataTable:
+    properties:
+      columns:
+        items:
+          $ref: '#/definitions/entities.Column'
+        type: array
+      created_at:
+        type: integer
+      data_view:
+        type: string
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/entities.Instance'
+      instance_id:
+        type: integer
+      name:
+        type: string
+      report_id:
+        type: integer
+      row_num:
+        type: integer
+      space_name:
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
   entities.Dropdown:
     properties:
       text:
@@ -140,6 +190,10 @@ definitions:
         type: string
       created_at:
         type: integer
+      dataTables:
+        items:
+          $ref: '#/definitions/entities.DataTable'
+        type: array
       deleted_at:
         type: integer
       elements:
@@ -289,6 +343,29 @@ info:
   title: Report Engine Golang API
   version: "1.0"
 paths:
+  /DataTable/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: DataTable
+        in: body
+        name: DataTable
+        required: true
+        schema:
+          $ref: '#/definitions/entities.DataTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create DataTable
+      tags:
+      - DataTable
   /Dropdown:
     get:
       consumes:

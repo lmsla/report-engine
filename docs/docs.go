@@ -19,6 +19,44 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/DataTable/Create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Create DataTable",
+                "parameters": [
+                    {
+                        "description": "DataTable",
+                        "name": "DataTable",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.DataTable"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/Dropdown": {
             "get": {
                 "security": [
@@ -1202,6 +1240,82 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entities.Column": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "table_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.DataTable": {
+            "type": "object",
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Column"
+                    }
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "data_view": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instance": {
+                    "$ref": "#/definitions/entities.Instance"
+                },
+                "instance_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "report_id": {
+                    "type": "integer"
+                },
+                "row_num": {
+                    "type": "integer"
+                },
+                "space_name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
         "entities.Dropdown": {
             "type": "object",
             "properties": {
@@ -1411,6 +1525,12 @@ const docTemplate = `{
                 },
                 "created_at": {
                     "type": "integer"
+                },
+                "dataTables": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.DataTable"
+                    }
                 },
                 "deleted_at": {
                     "type": "integer"
