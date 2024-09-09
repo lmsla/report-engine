@@ -366,6 +366,67 @@ paths:
       summary: Create DataTable
       tags:
       - DataTable
+  /DataTable/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete DataTable
+      tags:
+      - DataTable
+  /DataTable/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get DataTable
+      tags:
+      - DataTable
+  /DataTable/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: DataTable
+        in: body
+        name: DataTable
+        required: true
+        schema:
+          $ref: '#/definitions/entities.DataTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update DataTable
+      tags:
+      - DataTable
   /Dropdown:
     get:
       consumes:
