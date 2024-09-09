@@ -63,6 +63,8 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.DELETE("/Element/Delete/:id", DeleteElement)
 		apiv1_auth.GET("/Element/GetElementByReportID/:id", GetElementByReportID)
 
+		apiv1_auth.POST("/DataTable/Create", CreateDataTable)
+
 		apiv1_auth.GET("/Schedule/GetAll", GetAllSchedule)
 		apiv1_auth.GET("/Schedule/GetSchedule/:id", GetScheduleByScheduleID)
 		apiv1_auth.POST("/Schedule/Create", CreateSchedule)

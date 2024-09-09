@@ -8,7 +8,7 @@ import (
 	"report-backend-golang/utils"
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
-	"report-backend-golang/models"
+	// "report-backend-golang/models"
 	"report-backend-golang/services"
 	// "report-backend-golang/entities"
 )
@@ -29,7 +29,7 @@ import (
 // @in header
 // @name Authorization
 // @schemes http
-func main() {
+func main1() {
 
 	utils.LoadEnvironment()
 
@@ -60,17 +60,19 @@ func main() {
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
 
-func main1() {
+func main() {
 
-	instance := models.Instance{
-		ID:       0,
-		Type:     "",
-		Name:     "",
-		URL:      "10.99.1.93:5601",
-		User:     "elastic",
-		Password: "12345678",
-		Auth:     0,
-	}
+	// instance := models.Instance{
+	// 	ID:       0,
+	// 	Type:     "",
+	// 	Name:     "",
+	// 	URL:      "10.99.1.93:5601",
+	// 	User:     "elastic",
+	// 	Password: "12345678",
+	// 	Auth:     0,
+	// }
 
-	services.GetDataViewData("csc",instance,"bd9283f8-460b-48ab-bd23-f253bca38f12")
+	// services.GetDataViewData("csc",instance,"bd9283f8-460b-48ab-bd23-f253bca38f12")
+
+	services.EsTableQuery()
 }

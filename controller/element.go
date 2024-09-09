@@ -3,14 +3,11 @@ package controller
 import (
 	"net/http"
 	"strconv"
-
 	"report-backend-golang/entities"
 	// "report-backend-golang/models"
 	"report-backend-golang/services"
 	"report-backend-golang/handler"
-
 	"github.com/gin-gonic/gin"
-	// "report-backend-golang/entities"
 )
 
 

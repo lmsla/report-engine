@@ -1328,6 +1328,9 @@ const docTemplate = `{
                 "deleted_at": {
                     "type": "integer"
                 },
+                "es_url": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1549,6 +1552,9 @@ const docTemplate = `{
             "properties": {
                 "auth": {
                     "type": "integer"
+                },
+                "es_url": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"

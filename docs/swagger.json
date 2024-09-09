@@ -1322,6 +1322,9 @@
                 "deleted_at": {
                     "type": "integer"
                 },
+                "es_url": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1543,6 +1546,9 @@
             "properties": {
                 "auth": {
                     "type": "integer"
+                },
+                "es_url": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"

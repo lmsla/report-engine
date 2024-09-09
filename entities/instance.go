@@ -8,6 +8,7 @@ type Instance struct {
 	URL      string `gorm:"type:varchar(50)" json:"url" form:"url"`
 	User     string `gorm:"type:varchar(50)" json:"user" form:"user"`
 	Password string `gorm:"type:varchar(50)" json:"password" form:"password"`
+	EsUrl    string `gorm:"type:varchar(50)" json:"es_url" form:"es_url"`
 	Auth     int   `type:"int;default:0" json:"auth" form:"auth"`
 }
 

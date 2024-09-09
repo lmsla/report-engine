@@ -7,11 +7,10 @@ type Instance struct {
 	URL      string `json:"url" form:"url"`
 	User     string `json:"user" form:"user"`
 	Password string `json:"password" form:"password"`
-	Auth     int   `json:"auth" form:"auth"`
+	EsUrl    string `json:"es_url" form:"es_url"`
+	Auth     int    `json:"auth" form:"auth"`
 }
-
 
 type SSO struct {
 	SsoUrl string `json:"url" form:"url"`
-
 }
