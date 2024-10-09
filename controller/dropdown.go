@@ -1,12 +1,12 @@
 package controller
 
 import (
-	// "fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"report-backend-golang/entities"
 	"report-backend-golang/handler"
 	"report-backend-golang/services"
+
+	"github.com/gin-gonic/gin"
 	// "report-backend-golang/entities"
 )
 
@@ -87,6 +87,12 @@ func GetDropdownSource(c *gin.Context) {
 			handler.WriteErrorLog(c, "error to get inventory details")
 			return
 		}
+
+		// 如果 space 沒填的話，預設帶入 default
+		if body.SpaceName == "" {
+			body.SpaceName = "default"
+		}
+
 		visualdata, err := services.GetKibanaDataViews(body.SpaceName, inventory)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, "error to get visualization details")
@@ -120,7 +126,11 @@ func DropdownFields(c *gin.Context) {
 		handler.WriteErrorLog(c, "error to get inventory details")
 		return
 	}
-	visualdata, err := services.GetDataViewData(body.SpaceName, inventory,body.DataViewID)
+	// 如果 space 沒填的話，預設帶入 default
+	if body.SpaceName == "" {
+		body.SpaceName = "default"
+	}
+	visualdata, err := services.GetDataViewData(body.SpaceName, inventory, body.DataViewID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error to get visualization details")
 		handler.WriteErrorLog(c, "error to get visualization details")

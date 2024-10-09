@@ -11,8 +11,9 @@ CREATE TABLE `schedules` (
   `cron_id` bigint DEFAULT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `body` varchar(255) DEFAULT NULL,
+  `enable` tinyint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `idx_schedules_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 

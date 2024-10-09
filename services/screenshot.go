@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	// "io/ioutil"
+	"os"
 	"report-backend-golang/global"
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
@@ -19,7 +20,7 @@ import (
 )
 
 func ScreenshotbySchedule(nowtime int64, scheduleID int) (err error) {
-
+	log.Logrecord("Dubug", "ScreenshotbySchedule:")
 	defer func() {
 		if err != nil {
 			// 进行错误处理，例如记录日志或返回错误信息给调用方
@@ -121,7 +122,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 			log.Logrecord("ERROR", "Visualiztion Screenshot error"+err.Error())
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
-		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+		if err := os.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 100", err.Error())
 			log.Logrecord("ERROR", "Write Visualiztion Screenshot file error"+err.Error())
 
@@ -136,7 +137,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
-		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+		if err := os.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 161", err.Error())
 			log.Logrecord("ERROR", "Write Dashboard Screenshot file error"+err.Error())
 
@@ -154,6 +155,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 }
 
 func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel string, res *[]byte) (err error) {
+	log.Logrecord("Dubug", "kibanaElementScreenshotWithAuth_timeout:")
 	var executed *runtime.RemoteObject
 	// 自定義長寬
 	// width, height := 1240, 1754
@@ -161,16 +163,19 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	defer func() {
 		if err != nil {
 			// 进行错误处理，例如记录日志或返回错误信息给调用方
-			fmt.Println("发生错误：", err)
+			fmt.Println("發生錯誤：", err)
 		}
 	}()
 
-	// 创建带超时的 context
+	// 創建帶超時的 context
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
+		// chromedp.NoSandbox,
+		// chromedp.Flag("disable-gpu", true),
+		// chromedp.Flag("remote-debugging-port", "9223"),
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
 		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
@@ -317,7 +322,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 			log.Logrecord("ERROR", "Visualiztion Screenshot error"+err.Error())
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
-		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+		if err := os.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 100", err.Error())
 			log.Logrecord("ERROR", "Write Visualiztion Screenshot file error"+err.Error())
 
@@ -331,7 +336,7 @@ func Screenshot_element(element_type string, url string, space string, uid strin
 
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, now)
-		if err := ioutil.WriteFile(file, buf, 0o644); err != nil {
+		if err := os.WriteFile(file, buf, 0o644); err != nil {
 			fmt.Println("Screenshot_element - line 114", err.Error())
 			log.Logrecord("ERROR", "Write Dashboard Screenshot file error"+err.Error())
 

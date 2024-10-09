@@ -25,28 +25,3 @@ type Element struct {
 	SpaceName  string   `gorm:"type:varchar(50)" json:"space_name" form:"space_name"`
 }
 
-// type Report struct {
-// 	Common
-// 	ID         int       `json:"id" form:"id"`
-// 	Name       string    `json:"name" form:"name"`
-// 	TimeUnit   string       `json:"time_unit" form:"time_unit"`
-// 	TimePeriod int    `json:"time_period" form:"time_period"`
-// 	Elements   []Element `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
-// 	// Elements   []Element `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
-
-// }
-
-// type Element struct {
-// 	Common
-// 	ID         int    `json:"id" form:"id"`
-// 	ReportID   int    `json:"report_id" form:"report_id"`
-// 	Type       string `json:"type" form:"type"`
-// 	Name       string `json:"name" form:"name"`
-// 	UID        string `json:"uid" form:"uid"`
-// 	RowNum     int    `json:"row_num" form:"row_num"`
-// 	ColumnType string `json:"column_type" form:"column_type"`
-// 	InstanceID int    `json:"instance_id" form:"instance_id"`
-// 	Instance   Instance `gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-// 	// Instance   Instance `json:"instance" form:"instance"`
-// 	SpcaceName string `json:"space_name" form:"space_name"`
-// }

@@ -15,11 +15,11 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Response
-// @Router /DataTable/GetAll [get]
+// @Router /Table/GetAll [get]
 // @Security ApiKeyAuth
-func GetDataTables(c *gin.Context) { 
+func GetTables(c *gin.Context) { 
 
-	res := services.GetDataTables()
+	res := services.GetTables()
 
 	if !res.Success {
 		c.JSON(http.StatusBadRequest, res.Msg)
@@ -35,13 +35,13 @@ func GetDataTables(c *gin.Context) {
 // @Tags DataTable
 // @Accept  json
 // @Produce  json
-// @Param DataTable body entities.DataTable true "DataTable"
+// @Param Table body entities.Table true "Table"
 // @Success 200 {object} models.Response
-// @Router /DataTable/Create [post]
+// @Router /Table/Create [post]
 // @Security ApiKeyAuth
-func CreateDataTable(c *gin.Context) {
+func CreateTable(c *gin.Context) {
 
-	body := new(entities.DataTable)
+	body := new(entities.Table)
 
 	err := c.Bind(&body)
 	if err != nil {
@@ -49,7 +49,7 @@ func CreateDataTable(c *gin.Context) {
 		return
 	}
 
-	res := services.CreateDataTable(*body)
+	res := services.CreateTable(*body)
 
 	if !res.Success {
 		c.JSON(http.StatusBadRequest, res.Msg)
@@ -63,13 +63,13 @@ func CreateDataTable(c *gin.Context) {
 // @Tags DataTable
 // @Accept  json
 // @Produce  json
-// @Param DataTable body entities.DataTable true "DataTable"
+// @Param Table body entities.Table true "Table"
 // @Success 200 {object} string
-// @Router /DataTable/Update [put]
+// @Router /Table/Update [put]
 // @Security ApiKeyAuth
-func UpdateDataTable(c *gin.Context) {
+func UpdateTable(c *gin.Context) {
 
-	body := new(entities.DataTable)
+	body := new(entities.Table)
 
 	err := c.Bind(&body)
 	if err != nil {
@@ -77,7 +77,7 @@ func UpdateDataTable(c *gin.Context) {
 		return
 	}
 
-	res := services.UpdateDataTable(*body)
+	res := services.UpdateTable(*body)
 
 	if !res.Success {
 		c.JSON(http.StatusBadRequest, res.Msg)
@@ -93,20 +93,49 @@ func UpdateDataTable(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "id"
 // @Success 200 {object} string
-// @Router /DataTable/Delete/{id} [delete]
+// @Router /Table/Delete/{id} [delete]
 // @Security ApiKeyAuth
-func DeleteDataTable(c *gin.Context) {
+func DeleteTable(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	res := services.DeleteDataTable(id)
+	res := services.DeleteTable(id)
 
 	if !res.Success {
 		c.JSON(http.StatusBadRequest, res.Msg)
 		return
 	}
 	c.JSON(http.StatusOK, res.Msg)
+}
+
+
+
+// @Summary Get Table by Report ID
+// @Tags DataTable
+// @Accept  json
+// @Produce  json
+// @Param id path int true "report id"
+// @Success 200 {object} entities.Table
+// @Router /Table/GetTableByReportID/{id} [get]
+// @Security ApiKeyAuth
+func GetTableByReportID(c *gin.Context) {
+
+	ReportID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "instance ID should be int")
+		// handler.WriteErrorLog(c, "instance ID should be integer")
+		return
+	}
+
+	inventory, err := services.GetTableByReportID(ReportID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		// handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+
 }

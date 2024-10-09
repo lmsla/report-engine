@@ -79,6 +79,7 @@ func FuncAddToCron(scheduleID int) {
 
 	log.Logrecord("排程", "schedule name: "+inventory.Name)
 	history.Success = "成功"
+	log.Logrecord("Dubug", "截圖:")
 	err = ScreenshotbySchedule(time_execute, scheduleID)
 	if err != nil {
 		fmt.Println("截圖錯誤", err)

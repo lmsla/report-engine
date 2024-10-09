@@ -3,15 +3,12 @@ package controller
 import (
 	"net/http"
 	"strconv"
-
-	"report-backend-golang/models"
-	"report-backend-golang/services"
-	"report-backend-golang/handler"
-
+	// "report-backend-golang/models"
 	"github.com/gin-gonic/gin"
-	// "report-backend-golang/entities"
+	"report-backend-golang/entities"
+	"report-backend-golang/handler"
+	"report-backend-golang/services"
 )
-
 
 // @Summary Get Report
 // @Tags Report
@@ -31,7 +28,6 @@ func GetAllReports(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
-
 
 // @Summary Get report by Report ID
 // @Tags Report
@@ -60,22 +56,18 @@ func GetReportByReportID(c *gin.Context) {
 	c.JSON(http.StatusOK, inventory)
 }
 
-
-
-
-
 // @Summary Create Report
 // @Tags Report
 // @Accept  json
 // @Produce  json
-// @Param Report body models.Report true "report"
+// @Param Report body entities.Report true "report"
 // @Success 200 {object} models.Response
 // @Router /Report/Create [post]
 // @Security ApiKeyAuth
 func CreateReport(c *gin.Context) {
 
 	// body := new(models.Instance)
-	body := new(models.Report)
+	body := new(entities.Report)
 
 	err := c.Bind(&body)
 	if err != nil {
@@ -96,13 +88,13 @@ func CreateReport(c *gin.Context) {
 // @Tags Report
 // @Accept  json
 // @Produce  json
-// @Param Instacne body models.Report true "report"
+// @Param Report body entities.Report true "report"
 // @Success 200 {object} string
 // @Router /Report/Update [put]
 // @Security ApiKeyAuth
 func UpdateReport(c *gin.Context) {
 
-	body := new(models.Report)
+	body := new(entities.Report)
 
 	err := c.Bind(&body)
 	if err != nil {
@@ -119,6 +111,30 @@ func UpdateReport(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
+// func UpdateReport(c *gin.Context) {
+
+// 	// 創建一個新的 Report 實例
+// 	var body entities.Report
+
+// 	// 明確綁定 JSON 請求體
+// 	if err := c.ShouldBindJSON(&body); err != nil {
+// 		// 如果綁定失敗，返回錯誤響應
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	// 調用服務層更新報告
+// 	res := services.UpdateReport(body)
+
+// 	// 如果更新失敗，返回錯誤響應
+// 	if !res.Success {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": res.Msg})
+// 		return
+// 	}
+
+// 	// 如果更新成功，返回成功響應
+// 	c.JSON(http.StatusOK, gin.H{"message": "Update successful", "data": res.Body})
+// }
 
 // @Summary Delete Report
 // @Tags Report
@@ -145,8 +161,6 @@ func DeleteReport(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Msg)
 }
 
-
-
 // @Summary Get Report by Schedule ID
 // @Tags Report
 // @Accept  json
@@ -163,7 +177,6 @@ func GetReportByScheduleID(c *gin.Context) {
 		handler.WriteErrorLog(c, "schedule ID should be integer")
 		return
 	}
-
 
 	inventory, err := services.GetReportByScheduleID(ScheduleID)
 	if err != nil {

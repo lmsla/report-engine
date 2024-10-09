@@ -26,7 +26,7 @@ func GetAllElements() models.Response {
 }
 
 
-// 查單一 Element by ReportID
+// 查 Elements by ReportID
 func GetElementsByReportID(reportID int) ([]entities.Element,error) {
 
 	// element :=  entities.Element{}
@@ -40,8 +40,6 @@ func GetElementsByReportID(reportID int) ([]entities.Element,error) {
 		return nil,err
 	}
 	return report.Elements,nil
-
-
 }
 
 // // 查單一 Element by ReportID

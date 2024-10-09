@@ -9,12 +9,12 @@ import (
 
 
 
-func GetDataTables() models.Response {
+func GetTables() models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	var body = []entities.DataTable{}
-	err := global.Mysql.Debug().Preload("Instance").Find(&body).Error
+	var body = []entities.Table{}
+	err := global.Mysql.Debug().Preload("Instance").Preload("Columns").Find(&body).Error
 	if err != nil {
 		res.Msg = err.Error()
 		return res
@@ -28,11 +28,11 @@ func GetDataTables() models.Response {
 
 
 // 新增element
-func CreateDataTable(table entities.DataTable) models.Response {
+func CreateTable(table entities.Table) models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []entities.DataTable{}
+	res.Body = []entities.Table{}
 	err := global.Mysql.Create(&table).Error
 
 	if err != nil {
@@ -48,11 +48,11 @@ func CreateDataTable(table entities.DataTable) models.Response {
 }
 
 
-func UpdateDataTable(table entities.DataTable) models.Response {
+func UpdateTable(table entities.Table) models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []entities.DataTable{}
+	res.Body = []entities.Table{}
 
 	err := global.Mysql.Select("*").Where("id = ?", table.ID).Updates(&table).Error
 	if err != nil {
@@ -70,19 +70,19 @@ func UpdateDataTable(table entities.DataTable) models.Response {
 
 
 
-func DeleteDataTable(id int) models.Response {
+func DeleteTable(id int) models.Response {
 
 	res := models.Response{}
 	res.Success = false
 	res.Body = nil
 
-	result := global.Mysql.Where("id = ?", id).First(&entities.DataTable{})
+	result := global.Mysql.Where("id = ?", id).First(&entities.Table{})
 	if result.RowsAffected == 0 {
 		res.Msg = "DataTable ID does not exist"
 		return res
 	}
 
-	err := global.Mysql.Where("id = ?", id).Delete(&entities.DataTable{}).Error
+	err := global.Mysql.Where("id = ?", id).Delete(&entities.Table{}).Error
 	if err != nil {
 		res.Msg = fmt.Sprintf("Error when deleting DataTable, err: %s", err)
 		return res
@@ -93,4 +93,15 @@ func DeleteDataTable(id int) models.Response {
 
 	return res
 
+}
+
+// 查 Tables by ReportID
+func GetTableByReportID(reportID int) ([]entities.Table,error) {
+	// element :=  entities.Element{}
+	report := entities.Report{}
+	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Tables").Preload("Tables.Columns").Preload("Tables.Instance").Find(&report).Error
+	if err != nil {
+		return nil,err
+	}
+	return report.Tables,nil
 }

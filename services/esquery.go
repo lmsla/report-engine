@@ -6,30 +6,31 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	// "io/ioutil"
 	"net/http"
+	"report-backend-golang/entities"
+	"sort"
 	"time"
 )
 
-// 定义请求结构体
+// request struct
 type ElasticsearchRequest struct {
-	Aggs map[string]Aggregation `json:"aggs"`
-	Size          int           `json:"size"`
-	Fields        []Field       `json:"fields"`
-	ScriptFields  struct{}      `json:"script_fields"`
-	StoredFields  []string      `json:"stored_fields"`
-	RuntimeMappings struct{}    `json:"runtime_mappings"`
-	Source        Source        `json:"_source"`
-	Query         Query         `json:"query"`
+	Aggs            map[string]Aggregation `json:"aggs"`
+	Size            int                    `json:"size"`
+	Fields          []Field                `json:"fields"`
+	ScriptFields    struct{}               `json:"script_fields"`
+	StoredFields    []string               `json:"stored_fields"`
+	RuntimeMappings struct{}               `json:"runtime_mappings"`
+	Source          Source                 `json:"_source"`
+	Query           Query                  `json:"query"`
 }
 
-// 定义聚合结构体
+// aggregation struct
 type Aggregation struct {
-	Terms Terms                 `json:"terms"`
+	Terms Terms                  `json:"terms"`
 	Aggs  map[string]Aggregation `json:"aggs,omitempty"`
 }
 
-// 定义 Terms 结构体
+// Terms struct
 type Terms struct {
 	Field     string            `json:"field"`
 	Order     map[string]string `json:"order"`
@@ -37,28 +38,28 @@ type Terms struct {
 	ShardSize int               `json:"shard_size"`
 }
 
-// 定义字段结构体
+// Field struct
 type Field struct {
 	Field  string `json:"field"`
 	Format string `json:"format"`
 }
 
-// 定义 _source 结构体
+// _source struct
 type Source struct {
 	Excludes []string `json:"excludes"`
 }
 
-// 定义查询结构体
+// Query struct
 type Query struct {
 	Bool struct {
-		Must     []interface{} `json:"must"`
-		Filter   []Filter      `json:"filter"`
-		Should   []interface{} `json:"should"`
-		MustNot  []interface{} `json:"must_not"`
+		Must    []interface{} `json:"must"`
+		Filter  []Filter      `json:"filter"`
+		Should  []interface{} `json:"should"`
+		MustNot []interface{} `json:"must_not"`
 	} `json:"bool"`
 }
 
-// 定义过滤器结构体
+// Filter struct
 type Filter struct {
 	Range struct {
 		Timestamp struct {
@@ -70,25 +71,25 @@ type Filter struct {
 }
 
 // Build aggregation body
-func buildAggregationRequest(fields []string) ElasticsearchRequest {
-	// 创建顶层的聚合结构体
+func buildAggregationRequest(fields []Column, timefromStr, nowStr string) ElasticsearchRequest {
+	// 最外層的 aggregation
 	aggregations := make(map[string]Aggregation)
 	currentAgg := aggregations
 
-	// 动态构建聚合的 terms
+	// 動態產生 aggregate terms
 	for i, field := range fields {
 		// name aggregations
 		aggName := fmt.Sprintf("agg_%d", i+2)
 		newAgg := Aggregation{
 			Terms: Terms{
-				Field:     field,
+				Field:     field.Name,
 				Order:     map[string]string{"_count": "desc"},
-				Size:      10000,
-				ShardSize: 25,
+				Size:      10,
+				ShardSize: field.Size,
 			},
 		}
 
-		// 将新的聚合添加到当前层的聚合中
+		// 將新的 aggregation 加到目前層的 aggregation 中
 		currentAgg[aggName] = newAgg
 
 		// 如果不是最后一个字段，则为下一个嵌套聚合创建子聚合
@@ -101,7 +102,7 @@ func buildAggregationRequest(fields []string) ElasticsearchRequest {
 		}
 	}
 
-	// 构建完整的 Elasticsearch 请求结构
+	// Build  Complete Elasticsearch request struct
 	return ElasticsearchRequest{
 		Aggs: aggregations,
 		Size: 0,
@@ -137,8 +138,8 @@ func buildAggregationRequest(fields []string) ElasticsearchRequest {
 								Lte    string `json:"lte"`
 							}{
 								Format: "strict_date_optional_time",
-								Gte:    "2023-09-04T16:00:00.000Z",
-								Lte:    "2024-09-05T03:06:10.701Z",
+								Gte:    timefromStr,
+								Lte:    nowStr,
 							},
 						},
 					},
@@ -146,24 +147,47 @@ func buildAggregationRequest(fields []string) ElasticsearchRequest {
 			},
 		},
 	}
+
 }
 
-func EsTableQuery() {
-	// 動態指定一或多個欄位作為 aggregation 的 terms
-	fields := []string{"sourceAddress.keyword", "Method.keyword","App.keyword"}
-	// create request body
-	reqBody := buildAggregationRequest(fields)
+func EsTableQuery(table_columns []entities.Column, instance entities.Instance, data_view, timefrom, now string) (result string) {
+	var fields []Column
+	var Columns []Column
 
-	// 将请求体编码为 JSON 格式
+	for _, data := range table_columns {
+		var column Column
+		column.Name = data.Name
+		column.Order = data.Order
+		column.Size = data.Size
+		Columns = append(Columns, column)
+		sort.Sort(sort.Reverse(ColumnSlice(Columns))) // 按照 order 排序
+	}
+	for _, data := range Columns {
+		fields = append(fields, Column{Name: data.Name, Order: data.Order, Size: data.Size})
+	}
+
+	nowStr := now + "T00:00:00.000+08:00"
+	timefromStr := timefrom + "T00:00:00.000+08:00"
+
+	// nowStr:= "2024-05-13T15:30:00.000+08:00"
+	// timefromStr := "2024-05-13T15:40:00.000+08:00"
+
+
+	//// 動態指定一或多個欄位作為 aggregation 的 terms
+	//// create request body
+	//// fields sample := []string{"sourceAddress.keyword", "Method.keyword", "App.keyword", "User.keyword"}
+	reqBody := buildAggregationRequest(fields, timefromStr, nowStr)
+
+	//// reqbody to JSON
 	jsonData, err := json.Marshal(reqBody)
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 		return
 	}
-	// fmt.Println(string(jsonData))
 
-	// 创建 HTTP 请求
-	url := "https://10.99.1.93:9200/logstash-l7_network*/_async_search" // 请替换为你的 Elasticsearch URL
+	//// create HTTP request
+	url := fmt.Sprintf("%s/%s/_async_search", instance.EsUrl, data_view)
+	// url := "https://10.99.1.93:9200/logstash-l7_network*/_async_search" // change to your Elasticsearch URL
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Println("Error creating request:", err)
@@ -171,8 +195,8 @@ func EsTableQuery() {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	// 替换为你的 Elasticsearch 用户名和密码
-	req.SetBasicAuth("elastic", "12345678") 
+	// Elasticsearch 帳號＆密碼
+	req.SetBasicAuth(instance.User, instance.Password)
 
 	// 創建 HTTP 客户端，支援自簽憑證（如果需要）
 	client := &http.Client{
@@ -198,8 +222,89 @@ func EsTableQuery() {
 		return
 	}
 
-	fmt.Println("Response Body:", string(body))
+	response := string(body)
 
-	// response 
-	fmt.Println("Response Status:", resp.Status)
+	return response
+}
+
+func DataDealing(table entities.Table, timefrom, now string) (json_data string, data_len int) {
+
+	jsonData := EsTableQuery(table.Columns, table.Instance, table.DataView, timefrom, now)
+
+	// 將JSON字符串解碼為Go的map類型
+	var result map[string]interface{}
+	err := json.Unmarshal([]byte(jsonData), &result)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+
+	// 準備存儲結果的切片
+	var finalResults []map[string]interface{}
+
+	// 從 response 開始處理
+	if response, ok := result["response"].(map[string]interface{}); ok {
+		if aggs, ok := response["aggregations"].(map[string]interface{}); ok {
+			for _, v := range aggs {
+				if agg, ok := v.(map[string]interface{}); ok {
+					flattenAggs(agg, &finalResults, map[string]string{})
+				}
+			}
+		}
+	}
+
+	// 將最終結果轉換為 JSON 格式
+	jsonOutput, err := json.MarshalIndent(finalResults, "", "  ")
+	if err != nil {
+		fmt.Println("Error converting to JSON:", err)
+		// os.Exit(1)
+	}
+
+	// 輸出 JSON 結果
+	// fmt.Println("yaya",string(jsonOutput))
+
+	return string(jsonOutput), len(finalResults)
+}
+
+// 遞迴處理 JSON 的函數
+func flattenAggs(data map[string]interface{}, result *[]map[string]interface{}, levels map[string]string) {
+	if buckets, ok := data["buckets"].([]interface{}); ok {
+		// 遍歷所有的 bucket
+		for _, bucket := range buckets {
+			bucketMap := bucket.(map[string]interface{})
+
+			// 提取 key 和 doc_count
+			key := bucketMap["key"].(string)
+			docCount := int(bucketMap["doc_count"].(float64))
+
+			// 複製當前層級的聚合信息
+			newLevels := make(map[string]string)
+			for k, v := range levels {
+				newLevels[k] = v
+			}
+
+			// 確定這一層的聚合名稱
+			levelName := fmt.Sprintf("%d", len(newLevels)+2)
+			newLevels[levelName] = key
+
+			// 檢查是否有下一層的聚合
+			foundNext := false
+			for k, v := range bucketMap {
+				if subAgg, ok := v.(map[string]interface{}); ok && k[:4] == "agg_" {
+					foundNext = true
+					flattenAggs(subAgg, result, newLevels)
+				}
+			}
+
+			// 如果沒有找到下一層的聚合，則添加結果到最終列表
+			if !foundNext {
+				aggResult := make(map[string]interface{})
+				for k, v := range newLevels {
+					aggResult[k] = v
+				}
+				aggResult["Count"] = docCount
+				*result = append(*result, aggResult)
+			}
+		}
+	}
 }

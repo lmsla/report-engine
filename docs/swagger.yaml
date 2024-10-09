@@ -12,41 +12,10 @@ definitions:
         type: string
       order:
         type: integer
+      size:
+        type: integer
       table_id:
         type: integer
-      updated_at:
-        type: integer
-    type: object
-  entities.DataTable:
-    properties:
-      columns:
-        items:
-          $ref: '#/definitions/entities.Column'
-        type: array
-      created_at:
-        type: integer
-      data_view:
-        type: string
-      deleted_at:
-        type: integer
-      id:
-        type: integer
-      instance:
-        $ref: '#/definitions/entities.Instance'
-      instance_id:
-        type: integer
-      name:
-        type: string
-      report_id:
-        type: integer
-      row_num:
-        type: integer
-      space_name:
-        type: string
-      type:
-        type: string
-      uid:
-        type: string
       updated_at:
         type: integer
     type: object
@@ -190,10 +159,6 @@ definitions:
         type: string
       created_at:
         type: integer
-      dataTables:
-        items:
-          $ref: '#/definitions/entities.DataTable'
-        type: array
       deleted_at:
         type: integer
       elements:
@@ -207,6 +172,11 @@ definitions:
       schedules:
         items:
           $ref: '#/definitions/entities.Schedule'
+        type: array
+      tables:
+        description: DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+        items:
+          $ref: '#/definitions/entities.Table'
         type: array
       time_period:
         type: integer
@@ -251,6 +221,42 @@ definitions:
         items:
           type: string
         type: array
+      updated_at:
+        type: integer
+    type: object
+  entities.Table:
+    properties:
+      columns:
+        items:
+          $ref: '#/definitions/entities.Column'
+        type: array
+      created_at:
+        type: integer
+      data_view:
+        type: string
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/entities.Instance'
+      instance_id:
+        type: integer
+      name:
+        type: string
+      reports:
+        items:
+          $ref: '#/definitions/entities.Report'
+        type: array
+      row_num:
+        type: integer
+      space_name:
+        type: string
+      type:
+        description: ReportID   int      `gorm:"index" json:"report_id" form:"report_id"`
+        type: string
+      uid:
+        type: string
       updated_at:
         type: integer
     type: object
@@ -302,29 +308,6 @@ definitions:
       user:
         type: string
     type: object
-  models.Report:
-    properties:
-      alias:
-        type: string
-      created_at:
-        type: integer
-      deleted_at:
-        type: integer
-      elements:
-        items:
-          $ref: '#/definitions/models.Element'
-        type: array
-      id:
-        type: integer
-      name:
-        type: string
-      time_period:
-        type: integer
-      time_unit:
-        type: string
-      updated_at:
-        type: integer
-    type: object
   models.Response:
     properties:
       body: {}
@@ -333,7 +316,7 @@ definitions:
       success:
         type: boolean
     type: object
-host: 10.99.1.133:8005
+host: 10.99.1.93:8005
 info:
   contact:
     email: support@swagger.io
@@ -343,90 +326,6 @@ info:
   title: Report Engine Golang API
   version: "1.0"
 paths:
-  /DataTable/Create:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: DataTable
-        in: body
-        name: DataTable
-        required: true
-        schema:
-          $ref: '#/definitions/entities.DataTable'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Create DataTable
-      tags:
-      - DataTable
-  /DataTable/Delete/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Delete DataTable
-      tags:
-      - DataTable
-  /DataTable/GetAll:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Get DataTable
-      tags:
-      - DataTable
-  /DataTable/Update:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: DataTable
-        in: body
-        name: DataTable
-        required: true
-        schema:
-          $ref: '#/definitions/entities.DataTable'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Update DataTable
-      tags:
-      - DataTable
   /Dropdown:
     get:
       consumes:
@@ -875,7 +774,7 @@ paths:
         name: Report
         required: true
         schema:
-          $ref: '#/definitions/models.Report'
+          $ref: '#/definitions/entities.Report'
       produces:
       - application/json
       responses:
@@ -977,10 +876,10 @@ paths:
       parameters:
       - description: report
         in: body
-        name: Instacne
+        name: Report
         required: true
         schema:
-          $ref: '#/definitions/models.Report'
+          $ref: '#/definitions/entities.Report'
       produces:
       - application/json
       responses:
@@ -1099,6 +998,112 @@ paths:
       summary: Update Schedule
       tags:
       - Schedule
+  /Table/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Table
+        in: body
+        name: Table
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Table'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create DataTable
+      tags:
+      - DataTable
+  /Table/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete DataTable
+      tags:
+      - DataTable
+  /Table/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get DataTable
+      tags:
+      - DataTable
+  /Table/GetTableByReportID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Table'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Table by Report ID
+      tags:
+      - DataTable
+  /Table/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Table
+        in: body
+        name: Table
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Table'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update DataTable
+      tags:
+      - DataTable
   /get-server-module:
     get:
       consumes:

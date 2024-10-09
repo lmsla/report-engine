@@ -19,145 +19,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/DataTable/Create": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "DataTable"
-                ],
-                "summary": "Create DataTable",
-                "parameters": [
-                    {
-                        "description": "DataTable",
-                        "name": "DataTable",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.DataTable"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/DataTable/Delete/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "DataTable"
-                ],
-                "summary": "Delete DataTable",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/DataTable/GetAll": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "DataTable"
-                ],
-                "summary": "Get DataTable",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/DataTable/Update": {
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "DataTable"
-                ],
-                "summary": "Update DataTable",
-                "parameters": [
-                    {
-                        "description": "DataTable",
-                        "name": "DataTable",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.DataTable"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/Dropdown": {
             "get": {
                 "security": [
@@ -900,7 +761,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Report"
+                            "$ref": "#/definitions/entities.Report"
                         }
                     }
                 ],
@@ -1069,11 +930,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "report",
-                        "name": "Instacne",
+                        "name": "Report",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Report"
+                            "$ref": "#/definitions/entities.Report"
                         }
                     }
                 ],
@@ -1262,6 +1123,181 @@ const docTemplate = `{
                 }
             }
         },
+        "/Table/Create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Create DataTable",
+                "parameters": [
+                    {
+                        "description": "Table",
+                        "name": "Table",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Table"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Table/Delete/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Delete DataTable",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/Table/GetAll": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Get DataTable",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/Table/GetTableByReportID/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Get Table by Report ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "report id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Table"
+                        }
+                    }
+                }
+            }
+        },
+        "/Table/Update": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataTable"
+                ],
+                "summary": "Update DataTable",
+                "parameters": [
+                    {
+                        "description": "Table",
+                        "name": "Table",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Table"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/get-server-module": {
             "get": {
                 "consumes": [
@@ -1359,58 +1395,11 @@ const docTemplate = `{
                 "order": {
                     "type": "integer"
                 },
+                "size": {
+                    "type": "integer"
+                },
                 "table_id": {
                     "type": "integer"
-                },
-                "updated_at": {
-                    "type": "integer"
-                }
-            }
-        },
-        "entities.DataTable": {
-            "type": "object",
-            "properties": {
-                "columns": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entities.Column"
-                    }
-                },
-                "created_at": {
-                    "type": "integer"
-                },
-                "data_view": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "instance": {
-                    "$ref": "#/definitions/entities.Instance"
-                },
-                "instance_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "report_id": {
-                    "type": "integer"
-                },
-                "row_num": {
-                    "type": "integer"
-                },
-                "space_name": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "uid": {
-                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"
@@ -1627,12 +1616,6 @@ const docTemplate = `{
                 "created_at": {
                     "type": "integer"
                 },
-                "dataTables": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entities.DataTable"
-                    }
-                },
                 "deleted_at": {
                     "type": "integer"
                 },
@@ -1652,6 +1635,13 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.Schedule"
+                    }
+                },
+                "tables": {
+                    "description": "DataTables []DataTable ` + "`" + `gorm:\"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;\"` + "`" + `",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Table"
                     }
                 },
                 "time_period": {
@@ -1718,6 +1708,60 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.Table": {
+            "type": "object",
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Column"
+                    }
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "data_view": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instance": {
+                    "$ref": "#/definitions/entities.Instance"
+                },
+                "instance_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "reports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Report"
+                    }
+                },
+                "row_num": {
+                    "type": "integer"
+                },
+                "space_name": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "ReportID   int      ` + "`" + `gorm:\"index\" json:\"report_id\" form:\"report_id\"` + "`" + `",
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "integer"
@@ -1797,41 +1841,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Report": {
-            "type": "object",
-            "properties": {
-                "alias": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "integer"
-                },
-                "deleted_at": {
-                    "type": "integer"
-                },
-                "elements": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Element"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "time_period": {
-                    "type": "integer"
-                },
-                "time_unit": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.Response": {
             "type": "object",
             "properties": {
@@ -1857,7 +1866,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "10.99.1.133:8005",
+	Host:             "10.99.1.93:8005",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Report Engine Golang API",

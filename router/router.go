@@ -49,7 +49,6 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.GET("/Dropdown", GetDropdownSource)
 		apiv1_auth.GET("/DropdownFields", DropdownFields)
 
- 
 		apiv1_auth.GET("/Report/GetAll", GetAllReports)
 		apiv1_auth.POST("/Report/Create", CreateReport)
 		apiv1_auth.PUT("/Report/Update", UpdateReport)
@@ -63,12 +62,11 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.DELETE("/Element/Delete/:id", DeleteElement)
 		apiv1_auth.GET("/Element/GetElementByReportID/:id", GetElementByReportID)
 
-		apiv1_auth.GET("/DataTable/GetAll", GetDataTables)
-		apiv1_auth.POST("/DataTable/Create", CreateDataTable)
-		apiv1_auth.PUT("/DataTable/Update", UpdateDataTable)
-		apiv1_auth.DELETE("/DataTable/Delete/:id", DeleteDataTable)
-
-
+		apiv1_auth.GET("/Table/GetAll", GetTables)
+		apiv1_auth.POST("/Table/Create", CreateTable)
+		apiv1_auth.PUT("/Table/Update", UpdateTable)
+		apiv1_auth.DELETE("/Table/Delete/:id", DeleteTable)
+		apiv1_auth.GET("/Table/GetTableByReportID/:id", GetTableByReportID)
 
 		apiv1_auth.GET("/Schedule/GetAll", GetAllSchedule)
 		apiv1_auth.GET("/Schedule/GetSchedule/:id", GetScheduleByScheduleID)

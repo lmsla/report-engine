@@ -6,6 +6,7 @@ CREATE TABLE `reports` (
   `name` varchar(50) DEFAULT NULL,
   `time_unit` varchar(50) DEFAULT NULL,
   `time_period` bigint DEFAULT NULL,
+  `alias` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_reports_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

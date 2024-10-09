@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"report-backend-golang/entities"
 	"report-backend-golang/models"
+	"strings"
 )
 
 func VerifyKibanaInstance(instance *entities.Instance) models.Response {
@@ -320,13 +321,14 @@ func GetDataViewData(space string, inventory models.Instance, uid string) ([]ent
 		// 獲取每個 field 的 name 和 type
 		name := field.(map[string]interface{})["name"]
 		uid := field.(map[string]interface{})["type"]
+		if strings.Contains(name.(string), ".keyword") {
+			dropdownData.Text = uid.(string)
+			dropdownData.Value = name.(string)
+			dropdownDatas = append(dropdownDatas, *dropdownData)
+		}
 
-		dropdownData.Text = uid.(string)
-		dropdownData.Value = name.(string)
-
-		dropdownDatas = append(dropdownDatas, *dropdownData)
 	}
-	
+
 	// fmt.Println("Dropdown Data:", dropdownDatas)
 	return dropdownDatas, nil
 }

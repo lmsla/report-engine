@@ -48,6 +48,5 @@ func Run() {
 			}
 		}
 	}
-
 	// or m.Step(2) if you want to explicitly set the number of migrations to run
 }

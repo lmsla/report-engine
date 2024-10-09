@@ -54,7 +54,7 @@ func Toools() {
 }
 
 func GetImageHW(image string) (width int, height int) {
-	// 打开 PNG 文件
+	// Open PNG 
 	file, err := os.Open(image)
 	if err != nil {
 		fmt.Println("無法打開文件:", err)
@@ -62,14 +62,14 @@ func GetImageHW(image string) (width int, height int) {
 	}
 	defer file.Close()
 
-	// 解码 PNG 图像
+	// 解碼 PNG 圖片
 	img, err := png.Decode(file)
 	if err != nil {
 		fmt.Println("無法解碼圖片:", err)
 		return
 	}
 
-	// 获取图像的长宽
+	// 取得圖片的長寬
 	width = img.Bounds().Dx()
 	height = img.Bounds().Dy()
 

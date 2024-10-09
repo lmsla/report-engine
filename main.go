@@ -1,16 +1,18 @@
 package main
 
 import (
+	// "fmt"
 	"report-backend-golang/clients"
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
 	"report-backend-golang/utils"
+	// "report-backend-golang/entities"
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
 	// "report-backend-golang/models"
 	"report-backend-golang/services"
-	// "report-backend-golang/entities"
+
 )
 
 // @title Report Engine Golang API
@@ -21,8 +23,8 @@ import (
 // @contact.name Winston
 // @contact.email support@swagger.io
 
-// @host 10.99.1.133:8005
-// // @host localhost:8005
+// @host 10.99.1.93:8005
+//// @host localhost:8005
 // @BasePath  /api/v1
 // @query.collection.format multi
 // @securityDefinitions.apikey ApiKeyAuth
@@ -45,13 +47,12 @@ func main() {
 
 	migrate.Run()
 
-	clients.LoadRedis()
-	defer global.Redis.Close()
 
 	utils.LoadCrontab()
 	// // authorize.LoadCasbin()
 
 	clients.LoadKeycloak()
+
 	r := router.LoadRouter()
 	r.Run(global.EnvConfig.Server.Port)
 
@@ -71,8 +72,29 @@ func main1() {
 	// 	Password: "12345678",
 	// 	Auth:     0,
 	// }
-
+	utils.LoadEnvironment()
 	// services.GetDataViewData("csc",instance,"bd9283f8-460b-48ab-bd23-f253bca38f12")
 
-	services.EsTableQuery()
+	clients.LoadDatabase()
+	mysql, _ := global.Mysql.DB()
+	defer mysql.Close()
+
+	// services.DataDealing()
+	// services.Testgy()
+	services.Test1()
+	// services.ExampleFpdf_CellFormat_tables1()
+	// services.TableCreate()
+	// dateString := "2024-09-25"
+
+	// date,err := time.Parse("2006-01-02T15:04",dateString)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Printf("date: %v\n", date)
+
+	
 }
+
+
+
+

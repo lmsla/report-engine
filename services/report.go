@@ -12,8 +12,8 @@ func GetAllReports() models.Response {
 	res := models.Response{}
 	res.Success = false
 
-	var body = []models.Report{}
-	err := global.Mysql.Debug().Preload("Elements").Find(&body).Error
+	var body = []entities.Report{}
+	err := global.Mysql.Debug().Preload("Elements").Preload("Tables").Find(&body).Error
 
 	if err != nil {
 		res.Msg = err.Error()
@@ -30,30 +30,30 @@ func GetAllReports() models.Response {
 // 查單一 report by ReportID
 func GetReportByReportID(reportID int) (entities.Report,error) {
 
-	var instance entities.Report
-	instance.ID = reportID
-	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Find(&instance).Error
+	var report entities.Report
+	report.ID = reportID
+	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Preload("Tables").Preload("Tables.Columns").Find(&report).Error
 	if err != nil {
-		return instance, err
+		return report, err
 	}
-	return instance, nil
+	return report, nil
 
 }
 
 
-func CreateReport(report models.Report) models.Response {
+func CreateReport(report entities.Report) models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []models.Report{}
+	res.Body = []entities.Report{}
 
-	result := global.Mysql.Where("name = ?", report.Name).First(&models.Report{})
+	result := global.Mysql.Where("name = ?", report.Name).First(&entities.Report{})
 	if result.RowsAffected > 0 {
 		res.Msg = "Report Name already existed"
 		return res
 	}
 
-	err := global.Mysql.Create(&report).Error
+	err := global.Mysql.Create(&report).Preload("Reports.tables").Error
 	if err != nil {
 		res.Msg = "Create Fail"
 		return res
@@ -66,13 +66,13 @@ func CreateReport(report models.Report) models.Response {
 	return res
 }
 
-func UpdateReport(report models.Report) models.Response {
+func UpdateReport(report entities.Report) models.Response {
 
 	res := models.Response{}
 	res.Success = false
-	res.Body = []models.Report{}
+	res.Body = []entities.Report{}
 
-	result := global.Mysql.Where("id != ? AND name = ?", report.ID, report.Name).First(&models.Report{})
+	result := global.Mysql.Where("id != ? AND name = ?", report.ID, report.Name).First(&entities.Report{})
 	if result.RowsAffected > 0 {
 		res.Msg = "Report Name already existed"
 		return res
