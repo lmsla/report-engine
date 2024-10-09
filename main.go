@@ -23,7 +23,7 @@ import (
 // @contact.name Winston
 // @contact.email support@swagger.io
 
-// @host 10.99.1.93:8005
+// @host 10.99.1.133:8005
 //// @host localhost:8005
 // @BasePath  /api/v1
 // @query.collection.format multi
