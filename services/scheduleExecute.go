@@ -79,29 +79,22 @@ func FuncAddToCron(scheduleID int) {
 
 	log.Logrecord("排程", "schedule name: "+inventory.Name)
 	history.Success = "成功"
-	log.Logrecord("Dubug", "截圖:")
+	// 移除掉 CreateHtmlbySchedule(time_execute, scheduleID)
 	err = ScreenshotbySchedule(time_execute, scheduleID)
 	if err != nil {
 		fmt.Println("截圖錯誤", err)
 		history.Success = "截圖錯誤"
 	} else {
-		err = CreateHtmlbySchedule(time_execute, scheduleID)
+		// CreatePDFbySchedule(scheduleID)
+		err = CreatePDFbySchedule(time_execute, scheduleID)
 		if err != nil {
-			fmt.Println("產生html錯誤", err)
-			history.Success = "產生html錯誤"
+			fmt.Println("產生pdf錯誤", err)
+			history.Success = "產生pdf錯誤"
 		} else {
-			// CreatePDFbySchedule(scheduleID)
-			err = CreatePDFbySchedule(time_execute, scheduleID)
+			err = SendEmailBySchedule(time_execute, scheduleID)
 			if err != nil {
-				fmt.Println("產生pdf錯誤", err)
-				history.Success = "產生pdf錯誤"
-			} else {
-				err = SendEmailBySchedule(time_execute, scheduleID)
-				if err != nil {
-					fmt.Println("發送mail錯誤", err)
-					history.Success = "發送mail錯誤"
-				}
-
+				fmt.Println("發送mail錯誤", err)
+				history.Success = "發送mail錯誤"
 			}
 
 		}
@@ -119,7 +112,6 @@ func FuncAddToCron(scheduleID int) {
 	}
 
 	DeleteOldHistory()
-
 }
 
 // report 重寄by 歷史紀錄
@@ -162,22 +154,15 @@ func CreateHistoryReport(historyID int) {
 		fmt.Println("截圖錯誤", err)
 		history.Success = "截圖錯誤"
 	} else {
-		err = CreateHtmlbySchedule(history_ExecuteTime, historydata.ScheduleID)
+		err = CreatePDFbySchedule(history_ExecuteTime, historydata.ScheduleID)
 		if err != nil {
-			fmt.Println("產生html錯誤", err)
-			history.Success = "產生html錯誤"
+			fmt.Println("產生pdf錯誤", err)
+			history.Success = "產生pdf錯誤"
 		} else {
-			err = CreatePDFbySchedule(history_ExecuteTime, historydata.ScheduleID)
+			err = SendEmailBySchedule(history_ExecuteTime, historydata.ScheduleID)
 			if err != nil {
-				fmt.Println("產生pdf錯誤", err)
-				history.Success = "產生pdf錯誤"
-			} else {
-				err = SendEmailBySchedule(history_ExecuteTime, historydata.ScheduleID)
-				if err != nil {
-					fmt.Println("發送mail錯誤", err)
-					history.Success = "發送mail錯誤"
-				}
-
+				fmt.Println("發送mail錯誤", err)
+				history.Success = "發送mail錯誤"
 			}
 
 		}

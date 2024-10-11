@@ -382,7 +382,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/History/HistoryReport": {
+        "/History/HistoryReport/{id}": {
             "post": {
                 "security": [
                     {
@@ -404,7 +404,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "id",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1866,7 +1866,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "10.99.1.133:8005",
+	Host:             "localhost:8005",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Report Engine Golang API",

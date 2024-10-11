@@ -103,13 +103,14 @@ func GetOldHitory(c *gin.Context) {
 // @Tags History
 // @Accept  json
 // @Produce  json
-// @Param id query int true "id"
+// @Param id path int true "id"
 // @Success 200 {object} models.Response
-// @Router /History/HistoryReport [POST]
+// @Router /History/HistoryReport/{id} [post]
 // @Security ApiKeyAuth
 func CreateHistoryReport(c *gin.Context) {
 
-	idParam := c.Query("id")
+	// idParam := c.Query("id")
+	idParam := c.Param("id")
 
 	HistoryID, err := strconv.Atoi(idParam)
 	if err != nil {

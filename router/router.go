@@ -74,8 +74,6 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.DELETE("/Schedule/Delete/:id", DeleteSchedule)
 		apiv1_auth.PUT("/Schedule/Update", UpdateSchedule)
 
-		// apiv1_auth.POST("Screenshot/Create/:id", GetScreenShot)
-
 		apiv1_auth.POST("/Html/Create/:id", CreateHtml)
 		apiv1_auth.POST("/PDF/Create/:id", CreatePDF)
 
@@ -84,9 +82,9 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.GET("/History/GetAll", GetAllHitory)
 		apiv1_auth.GET("/History/GetOldHistory", GetOldHitory)
 		apiv1_auth.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
-		// apiv1_auth.POST("/History/HistoryReport/:id", CreateHistoryReport)
+		apiv1_auth.POST("/History/HistoryReport/:id", CreateHistoryReport)
 
-		apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
+		// apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
 		// apiv1_auth.GET("/History/HistoryReport", CreateHistoryReport)
 
 	}

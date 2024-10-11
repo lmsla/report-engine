@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "10.99.1.133:8005",
+    "host": "localhost:8005",
     "basePath": "/api/v1",
     "paths": {
         "/Dropdown": {
@@ -376,7 +376,7 @@
                 }
             }
         },
-        "/History/HistoryReport": {
+        "/History/HistoryReport/{id}": {
             "post": {
                 "security": [
                     {
@@ -398,7 +398,7 @@
                         "type": "integer",
                         "description": "id",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],

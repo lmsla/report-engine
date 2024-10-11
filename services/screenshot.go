@@ -20,10 +20,10 @@ import (
 )
 
 func ScreenshotbySchedule(nowtime int64, scheduleID int) (err error) {
-	log.Logrecord("Dubug", "ScreenshotbySchedule:")
+
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			fmt.Println("ScreenshotbySchedule 發生錯誤：", err)
 		}
 	}()
@@ -49,11 +49,11 @@ func ScreenshotbyReport(nowtime int64, reportID int) (err error) {
 
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			fmt.Println("ScreenshotbyReport 發生錯誤：", err)
 		}
 	}()
-	
+
 	report_data, err1 := GetReportByReportID(reportID)
 	if err1 != nil {
 		fmt.Println("ScreenshotbyReport - line 36", err1.Error())
@@ -101,7 +101,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			fmt.Println("Screenshot_element1 發生錯誤：", err)
 		}
 	}()
@@ -133,7 +133,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {
 			fmt.Println("Screenshot_element - line 155", err)
-			log.Logrecord("ERROR", "Dashboard Screenshot error "+ err.Error())
+			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
 
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
@@ -155,14 +155,14 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 }
 
 func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel string, res *[]byte) (err error) {
-	log.Logrecord("Dubug", "kibanaElementScreenshotWithAuth_timeout:")
+
 	var executed *runtime.RemoteObject
 	// 自定義長寬
 	// width, height := 1240, 1754
 
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			fmt.Println("發生錯誤：", err)
 		}
 	}()
@@ -175,7 +175,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 		chromedp.Flag("headless", true),
 		// chromedp.NoSandbox,
 		// chromedp.Flag("disable-gpu", true),
-		// chromedp.Flag("remote-debugging-port", "9223"),
+
 		// chromedp.ExecPath("/usr/bin/google-chrome"),
 		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 	)
@@ -215,7 +215,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 
 // 	defer func() {
 // 		if err != nil {
-// 			// 进行错误处理，例如记录日志或返回错误信息给调用方
+// 			// Error handling
 // 			fmt.Println("发生错误：", err)
 // 		}
 // 	}()

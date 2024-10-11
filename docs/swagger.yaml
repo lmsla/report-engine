@@ -316,7 +316,7 @@ definitions:
       success:
         type: boolean
     type: object
-host: 10.99.1.133:8005
+host: localhost:8005
 info:
   contact:
     email: support@swagger.io
@@ -548,13 +548,13 @@ paths:
       summary: Get Old history
       tags:
       - History
-  /History/HistoryReport:
+  /History/HistoryReport/{id}:
     post:
       consumes:
       - application/json
       parameters:
       - description: id
-        in: query
+        in: path
         name: id
         required: true
         type: integer

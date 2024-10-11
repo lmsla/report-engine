@@ -44,7 +44,7 @@ func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
 			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
 		}
@@ -74,7 +74,7 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
 			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
 		}
@@ -146,7 +146,7 @@ func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
 	// nowtime = time_execute
 	defer func() {
 		if err != nil {
-			// 进行错误处理，例如记录日志或返回错误信息给调用方
+			// Error handling
 			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
 
 		}
@@ -303,7 +303,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		pdf.SetY(y)
 		pdf.SetFont("Taipei Sans TC Beta", "", 14)
 		pdf.CellFormat(0, 0, table.Name, "", 0, "C", false, 0, "")
-		
+
 		period := fmt.Sprintf("報表期間:%s~%s", timefrom, now)
 		pdf.SetFont("Taipei Sans TC Beta", "", 10)
 		pdf.CellFormat(0, 0, period, "", 0, "R", false, 0, "")
@@ -375,6 +375,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		pdf.SetTextColor(0, 0, 0)
 		pdf.SetDrawColor(0, 0, 0)
 		pdf.SetLineWidth(0.3)
+		pdf.SetFont("Taipei Sans TC Beta", "", 12)
 		// 繪制表格數據
 		// 用於存放解碼後的數據的變數
 		var result []map[string]interface{}
@@ -384,8 +385,8 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 			fmt.Println("Error parsing JSON:", err)
 			return
 		}
-		// var prevRow map[string]interface{} // 用於存儲上一行的數據
-		var prevRow []Column
+		// // var prevRow map[string]interface{} // 用於存儲上一行的數據
+		// var prevRow []Column
 		fill := false
 		for _, c := range result {
 
@@ -413,53 +414,53 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 			}
 			sort.Sort(sort.Reverse(ColumnSlice(ColumnsV))) // 按照 Age 的升序排序
 
-			// // 繪製每個動態欄位(儲存格不合併)-------------
-			// for i, val := range ColumnsV {
-			// 	if i == len(ColumnsV)-1 {
-			// 		// 動態處理最後一個欄位的多行文本
-			// 		pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LR", "R", fill)
-			// 	} else {
-			// 		pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LR", "R", fill)
-			// 		// 更新 X 軸位置
-			// 		pdf.SetXY(startX+colWidths[i], startY)
-			// 		startX = pdf.GetX()
-			// 	}
-			// }
-			//-------------------------------------------
-
-			pdf.SetFont("Taipei Sans TC Beta", "", 12)
-
-			//// 繪製每個動態欄位(儲存格合併)
+			// 繪製每個動態欄位(儲存格不合併)-------------
 			for i, val := range ColumnsV {
-
-				// 檢查該欄位值是否與上一行相同，若相同則合併儲存格
 				if i == len(ColumnsV)-1 {
 					// 動態處理最後一個欄位的多行文本
-					pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LRB", "C", fill)
+					pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LR", "R", fill)
 				} else {
-					if prevRow != nil && prevRow[i].Name == val.Name {
-
-						pdf.MultiCell(colWidths[i], cellHeight, "", "LR", "C", fill)
-						pdf.SetXY(startX+colWidths[i], startY)
-						startX = pdf.GetX()
-
-					} else {
-
-						pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LRT", "C", fill)
-						// 更新 X 軸位置
-						pdf.SetXY(startX+colWidths[i], startY)
-						startX = pdf.GetX()
-					}
+					pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LR", "R", fill)
+					// 更新 X 軸位置
+					pdf.SetXY(startX+colWidths[i], startY)
+					startX = pdf.GetX()
 				}
 			}
-			// 將當前行設置為上一行，供下一行比較使用
-			prevRow = ColumnsV
-			//-------------------------------------------
+			// -------------------------------------------
+
+			// pdf.SetFont("Taipei Sans TC Beta", "", 12)
+
+			// // 繪製每個動態欄位(儲存格合併)
+			// for i, val := range ColumnsV {
+
+			// 	// 檢查該欄位值是否與上一行相同，若相同則合併儲存格
+			// 	if i == len(ColumnsV)-1 {
+			// 		// 動態處理最後一個欄位的多行文本
+			// 		pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LRB", "C", fill)
+			// 	} else {
+			// 		if prevRow != nil && prevRow[i].Name == val.Name {
+
+			// 			pdf.MultiCell(colWidths[i], cellHeight, "", "LR", "C", fill)
+			// 			pdf.SetXY(startX+colWidths[i], startY)
+			// 			startX = pdf.GetX()
+
+			// 		} else {
+
+			// 			pdf.MultiCell(colWidths[i], cellHeight, val.Name, "LRT", "C", fill)
+			// 			// 更新 X 軸位置
+			// 			pdf.SetXY(startX+colWidths[i], startY)
+			// 			startX = pdf.GetX()
+			// 		}
+			// 	}
+			// }
+			// // 將當前行設置為上一行，供下一行比較使用
+			// prevRow = ColumnsV
+			// // -------------------------------------------
 
 			// pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
 			// 移動到下一行
 			// pdf.Ln(-1)
-			// fill = !fill
+			fill = !fill
 
 		}
 

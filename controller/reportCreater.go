@@ -50,11 +50,12 @@ func CreatePDF(c *gin.Context) {
 
 	ScheduleID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "report ID should be int")
+		c.JSON(http.StatusBadRequest, "Schedule ID should be int")
 		// handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
-
+	c.JSON(http.StatusOK, "報表試寄中，請稍候")
+	
 	log.Logrecord("排程",fmt.Sprintf("報表試寄, Schedule ID : %d",ScheduleID))
 
 	go services.FuncAddToCron(ScheduleID)
