@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8005",
+    "host": "10.99.1.133:8005",
     "basePath": "/api/v1",
     "paths": {
         "/Dropdown": {
@@ -1374,6 +1374,9 @@
         "entities.Column": {
             "type": "object",
             "properties": {
+                "alias": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "integer"
                 },

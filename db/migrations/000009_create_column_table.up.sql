@@ -5,6 +5,7 @@ CREATE TABLE `columns` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `table_id` bigint DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
+  `alias` varchar(50) DEFAULT NULL,
   `order` int DEFAULT NULL,
   `size` int DEFAULT NULL,
   PRIMARY KEY (`id`),

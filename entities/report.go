@@ -48,6 +48,7 @@ type Column struct {
 	ID      int    `gorm:"primaryKey;index" json:"id" form:"id"`
 	TableID int    `gorm:"index" json:"table_id" form:"table_id"`
 	Name    string `gorm:"type:varchar(50)" json:"name" form:"name"`
+	Alias   string `gorm:"type:varchar(50)" json:"alias" form:"alias"`
 	Order   int    `gorm:"type:int" json:"order" form:"order"`
 	Size    int    `gorm:"type:int" json:"size" form:"size"`
 }

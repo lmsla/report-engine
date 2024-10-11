@@ -123,7 +123,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 		to:          reciver_list,
 		cc:          cc_list,
 		bcc:         bcc_list,
-		subject:     schedule_data.Name + schedule_data.Subject,
+		subject:     schedule_data.Name+"-"+ schedule_data.Subject,
 		body:        text + schedule_data.Body,
 		contentType: "text/plain;charset=utf-8",
 		// attachment: Attachment{
