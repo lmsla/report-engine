@@ -1224,6 +1224,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/Table/GetTable/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Table"
+                ],
+                "summary": "Get table by Table ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Table"
+                        }
+                    }
+                }
+            }
+        },
         "/Table/GetTableByReportID/{id}": {
             "get": {
                 "security": [

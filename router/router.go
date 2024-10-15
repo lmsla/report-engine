@@ -66,6 +66,7 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.POST("/Table/Create", CreateTable)
 		apiv1_auth.PUT("/Table/Update", UpdateTable)
 		apiv1_auth.DELETE("/Table/Delete/:id", DeleteTable)
+		apiv1_auth.GET("/Table/GetTable/:id", GetTableByID)
 		apiv1_auth.GET("/Table/GetTableByReportID/:id", GetTableByReportID)
 
 		apiv1_auth.GET("/Schedule/GetAll", GetAllSchedule)
@@ -84,8 +85,6 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.GET("/History/GetHistory/:id", GetHistoryByHistoryID)
 		apiv1_auth.POST("/History/HistoryReport/:id", CreateHistoryReport)
 
-		// apiv1_auth.POST("/History/HistoryReport", CreateHistoryReport)
-		// apiv1_auth.GET("/History/HistoryReport", CreateHistoryReport)
 
 	}
 

@@ -1061,6 +1061,28 @@ paths:
       summary: Get DataTable
       tags:
       - DataTable
+  /Table/GetTable/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Table'
+      security:
+      - ApiKeyAuth: []
+      summary: Get table by Table ID
+      tags:
+      - Table
   /Table/GetTableByReportID/{id}:
     get:
       consumes:

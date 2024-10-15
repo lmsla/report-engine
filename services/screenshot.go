@@ -4,15 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	// "io/ioutil"
 	"os"
 	"report-backend-golang/global"
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"time"
-
 	"github.com/chromedp/cdproto/emulation"
-
 	// "github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
@@ -36,7 +33,7 @@ func ScreenshotbySchedule(nowtime int64, scheduleID int) (err error) {
 
 		err := ScreenshotbyReport(nowtime, data.ID)
 		if err != nil {
-			fmt.Println("ScreenshotbyReport - line 47", err.Error())
+			fmt.Println("ScreenshotbyReport - line 37", err.Error())
 			log.Logrecord("ERROR", "ScreenshotbyReport error"+err.Error())
 			return err
 		}
@@ -118,7 +115,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 	case "visualiztion":
 		url1 = fmt.Sprintf("%s/s/%s/app/visualize#/edit/%s?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'%s',to:'%s'))", url, space, uid, timefrom, new_ExecuteTime_str)
 		if err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.css-zxsb69`, &buf); err != nil {
-			fmt.Println("Screenshot_element - line 94", err.Error())
+			fmt.Println("Screenshot_element - line 121", err.Error())
 			log.Logrecord("ERROR", "Visualiztion Screenshot error"+err.Error())
 		}
 		file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
@@ -132,7 +129,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {
-			fmt.Println("Screenshot_element - line 155", err)
+			fmt.Println("Screenshot_element - line 135", err)
 			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
 
 		}
@@ -143,14 +140,11 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 
 		}
 		if err != nil {
-			// fmt.Println("在 Screenshot_element1 ")
 			fmt.Println("在 Screenshot_element1 發生錯誤 " + err.Error())
 		}
 		return err
 	}
-	// if err != nil {
-	// 	fmt.Println(err.Error())
-	// }
+
 	return err
 }
 

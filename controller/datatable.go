@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"report-backend-golang/entities"
 	"report-backend-golang/services"
-	// "report-backend-golang/handler"
+	"report-backend-golang/handler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,6 +30,31 @@ func GetTables(c *gin.Context) {
 }
 
 
+// @Summary Get table by Table ID
+// @Tags Table
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Table
+// @Router /Table/GetTable/{id} [get]
+// @Security ApiKeyAuth
+func GetTableByID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	inventory, err := services.GetTableByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
 
 // @Summary Create DataTable
 // @Tags DataTable

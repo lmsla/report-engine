@@ -7,8 +7,6 @@ import (
 	"report-backend-golang/models"
 )
 
-
-
 func GetTables() models.Response {
 
 	res := models.Response{}
@@ -24,8 +22,6 @@ func GetTables() models.Response {
 	res.Msg = "Get All DataTable Success"
 	return res
 }
-
-
 
 // 新增element
 func CreateTable(table entities.Table) models.Response {
@@ -47,7 +43,6 @@ func CreateTable(table entities.Table) models.Response {
 	return res
 }
 
-
 func UpdateTable(table entities.Table) models.Response {
 
 	res := models.Response{}
@@ -67,8 +62,6 @@ func UpdateTable(table entities.Table) models.Response {
 	return res
 
 }
-
-
 
 func DeleteTable(id int) models.Response {
 
@@ -95,13 +88,25 @@ func DeleteTable(id int) models.Response {
 
 }
 
+// 查單一Table
+func GetTableByID(tableID int) (entities.Table, error) {
+
+	var table entities.Table
+	table.ID = tableID
+	err := global.Mysql.First(&table).Error
+	if err != nil {
+		return table, err
+	}
+	return table, nil
+}
+
 // 查 Tables by ReportID
-func GetTableByReportID(reportID int) ([]entities.Table,error) {
+func GetTableByReportID(reportID int) ([]entities.Table, error) {
 	// element :=  entities.Element{}
 	report := entities.Report{}
-	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Tables").Preload("Tables.Columns").Preload("Tables.Instance").Find(&report).Error
+	err := global.Mysql.Debug().Where("id = ?", reportID).Preload("Tables").Preload("Tables.Columns").Preload("Tables.Instance").Find(&report).Error
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	return report.Tables,nil
+	return report.Tables, nil
 }

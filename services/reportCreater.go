@@ -245,8 +245,8 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 	// set logo
 	pdf.Image(global.EnvConfig.Files.LogoFile, 5, 5, 20, 20, false, "", 0, "")
 
-	// //给个空字符串就会去替换默认的 "{nb}"。
-	// //如果这里指定了特别的字符串，那么SetFooterFunc() 中的 "nb" 也必须换成这个特别的字符串
+	//// 给個空字符串就会去替换默认的 "{nb}"。
+	//// 如果这里指定了特别的字符串，那么SetFooterFunc() 中的 "nb" 也必须换成这个特别的字符串
 	// pdf.AliasNbPages("")
 	pdf.SetTopMargin(25)
 	// Page properties
