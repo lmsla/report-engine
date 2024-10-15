@@ -8,7 +8,7 @@ import (
 )
 
 
-func GetServerModule() []entities.Module {
+func GetServerModule() ([]entities.Module,error ){
 	db := global.Mysql
 	modules := []entities.Module{}
 	err := db.Model(entities.Module{}).Where(&entities.Module{
@@ -19,16 +19,17 @@ func GetServerModule() []entities.Module {
 		// 	zap.String(global.LogEvent.Tag.Service, global.LogEvent.API.Enviroment),
 		// )
 		fmt.Println("GetServerModule error", err.Error())
+		return nil,err
 	}
-	return modules
+	return modules,err
 }
 
-func GetServerMenu() []entities.MainMenu {
+func GetServerMenu() ([]entities.MainMenu, error) {
 	db := global.Mysql
 	menus := []entities.MainMenu{}
 	// var err error
 
-	var err = db.Model(entities.MainMenu{}).Preload(clause.Associations).Find(&menus).Error
+	err := db.Model(entities.MainMenu{}).Preload(clause.Associations).Find(&menus).Error
 
 	// switch role {
 	// case global.EnvConfig.SSO.AdminRole:
@@ -41,15 +42,17 @@ func GetServerMenu() []entities.MainMenu {
 	// 			OnlyAdmin: true}).Find(&menus).Error
 	// }
 	if err != nil {
+		
 		// global.Logger.Error(
 		// 	err.Error(),
 		// 	zap.String(global.LogEvent.Tag.Service, global.LogEvent.API.Enviroment),
 		// )
 		fmt.Println("GetServerMenu error", err.Error())
+		return nil, err
 	}
 	for _, data := range menus {
 		fmt.Println(data.Icon)
 	}
 	fmt.Println(menus)
-	return menus
+	return menus, nil
 }

@@ -1,14 +1,13 @@
 package controller
 
 import (
-	"net/http"
-	"strconv"
-	"report-backend-golang/entities"
-	"report-backend-golang/services"
-	"report-backend-golang/handler"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"report-backend-golang/entities"
+	"report-backend-golang/handler"
+	"report-backend-golang/services"
+	"strconv"
 )
-
 
 // @Summary Get DataTable
 // @Tags DataTable
@@ -17,7 +16,7 @@ import (
 // @Success 200 {object} models.Response
 // @Router /Table/GetAll [get]
 // @Security ApiKeyAuth
-func GetTables(c *gin.Context) { 
+func GetTables(c *gin.Context) {
 
 	res := services.GetTables()
 
@@ -29,9 +28,8 @@ func GetTables(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
-// @Summary Get table by Table ID
-// @Tags Table
+// @Summary Get table by DataTable ID
+// @Tags DataTable
 // @Accept  json
 // @Produce  json
 // @Param id path int true "id"
@@ -83,7 +81,6 @@ func CreateTable(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
 // @Summary Update DataTable
 // @Tags DataTable
 // @Accept  json
@@ -111,7 +108,6 @@ func UpdateTable(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
 // @Summary Delete DataTable
 // @Tags DataTable
 // @Accept  json
@@ -136,9 +132,7 @@ func DeleteTable(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Msg)
 }
 
-
-
-// @Summary Get Table by Report ID
+// @Summary Get DataTable by Report ID
 // @Tags DataTable
 // @Accept  json
 // @Produce  json
@@ -150,7 +144,7 @@ func GetTableByReportID(c *gin.Context) {
 
 	ReportID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "instance ID should be int")
+		c.JSON(http.StatusBadRequest, "Report ID should be int")
 		// handler.WriteErrorLog(c, "instance ID should be integer")
 		return
 	}

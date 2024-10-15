@@ -1080,9 +1080,9 @@ paths:
             $ref: '#/definitions/entities.Table'
       security:
       - ApiKeyAuth: []
-      summary: Get table by Table ID
+      summary: Get table by DataTable ID
       tags:
-      - Table
+      - DataTable
   /Table/GetTableByReportID/{id}:
     get:
       consumes:
@@ -1102,7 +1102,7 @@ paths:
             $ref: '#/definitions/entities.Table'
       security:
       - ApiKeyAuth: []
-      summary: Get Table by Report ID
+      summary: Get DataTable by Report ID
       tags:
       - DataTable
   /Table/Update:
@@ -1128,6 +1128,24 @@ paths:
       summary: Update DataTable
       tags:
       - DataTable
+  /get-server-menu:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.MainMenu'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Server Menu
+      tags:
+      - Env
   /get-server-module:
     get:
       consumes:
@@ -1158,24 +1176,6 @@ paths:
       summary: Get SSOUrl
       tags:
       - SSO
-  /user/get-server-menu:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entities.MainMenu'
-            type: array
-      security:
-      - ApiKeyAuth: []
-      summary: Get Log-detect Menu
-      tags:
-      - Env
 securityDefinitions:
   ApiKeyAuth:
     in: header
