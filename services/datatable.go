@@ -49,7 +49,14 @@ func UpdateTable(table entities.Table) models.Response {
 	res.Success = false
 	res.Body = []entities.Table{}
 
-	err := global.Mysql.Select("*").Where("id = ?", table.ID).Updates(&table).Error
+	//先刪除 column 中相應的欄位
+	err := global.Mysql.Where("table_id = ?", table.ID).Delete(&entities.Column{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting related columns, err: %s", err)
+		return res
+	}
+
+	err = global.Mysql.Select("*").Where("id = ?", table.ID).Updates(&table).Error
 	if err != nil {
 		res.Msg = "Update Fail"
 		return res
@@ -93,7 +100,7 @@ func GetTableByID(tableID int) (entities.Table, error) {
 
 	var table entities.Table
 	table.ID = tableID
-	err := global.Mysql.First(&table).Error
+	err := global.Mysql.Preload("Columns").First(&table).Error
 	if err != nil {
 		return table, err
 	}
