@@ -83,6 +83,11 @@ func UpdateReport(report entities.Report) models.Response {
 		res.Msg = fmt.Sprintf("Error when deleting related elements, err: %s", err)
 		return res
 	}
+	err = global.Mysql.Where("report_id = ?", report.ID).Delete(&entities.ReportsTables{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting related tables, err: %s", err)
+		return res
+	}
 
 	err = global.Mysql.Select("*").Where("id = ?", report.ID).Updates(&report).Error
 	if err != nil {

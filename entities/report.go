@@ -10,7 +10,7 @@ type Report struct {
 	Elements   []Element  `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 	Schedules  []Schedule `gorm:"many2many:reports_schedules;"`
 	// DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Tables []Table `gorm:"many2many:report_tables;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:ID;reference:ID;"`
+	Tables []Table `gorm:"many2many:reports_tables;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:ID;reference:ID;"`
 }
 
 type Element struct {
@@ -51,4 +51,12 @@ type Column struct {
 	Alias   string `gorm:"type:varchar(50)" json:"alias" form:"alias"`
 	Order   int    `gorm:"type:int" json:"order" form:"order"`
 	Size    int    `gorm:"type:int" json:"size" form:"size"`
+}
+
+
+
+type ReportsTables struct {
+	Common
+	ReportID   int `gorm:"primaryKey" form:"report_id"`
+	TableID int `gorm:"primaryKey" form:"table_id"`
 }
