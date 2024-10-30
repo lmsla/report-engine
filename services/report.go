@@ -72,11 +72,11 @@ func UpdateReport(report entities.Report) models.Response {
 	res.Success = false
 	res.Body = []entities.Report{}
 
-	result := global.Mysql.Where("id != ? AND name = ?", report.ID, report.Name).First(&entities.Report{})
-	if result.RowsAffected > 0 {
-		res.Msg = "Report Name already existed"
-		return res
-	}
+	// result := global.Mysql.Where("id != ? AND name = ?", report.ID, report.Name).First(&entities.Report{})
+	// if result.RowsAffected > 0 {
+	// 	res.Msg = "Report Name already existed"
+	// 	return res
+	// }
 	//先刪除 element 中相應的圖表
 	err := global.Mysql.Where("report_id = ?", report.ID).Delete(&entities.Element{}).Error
 	if err != nil {
