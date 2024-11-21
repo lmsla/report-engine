@@ -28,7 +28,7 @@ func GetServerModule(c *gin.Context) {
 // @Produce  json
 // @Success  200 {object} []entities.MainMenu
 // @Security ApiKeyAuth
-// @Router   /get-server-menu [get]
+// @Router   /user/get-server-menu [get]
 func GetServerMenu(c *gin.Context) {
 
 	// user := c.Keys["user"].(models.SSOUser)

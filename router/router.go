@@ -33,7 +33,7 @@ func LoadRouter() *gin.Engine {
 	apiv1 := router.Group("api/v1")
 	{
 		apiv1.GET("/get-sso-url", controller.GetSsoURL)
-		apiv1.GET("/get-server-menu", controller.GetServerMenu)
+		apiv1.GET("/user/get-server-menu", controller.GetServerMenu)
 		apiv1.GET("/get-server-module", controller.GetServerModule)
 	}
 

@@ -1128,24 +1128,6 @@ paths:
       summary: Update DataTable
       tags:
       - DataTable
-  /get-server-menu:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entities.MainMenu'
-            type: array
-      security:
-      - ApiKeyAuth: []
-      summary: Get Server Menu
-      tags:
-      - Env
   /get-server-module:
     get:
       consumes:
@@ -1176,6 +1158,24 @@ paths:
       summary: Get SSOUrl
       tags:
       - SSO
+  /user/get-server-menu:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.MainMenu'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Server Menu
+      tags:
+      - Env
 securityDefinitions:
   ApiKeyAuth:
     in: header
