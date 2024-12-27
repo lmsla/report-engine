@@ -20,7 +20,7 @@ func GetAllSchedule() models.Response {
 	// 	return res
 	// }
 
-	err := global.Mysql.Debug().Preload("Reports").Find(&body).Error
+	err := global.Mysql.Preload("Reports").Find(&body).Error
 	if err != nil {
 		res.Msg = err.Error()
 		return res

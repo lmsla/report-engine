@@ -24,6 +24,8 @@ func GetAllInstances() models.Response {
 	return res
 }
 
+
+
 // 新增instance
 func CreateInstance(instance entities.Instance) models.Response {
 
@@ -44,7 +46,7 @@ func CreateInstance(instance entities.Instance) models.Response {
 	}
 
 	res.Success = true
-	res.Msg = "Create Success"
+	res.Msg = "Instance Create Success"
 	global.Mysql.Where("name = ?", instance.Name).First(&res.Body)
 
 	return res
@@ -82,7 +84,7 @@ func UpdateInstance(instance models.Instance) models.Response {
 	}
 
 	res.Success = true
-	res.Msg = "Update Success"
+	res.Msg = "Instance Update Success"
 	global.Mysql.Where("id = ?", instance.ID).First(&res.Body)
 
 	return res
@@ -116,7 +118,7 @@ func DeleteInstance(id int) models.Response {
 	}
 
 	res.Success = true
-	res.Msg = "Delete Success"
+	res.Msg = "Instance Delete Success"
 
 	return res
 

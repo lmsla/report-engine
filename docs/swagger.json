@@ -5,12 +5,12 @@
         "title": "Report Engine Golang API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "Winston",
+            "name": "Russell",
             "email": "support@swagger.io"
         },
         "version": "1.0"
     },
-    "host": "10.99.1.133:8005",
+    "host": "localhost:8005",
     "basePath": "/api/v1",
     "paths": {
         "/Dropdown": {

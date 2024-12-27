@@ -35,6 +35,7 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("/get-sso-url", controller.GetSsoURL)
 		apiv1.GET("/user/get-server-menu", controller.GetServerMenu)
 		apiv1.GET("/get-server-module", controller.GetServerModule)
+		// apiv1.GET("/Instance/GetAll", controller.GetAllInstances)
 	}
 
 	//*** 驗證 Token 跟 SSO 取 UserInfo AccessHosts ***//
@@ -87,6 +88,5 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.GET("/History/GetHistory/:id", controller.GetHistoryByHistoryID)
 		apiv1_auth.POST("/History/HistoryReport/:id", controller.CreateHistoryReport)
 	}
-
 	return router
 }

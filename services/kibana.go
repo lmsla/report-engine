@@ -260,6 +260,7 @@ func GetKibanaDataViews(space string, inventory models.Instance) ([]entities.Dro
 	} else {
 		curl = exec.Command("curl", "-XGET", "-k", "-u", inventory.User+":"+inventory.Password, "-s", inventory.URL+"/s/"+space+"/api/data_views")
 	}
+	fmt.Println(curl)
 
 	out, err := curl.Output()
 	if err != nil {

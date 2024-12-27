@@ -19,12 +19,11 @@ import (
 // @version 1.0
 // @description Golang API 專案描述
 // @termsOfService http://swagger.io/terms/
-
-// @contact.name Winston
+// @contact.name Russell
 // @contact.email support@swagger.io
 
-// @host 10.99.1.133:8005
-//// @host localhost:8005
+//// @host 10.99.1.133:8005
+// @host localhost:8005
 // @BasePath  /api/v1
 // @query.collection.format multi
 // @securityDefinitions.apikey ApiKeyAuth
@@ -33,10 +32,8 @@ import (
 // @schemes http
 func main() {
 
-	utils.LoadEnvironment()
-
+	utils.LoadEnvironment()    
 	// es.LoadElasticsearch()
-
 	clients.LoadDatabase()
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
@@ -44,13 +41,10 @@ func main() {
 	// if global.EnvConfig.Database.Migration {
 	// 	entities.InitTable()
 	// }
-
 	migrate.Run()
-
 
 	utils.LoadCrontab()
 	// // authorize.LoadCasbin()
-
 	clients.LoadKeycloak()
 
 	r := router.LoadRouter()
@@ -92,7 +86,6 @@ func main1() {
 	// }
 	// fmt.Printf("date: %v\n", date)
 
-	
 }
 
 

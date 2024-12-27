@@ -13,7 +13,7 @@ func GetAllElements() models.Response {
 	res.Success = false
 	// res.Body = []entities.Element{}
 	var body = []entities.Element{}
-	err := global.Mysql.Debug().Preload("Instance").Find(&body).Error
+	err := global.Mysql.Preload("Instance").Find(&body).Error
 	if err != nil {
 		res.Msg = err.Error()
 		return res
@@ -21,7 +21,7 @@ func GetAllElements() models.Response {
 
 	res.Body = body
 	res.Success = true
-	res.Msg = "Get All Report Success"
+	res.Msg = "Get All Elements Success"
 	return res
 }
 
@@ -79,7 +79,7 @@ func CreateElement(element entities.Element) models.Response {
 		return res
 	}
 	res.Success = true
-	res.Msg = "Create Success"
+	res.Msg = "Create Elements Success"
 	global.Mysql.Where("name = ?", element.Name).Omit("Instance").First(&res.Body)
 
 	return res
@@ -100,12 +100,12 @@ func UpdateElement(element entities.Element) models.Response {
 
 	err := global.Mysql.Select("*").Where("id = ?", element.ID).Updates(&element).Error
 	if err != nil {
-		res.Msg = "Update Fail"
+		res.Msg = "Update Elements Fail"
 		return res
 	}
 
 	res.Success = true
-	res.Msg = "Update Success"
+	res.Msg = "Update Elements Success"
 	global.Mysql.Where("id = ?", element.ID).First(&res.Body)
 
 	return res

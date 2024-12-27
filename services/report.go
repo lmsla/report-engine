@@ -91,7 +91,7 @@ func UpdateReport(report entities.Report) models.Response {
 
 	err = global.Mysql.Select("*").Where("id = ?", report.ID).Updates(&report).Error
 	if err != nil {
-		res.Msg = "Update Fail"
+		res.Msg = fmt.Sprintf("Report Update Fail , err: %s", err)
 		return res
 	}
 

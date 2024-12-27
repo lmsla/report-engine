@@ -2,15 +2,13 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 	"report-backend-golang/entities"
+	"strconv"
 	// "report-backend-golang/models"
-	"report-backend-golang/services"
-	"report-backend-golang/handler"
 	"github.com/gin-gonic/gin"
+	"report-backend-golang/handler"
+	"report-backend-golang/services"
 )
-
-
 
 // @Summary Get Element
 // @Tags Element
@@ -19,7 +17,7 @@ import (
 // @Success 200 {object} models.Response
 // @Router /Element/GetAll [get]
 // @Security ApiKeyAuth
-func GetAllElements(c *gin.Context) { 
+func GetAllElements(c *gin.Context) {
 
 	res := services.GetAllElements()
 
@@ -30,7 +28,6 @@ func GetAllElements(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res.Body)
 }
-
 
 // @Summary Create Element
 // @Tags Element
@@ -59,7 +56,6 @@ func CreateElement(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
 // @Summary Update Element
 // @Tags Element
 // @Accept  json
@@ -87,9 +83,6 @@ func UpdateElement(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
-
-
 // @Summary Delete Element
 // @Tags Element
 // @Accept  json
@@ -115,7 +108,6 @@ func DeleteElement(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Msg)
 }
 
-
 // @Summary Get Element by Report ID
 // @Tags Element
 // @Accept  json
@@ -133,8 +125,6 @@ func GetElementByReportID(c *gin.Context) {
 		return
 	}
 
-
-
 	inventory, err := services.GetElementsByReportID(ReportID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error to get inventory details")
@@ -143,7 +133,7 @@ func GetElementByReportID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, inventory)
 
-//-----------------
+	//-----------------
 	// res := services.GetElementsByReportID(ReportID)
 
 	// if !res.Success {
@@ -152,7 +142,7 @@ func GetElementByReportID(c *gin.Context) {
 	// }
 
 	// c.JSON(http.StatusOK, res.Body)
-//-----------------
+	//-----------------
 
 	// inventory, err := services.GetElementsByReportID(ReportID)
 	// if err != nil {

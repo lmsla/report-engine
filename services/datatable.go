@@ -38,7 +38,7 @@ func CreateTable(table entities.Table) models.Response {
 	}
 	res.Success = true
 	res.Msg = "Create Success"
-	global.Mysql.Where("name = ?", table.Name).Omit("Instance").First(&res.Body)
+	global.Mysql.Where("name = ?", table.Name).Omit("Report").Omit("Instance").First(&res.Body)
 
 	return res
 }
@@ -100,7 +100,7 @@ func GetTableByID(tableID int) (entities.Table, error) {
 
 	var table entities.Table
 	table.ID = tableID
-	err := global.Mysql.Preload("Columns").First(&table).Error
+	err := global.Mysql.Debug().Preload("Instance").Preload("Columns").First(&table).Error
 	if err != nil {
 		return table, err
 	}
