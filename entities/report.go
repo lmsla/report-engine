@@ -10,7 +10,7 @@ type Report struct {
 	Elements   []Element  `gorm:"foreignKey:ReportID;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 	Schedules  []Schedule `gorm:"many2many:reports_schedules;"`
 	// DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Tables []Table `gorm:"many2many:reports_tables;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:ID;reference:ID;"`
+	Tables []Table `gorm:"many2many:reports_tables;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;foreignKey:ID;reference:ID;"`
 }
 
 type Element struct {
@@ -39,7 +39,7 @@ type Table struct {
 	InstanceID int      `gorm:"type:int" json:"instance_id" form:"instance_id"`
 	Instance   Instance `json:"instance" gorm:"foreignKey:InstanceID;reference:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	SpaceName  string   `gorm:"type:varchar(50)" json:"space_name" form:"space_name"`
-	Reports    []Report `gorm:"many2many:reports_tables;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Reports    []Report `gorm:"many2many:reports_tables;constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 	Columns    []Column `gorm:"foreignKey:TableID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 

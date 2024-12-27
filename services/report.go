@@ -13,7 +13,7 @@ func GetAllReports() models.Response {
 	res.Success = false
 
 	var body = []entities.Report{}
-	err := global.Mysql.Debug().Preload("Elements").Preload("Tables").Find(&body).Error
+	err := global.Mysql.Preload("Elements").Preload("Tables").Find(&body).Error
 
 	if err != nil {
 		res.Msg = err.Error()
@@ -32,7 +32,7 @@ func GetReportByReportID(reportID int) (entities.Report,error) {
 
 	var report entities.Report
 	report.ID = reportID
-	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Preload("Tables").Preload("Tables.Columns").Find(&report).Error
+	err := global.Mysql.Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Preload("Tables").Preload("Tables.Columns").Find(&report).Error
 	if err != nil {
 		return report, err
 	}
@@ -72,11 +72,6 @@ func UpdateReport(report entities.Report) models.Response {
 	res.Success = false
 	res.Body = []entities.Report{}
 
-	// result := global.Mysql.Where("id != ? AND name = ?", report.ID, report.Name).First(&entities.Report{})
-	// if result.RowsAffected > 0 {
-	// 	res.Msg = "Report Name already existed"
-	// 	return res
-	// }
 	//先刪除 element 中相應的圖表
 	err := global.Mysql.Where("report_id = ?", report.ID).Delete(&entities.Element{}).Error
 	if err != nil {

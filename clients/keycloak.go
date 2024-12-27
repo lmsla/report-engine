@@ -27,6 +27,7 @@ func LoadKeycloak() {
 	password := global.EnvConfig.SSO.Password
 	realm := global.EnvConfig.SSO.Realm
 
+
 	_, err := client.LoginAdmin(ctx, user, password, realm)
 	if err != nil {
 		// global.Logger.Error(
@@ -34,7 +35,7 @@ func LoadKeycloak() {
 		// 	zap.String(global.LogEvent.Tag.Service, global.LogEvent.Keycloak.Query),
 		// )
 
-		fmt.Println("keycloak error")
+		fmt.Println("keycloak error",err.Error())
 	}
 
 	// global.Logger.Info(
