@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8005",
+    "host": "10.99.1.133:8005",
     "basePath": "/api/v1",
     "paths": {
         "/Dropdown": {
@@ -33,7 +33,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "space,dashboard,visualization,data_view",
+                        "description": "space,dashboard,visualization,data_view,table",
                         "name": "source_type",
                         "in": "query",
                         "required": true

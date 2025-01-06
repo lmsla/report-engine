@@ -14,7 +14,7 @@ import (
 // @Tags Dropdown
 // @Accept  json
 // @Produce  json
-// @Param source_type query string true "space,dashboard,visualization,data_view"
+// @Param source_type query string true "space,dashboard,visualization,data_view,table"
 // @Param space_name query string false "space_name"
 // @Param instance_id query int true "instance_id"
 // @Success 200 {object}  entities.Dropdown
@@ -101,6 +101,15 @@ func GetDropdownSource(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, visualdata)
 
+	case "table":
+		tabledata, err := services.GetTableByDropDown(body.InstanceID, body.SpaceName)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, "error to get table details")
+			handler.WriteErrorLog(c, "error to get table details")
+			return
+
+		}
+		c.JSON(http.StatusOK, tabledata)
 	}
 
 }

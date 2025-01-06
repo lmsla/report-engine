@@ -12,18 +12,18 @@ func GetTables() models.Response {
 	res := models.Response{}
 	res.Success = false
 	var body = []entities.Table{}
-	err := global.Mysql.Debug().Preload("Instance").Preload("Columns").Find(&body).Error
+	err := global.Mysql.Preload("Instance").Preload("Columns").Find(&body).Error
 	if err != nil {
 		res.Msg = err.Error()
 		return res
 	}
 	res.Body = body
 	res.Success = true
-	res.Msg = "Get All DataTable Success"
+	res.Msg = "Get All Table Success"
 	return res
 }
 
-// 新增element
+// 新增 table
 func CreateTable(table entities.Table) models.Response {
 
 	res := models.Response{}
@@ -78,13 +78,13 @@ func DeleteTable(id int) models.Response {
 
 	result := global.Mysql.Where("id = ?", id).First(&entities.Table{})
 	if result.RowsAffected == 0 {
-		res.Msg = "DataTable ID does not exist"
+		res.Msg = "Table ID does not exist"
 		return res
 	}
 
 	err := global.Mysql.Where("id = ?", id).Delete(&entities.Table{}).Error
 	if err != nil {
-		res.Msg = fmt.Sprintf("Error when deleting DataTable, err: %s", err)
+		res.Msg = fmt.Sprintf("Error when deleting Table, err: %s", err)
 		return res
 	}
 
@@ -100,7 +100,7 @@ func GetTableByID(tableID int) (entities.Table, error) {
 
 	var table entities.Table
 	table.ID = tableID
-	err := global.Mysql.Debug().Preload("Instance").Preload("Columns").First(&table).Error
+	err := global.Mysql.Preload("Instance").Preload("Columns").First(&table).Error
 	if err != nil {
 		return table, err
 	}
@@ -111,9 +111,47 @@ func GetTableByID(tableID int) (entities.Table, error) {
 func GetTableByReportID(reportID int) ([]entities.Table, error) {
 	// element :=  entities.Element{}
 	report := entities.Report{}
-	err := global.Mysql.Debug().Where("id = ?", reportID).Preload("Tables").Preload("Tables.Columns").Preload("Tables.Instance").Find(&report).Error
+	err := global.Mysql.Where("id = ?", reportID).Preload("Tables").Preload("Tables.Columns").Preload("Tables.Instance").Find(&report).Error
 	if err != nil {
 		return nil, err
 	}
 	return report.Tables, nil
+}
+
+
+// 查 Tables by DropDown
+func GetTableByDropDown(instanceID int,spaceName string) ([]entities.Table, error) {
+
+	tables := []entities.Table{}
+	err := global.Mysql.Where("instance_id = ? AND space_name = ?", instanceID,spaceName).Preload("Columns").Find(&tables).Error
+	if err != nil {
+		return nil, err
+	}
+	return tables, nil
+}
+
+
+func DeleteTableInReport(reportID,tableID int) models.Response {
+
+	res := models.Response{}
+	res.Success = false
+	res.Body = nil
+
+	result := global.Mysql.Where("report_id = ? AND table_id = ?", reportID,tableID ).First(&entities.ReportsTables{})
+	if result.RowsAffected == 0 {
+		res.Msg = "Table ID does not exist"
+		return res
+	}
+
+	err := global.Mysql.Where("report_id = ? AND table_id = ?", reportID,tableID ).Delete(&entities.ReportsTables{}).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when deleting Table In Report, err: %s", err)
+		return res
+	}
+
+	res.Success = true
+	res.Msg = "Delete Table In Report Success"
+
+	return res
+
 }

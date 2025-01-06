@@ -318,7 +318,7 @@ definitions:
       success:
         type: boolean
     type: object
-host: localhost:8005
+host: 10.99.1.133:8005
 info:
   contact:
     email: support@swagger.io
@@ -333,7 +333,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: space,dashboard,visualization,data_view
+      - description: space,dashboard,visualization,data_view,table
         in: query
         name: source_type
         required: true

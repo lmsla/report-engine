@@ -39,7 +39,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "space,dashboard,visualization,data_view",
+                        "description": "space,dashboard,visualization,data_view,table",
                         "name": "source_type",
                         "in": "query",
                         "required": true
@@ -1905,7 +1905,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8005",
+	Host:             "10.99.1.133:8005",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Report Engine Golang API",
