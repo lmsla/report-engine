@@ -126,8 +126,8 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 		}
 	case "dashboard":
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:'%s'))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom, new_ExecuteTime_str)
-
-		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
+		fmt.Println("url1",url1)
+		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dshDashboardViewport`, &buf)
 		if err != nil {
 			fmt.Println("Screenshot_element - line 135", err)
 			log.Logrecord("ERROR", "Dashboard Screenshot error "+err.Error())
@@ -149,29 +149,22 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 }
 
 func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel string, res *[]byte) (err error) {
-
-	var executed *runtime.RemoteObject
-	// 自定義長寬
-	// width, height := 1240, 1754
+	// var executed *runtime.RemoteObject
 
 	defer func() {
 		if err != nil {
-			// Error handling
 			fmt.Println("發生錯誤：", err)
 		}
 	}()
 
 	// 創建帶超時的 context
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
 	defer cancel()
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
-		// chromedp.NoSandbox,
-		// chromedp.Flag("disable-gpu", true),
-
-		// chromedp.ExecPath("/usr/bin/google-chrome"),
-		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
+		chromedp.Flag("disable-gpu", true),
+		chromedp.Flag("hide-scrollbars", true), // 隱藏滾動條
 	)
 
 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(ctx, opts...)
@@ -180,29 +173,60 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	ctx, cancel = chromedp.NewContext(allocCtx)
 	defer cancel()
 
+	// // 設置視口大小和縮放比例
+	// viewPortWidth, viewPortHeight := 1920, 1080
+	// err = chromedp.Run(ctx,
+	// 	chromedp.EmulateViewport(int64(viewPortWidth), int64(viewPortHeight)),
+	// 	emulation.SetDeviceMetricsOverride(int64(viewPortWidth), int64(viewPortHeight), 1.5, false),
+	// )
+	// if err != nil {
+	// 	return fmt.Errorf("設置視口大小失敗: %v", err)
+	// }
+
+	// 登錄並等待儀表板加載
 	err = chromedp.Run(ctx, chromedp.Tasks{
 		chromedp.Navigate(loginUrl),
-		chromedp.Sleep(3 * time.Second),
-		chromedp.Evaluate(`var jq = document.createElement('script'); jq.src = "https://cdn.bootcss.com/jquery/1.4.2/jquery.js"; document.getElementsByTagName('head')[0].appendChild(jq);`, &executed),
+		chromedp.Sleep(10 * time.Second),
+		chromedp.WaitVisible(`input[name="username"]`, chromedp.ByQuery),
 		chromedp.Sleep(3 * time.Second),
 		chromedp.SendKeys(`input[name="username"]`, username, chromedp.NodeVisible),
 		chromedp.SendKeys(`input[name="password"]`, password, chromedp.NodeVisible),
-		chromedp.Sleep(2 * time.Second),
-		chromedp.Click(`.euiButton`),
+		// chromedp.EmulateViewport(1920, 1080),
+		emulation.SetDeviceMetricsOverride(1920, 1080, 1.0, false),
+		chromedp.Click(`.euiButton`, chromedp.NodeVisible),
+		chromedp.WaitVisible(sel, chromedp.ByQuery), // 等待選定的儀表板元素可見
 		chromedp.Sleep(3 * time.Second),
-		chromedp.EmulateViewport(1920, 1080),
-		emulation.SetDeviceMetricsOverride(0, 0, 1.0, false),
-		chromedp.Sleep(25 * time.Second),
-		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
+		// chromedp.ActionFunc(func(ctx context.Context) error {
+		// 	for i := 0; i < 10; i++ { // 自動滾動頁面，確保動態加載完成
+		// 		err := chromedp.ScrollIntoView(sel).Do(ctx)
+		// 		if err != nil {
+		// 			return fmt.Errorf("滾動頁面失敗: %v", err)
+		// 		}
+		// 		time.Sleep(1 * time.Second) // 停留，讓頁面完成渲染
+		// 	}
+		// 	return nil
+		// }),
+		chromedp.Sleep(3 * time.Second), // 最後等待資源完全加載
 	})
+
 	if err != nil {
-		fmt.Println(err.Error())
+		return fmt.Errorf("登錄或加載儀表板失敗: %v", err)
 	}
-	return err
+
+	// 截圖
+	err = chromedp.Run(ctx, chromedp.Screenshot(sel, res, chromedp.NodeVisible))
+	if err != nil {
+		return fmt.Errorf("截圖失敗: %v", err)
+	}
+
+	return nil
 }
 
-// func kibanaElementScreenshotWithAuth_old(loginUrl, username, password, sel string, res *[]byte) (err error) {
-// 	fmt.Println("kibanaElementScreenshotWithAuth in")
+
+
+// gpt 修改前
+// func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel string, res *[]byte) (err error) {
+
 // 	var executed *runtime.RemoteObject
 // 	// 自定義長寬
 // 	// width, height := 1240, 1754
@@ -210,36 +234,52 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 // 	defer func() {
 // 		if err != nil {
 // 			// Error handling
-// 			fmt.Println("发生错误：", err)
+// 			fmt.Println("發生錯誤：", err)
 // 		}
 // 	}()
+
+// 	// 創建帶超時的 context
+// 	ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+// 	defer cancel()
+
 // 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 // 		chromedp.Flag("headless", true),
+// 		// chromedp.NoSandbox,
+// 		// chromedp.Flag("disable-gpu", true),
+
 // 		// chromedp.ExecPath("/usr/bin/google-chrome"),
 // 		// chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 // 	)
-// 	fmt.Println("kibanaElementScreenshotWithAuth in 2")
-// 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
-// 	ctx, cancel := chromedp.NewContext(allocCtx)
+
+// 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(ctx, opts...)
+// 	defer cancelAlloc()
+
+// 	ctx, cancel = chromedp.NewContext(allocCtx)
 // 	defer cancel()
-// 	fmt.Println("chrome error")
+
 // 	err = chromedp.Run(ctx, chromedp.Tasks{
 // 		chromedp.Navigate(loginUrl),
-// 		chromedp.Sleep(3 * time.Second),
+// 		chromedp.Sleep(10 * time.Second),
 // 		chromedp.Evaluate(`var jq = document.createElement('script'); jq.src = "https://cdn.bootcss.com/jquery/1.4.2/jquery.js"; document.getElementsByTagName('head')[0].appendChild(jq);`, &executed),
-// 		chromedp.Sleep(3 * time.Second),
+// 		chromedp.Sleep(5 * time.Second),
 // 		chromedp.SendKeys(`input[name="username"]`, username, chromedp.NodeVisible),
 // 		chromedp.SendKeys(`input[name="password"]`, password, chromedp.NodeVisible),
-// 		chromedp.Sleep(2 * time.Second),
+// 		chromedp.Sleep(5 * time.Second),
 // 		chromedp.Click(`.euiButton`),
-// 		chromedp.Sleep(3 * time.Second),
-// 		emulation.SetDeviceMetricsOverride(0, 0, 1.0, false),
+// 		chromedp.Sleep(5 * time.Second),
+// 		chromedp.EmulateViewport(1920, 1080),
+// 		emulation.SetDeviceMetricsOverride(1920, 1080, 1.0, false),
+// 		chromedp.WaitVisible(`div.dshDashboardViewport`),
+// 		chromedp.Sleep(25 * time.Second),
 // 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
 // 	})
-// 	fmt.Println(err.Error())
+// 	if err != nil {
+// 		fmt.Println(err.Error())
+// 	}
 // 	return err
-
 // }
+
+
 
 // kibana elementScreenshot with auth takes a screenshot of a specific element.
 func kibanaElementScreenshotWithAuth(loginUrl, username, password, sel string, res *[]byte) chromedp.Tasks {
@@ -264,7 +304,7 @@ func kibanaElementScreenshotWithAuth(loginUrl, username, password, sel string, r
 		// emulation.SetDeviceMetricsOverride(int64(width), int64(height), 1.0, false),
 		// 使用原圖的長寬比
 		emulation.SetDeviceMetricsOverride(0, 0, 1.0, false),
-		// chromedp.WaitVisible(`div.dashboardViewpxort`),
+		// chromedp.WaitVisible(`div.dashboardViewport`),
 		// chromedp.WaitVisible(`div.css-zxsb69`),
 		chromedp.Sleep(15 * time.Second),
 		chromedp.Screenshot(sel, res, chromedp.NodeVisible),
