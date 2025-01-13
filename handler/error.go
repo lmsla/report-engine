@@ -10,7 +10,7 @@ import (
 )
 
 func WriteErrorLog(c *gin.Context, msg string) {
-	fileName := fmt.Sprintf("%s/apiError_%s.log",global.EnvConfig.Files.LogPath, time.Now().Format("2006_01"))
+	fileName := fmt.Sprintf("%s/apiError_%s.log",global.EnvConfig.Files.LogPath, time.Now().Format("200601"))
 
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
