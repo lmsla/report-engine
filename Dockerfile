@@ -1,5 +1,5 @@
 # build stage
-FROM golang:1.22.0-bullseye AS build-env
+FROM golang:1.23.0-bullseye AS build-env
 # FROM golang:alpine AS build-env
 ADD . /src
 # RUN cd /src && go mod tidy && go build -o report_backend
