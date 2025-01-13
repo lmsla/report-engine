@@ -34,7 +34,7 @@ func TestElasticsearch(instance models.Instance) (error, models.Response) {
 	es, err := elasticsearch.NewClient(esConfig)
 	if err != nil {
 		log.Logrecord("ERROR", fmt.Sprintf("Error creating Elasticsearch client: %s", err.Error()))
-		res_t.Msg = fmt.Sprintf("Error creating Elasticsearch client: %s", err.Error())
+		res_t.Msg = fmt.Sprintf("Error creating Elasticsearch client")
 		return err, res_t
 	}
 
@@ -42,19 +42,19 @@ func TestElasticsearch(instance models.Instance) (error, models.Response) {
 	res, err := es.Cluster.Health()
 	if err != nil {
 		log.Logrecord("ERROR", fmt.Sprintf("Error ES getting cluster health: %s", err.Error()))
-		res_t.Msg = fmt.Sprintf("Error ES getting cluster health: %s", err.Error())
+		res_t.Msg = fmt.Sprintf("Error ES getting cluster health")
 		return err, res_t
 	}
 	defer res.Body.Close()
 
 	if res.IsError() {
-		res_t.Msg = fmt.Sprintf("Elasticsearch response error: %s", res.Status())
+		res_t.Msg = fmt.Sprintf("Elasticsearch response error")
 		// res_t.Body = res.Body
 		log.Logrecord("ERROR", fmt.Sprintf("Elasticsearch response error: %s", res.String()))
 	} else {
 		fmt.Println("Cluster Health Response:")
 		fmt.Println(res.String())
-		res_t.Msg = fmt.Sprintf("Cluster Health Response: %s", res.String())
+		res_t.Msg = fmt.Sprintf("ES Cluster Health Check Succeed")
 		res_t.Success = true
 	}
 	return err, res_t
@@ -78,7 +78,7 @@ func TestKibana(instance models.Instance) (error, models.Response) {
 	req, err := http.NewRequest("GET", instance.URL+"/api/spaces/space", nil)
 	if err != nil {
 		log.Logrecord("ERROR", fmt.Sprintf("Error creating HTTP request: %s", err.Error()))
-		res_t.Msg = fmt.Sprintf("Error creating HTTP request: %s", err.Error())
+		res_t.Msg = fmt.Sprintf("Error creating HTTP request")
 		return err, res_t
 	}
 	req.SetBasicAuth(instance.User, instance.Password)
@@ -87,7 +87,7 @@ func TestKibana(instance models.Instance) (error, models.Response) {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Logrecord("ERROR", fmt.Sprintf("Error connecting to Kibana: %s", err.Error()))
-		res_t.Msg = fmt.Sprintf("Error connecting to Kibana: %s", err.Error())
+		res_t.Msg = fmt.Sprintf("Error connecting to Kibana")
 		return err, res_t
 	}
 	defer resp.Body.Close()
@@ -97,8 +97,7 @@ func TestKibana(instance models.Instance) (error, models.Response) {
 		res_t.Success = true
 	} else {
 		log.Logrecord("ERROR", fmt.Sprintf("Kibana response error: %s", string(body)))
-		// log.Logrecord("ERROR", fmt.Sprintf("Error connecting to Kibana: %s", resp.Status))
-		res_t.Msg = fmt.Sprintf("Error connecting to Kibana: %s", resp.Status)
+		res_t.Msg = fmt.Sprintf("Kibana response error")
 	}
 	return err, res_t
 }
