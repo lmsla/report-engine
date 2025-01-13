@@ -75,6 +75,7 @@ func CreateSchedule(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 
@@ -103,6 +104,7 @@ func UpdateSchedule(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 
@@ -131,6 +133,7 @@ func DeleteSchedule(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 

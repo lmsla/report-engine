@@ -6,8 +6,7 @@ import (
 	"strconv"
 	"time"
 	"fmt"
-	// "report-backend-golang/handler"
-
+	"report-backend-golang/handler"
 	"report-backend-golang/log"
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +24,7 @@ func CreateHtml(c *gin.Context) {
 	ReportID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "report ID should be int")
-		// handler.WriteErrorLog(c, "report ID should be integer")
+		handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
 	nowtime := time.Now().Unix()
@@ -51,7 +50,7 @@ func CreatePDF(c *gin.Context) {
 	ScheduleID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "Schedule ID should be int")
-		// handler.WriteErrorLog(c, "report ID should be integer")
+		handler.WriteErrorLog(c, "report ID should be integer")
 		return
 	}
 	c.JSON(http.StatusOK, "報表試寄中，請稍候")

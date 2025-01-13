@@ -115,7 +115,7 @@ func CreateHistoryReport(c *gin.Context) {
 	HistoryID, err := strconv.Atoi(idParam)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "HistoryID ID should be int")
-		// handler.WriteErrorLog(c, "report ID should be integer")
+		handler.WriteErrorLog(c, "HistoryID ID should be in")
 		return
 	}
 	c.JSON(http.StatusOK, "重新寄送報表中，請稍候")

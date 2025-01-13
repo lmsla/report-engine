@@ -454,6 +454,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/Instance/CheckInstance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Instance"
+                ],
+                "summary": "check Instance by Instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Instance"
+                        }
+                    }
+                }
+            }
+        },
         "/Instance/Create": {
             "post": {
                 "security": [
@@ -586,6 +622,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Element"
+                        }
+                    }
+                }
+            }
+        },
+        "/Instance/GetInstance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Instance"
+                ],
+                "summary": "Get Instance by Instance ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Instance"
                         }
                     }
                 }
@@ -854,7 +926,7 @@ const docTemplate = `{
                 "tags": [
                     "Report"
                 ],
-                "summary": "Get report by Report ID",
+                "summary": "Get Report by Report ID",
                 "parameters": [
                     {
                         "type": "integer",

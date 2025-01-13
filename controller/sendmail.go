@@ -5,8 +5,7 @@ import (
 	"report-backend-golang/services"
 	"strconv"
 	"time"
-
-	// "report-backend-golang/handler"
+	"report-backend-golang/handler"
 	// "report-backend-golang/entities"
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +23,7 @@ func SendEmailBySchedule(c *gin.Context) {
 	ScheduleID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "Schedule ID should be int")
-		// handler.WriteErrorLog(c, "report ID should be integer")
+		handler.WriteErrorLog(c, "Schedule ID should be integer")
 		return
 	}
 	nowtime := time.Now().Unix()

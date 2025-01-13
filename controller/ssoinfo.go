@@ -1,11 +1,11 @@
 package controller
 
 import (
-	// "fmt"
+
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"report-backend-golang/global"
 	"report-backend-golang/models"
-	"github.com/gin-gonic/gin"
 )
 
 // @Summary Get SSOUrl
@@ -26,7 +26,6 @@ func GetSsoURL(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-
 func GetSsoUrl() models.Response {
 	res := models.Response{}
 	res.Success = false
@@ -37,4 +36,3 @@ func GetSsoUrl() models.Response {
 	res.Msg = "Get All SSO URL Success"
 	return res
 }
-

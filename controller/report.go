@@ -29,7 +29,7 @@ func GetAllReports(c *gin.Context) {
 	c.JSON(http.StatusOK, res.Body)
 }
 
-// @Summary Get report by Report ID
+// @Summary Get Report by Report ID
 // @Tags Report
 // @Accept  json
 // @Produce  json
@@ -49,8 +49,8 @@ func GetReportByReportID(c *gin.Context) {
 	// inventory, err := screenshot.GetInstanceByID(id)
 	inventory, err := services.GetReportByReportID(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "error to get inventory details")
-		handler.WriteErrorLog(c, "error to get inventory details")
+		c.JSON(http.StatusBadRequest, "error to get report details")
+		handler.WriteErrorLog(c, "error to get report details")
 		return
 	}
 	c.JSON(http.StatusOK, inventory)

@@ -43,11 +43,13 @@ func LoadRouter() *gin.Engine {
 	apiv1_auth.Use(controller.GetUserInfo)
 	{
 		apiv1_auth.GET("/Instance/GetAll", controller.GetAllInstances)
+		apiv1_auth.GET("/Instance/GetInstance/:id",controller.GetInstanceByInstanceID)
 		apiv1_auth.POST("/Instance/Create", controller.CreateInstance)
 		apiv1_auth.PUT("/Instance/Update", controller.UpdateInstance)
 		apiv1_auth.DELETE("/Instance/Delete/:id", controller.DeleteInstance)
 		apiv1_auth.GET("/Instance/GetDashboards/:id", controller.GetDBDashboardByInstanceID)
 		apiv1_auth.GET("/Instance/GetVisualizations/:id", controller.GetDBVisualizationByInstanceID)
+		apiv1_auth.GET("/Instance/CheckInstance/:id",controller.CheckInstanceByInstanceID)
 
 		apiv1_auth.GET("/Dropdown", controller.GetDropdownSource)
 		apiv1_auth.GET("/DropdownFields", controller.DropdownFields)

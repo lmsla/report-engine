@@ -38,6 +38,7 @@ func GetUserInfo(c *gin.Context) {
 	userInfo, err := client.GetUserInfo(ctx, token, realm)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, "GetUserInfo: "+ err.Error())
+		
 		fmt.Println("GetUserInfo: "+ err.Error())
 		fmt.Printf("realm: %v\n", realm)
 

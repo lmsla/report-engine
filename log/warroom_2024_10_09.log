@@ -1,2 +1,0 @@
-2024/10/09 10:31:22 Method="GET" URL="/api/v1/Dropdown?source_type=data_view&space_name=default&instance_id=9" msg="error to get inventory details"
-2024/10/09 10:31:29 Method="GET" URL="/api/v1/Dropdown?source_type=data_view&instance_id=9" msg="error to get inventory details"

@@ -23,6 +23,7 @@ func GetAllElements(c *gin.Context) {
 
 	if !res.Success {
 		c.JSON(http.StatusBadRequest, res.Msg)
+		handler.WriteErrorLog(c, res.Msg)
 		return
 	}
 
@@ -44,6 +45,7 @@ func CreateElement(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 
@@ -71,6 +73,7 @@ func UpdateElement(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 
@@ -96,6 +99,7 @@ func DeleteElement(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 

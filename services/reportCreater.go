@@ -98,12 +98,12 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 	data1 := Report{}
 	uu := new(Report)
 	gg := new(Element)
-	uu.Name = fmt.Sprintf(report_data.Name)
+	uu.Name = fmt.Sprintf("%s", report_data.Name)
 	for _, elements := range element_data {
 		// uu := new(Report)
 		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
-		gg.Name = fmt.Sprintf(elements.Name)
-		gg.Period = fmt.Sprintf(timefrom + "~" + now)
+		gg.Name = fmt.Sprintf("%s", elements.Name)
+		gg.Period = fmt.Sprintf("%s", timefrom + "~" + now)
 		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
 		data1.Elements = append(data1.Elements, *gg)
 	}
@@ -112,9 +112,6 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 		Name:     uu.Name,
 		Elements: data1.Elements,
 	}
-	// fmt.Println("CreateHtml-169")
-	// fmt.Println(data1.Name)
-	// fmt.Println(data1.Elements)
 
 	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
 
@@ -225,7 +222,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 
 		_, data_len := DataDealing(table, timefrom, now)
 		table_height := float64(data_len)*6 + 7
-		total_table_height += table_height + 35
+		total_table_height += table_height + 70
 
 	}
 	fmt.Println("total_table_height", total_table_height)
@@ -323,8 +320,8 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 
 		// 動態計算欄位寬度
 		colWidths := make([]float64, len(table.Columns)+1)
-		// 加入 count 欄位
-		table.Columns = append(table.Columns, entities.Column{Name: "Count", Order: len(table.Columns) + 1})
+		// 加入 count 欄位 (可調整欄位顯示)
+		table.Columns = append(table.Columns, entities.Column{Name: "資料筆數", Order: len(table.Columns) + 1})
 		for i := range table.Columns {
 			if i == len(table.Columns)-1 {
 				colWidths[i] = 25
@@ -346,10 +343,12 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 			if strings.Contains(data.Name, ".keyword") {
 				column.Name = data.Name[:len(data.Name)-8]
 				column.Order = data.Order
+				column.Alias = data.Alias
 				Columns = append(Columns, column)
 			} else {
 				column.Name = data.Name
 				column.Order = data.Order
+				column.Alias = data.Alias
 				Columns = append(Columns, column)
 			}
 
@@ -366,7 +365,12 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		// pdf.SetLineWidth(0.1)
 
 		for i, data := range Columns {
-			pdf.CellFormat(colWidths[i], 7, data.Name, "1", 0, "C", true, 0, "")
+			if data.Alias != "" {
+				pdf.CellFormat(colWidths[i], 7, data.Alias, "1", 0, "C", true, 0, "")
+			}else {
+				pdf.CellFormat(colWidths[i], 7, data.Name, "1", 0, "C", true, 0, "")
+			}
+			
 		}
 		pdf.Ln(-1)
 
@@ -398,7 +402,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 			// 創建一個切片來保存所有的值
 
 			var ColumnsV []Column
-
+			// c = table 的欄位值
 			// 遍歷 map 並添加值到切片
 			for k, v := range c {
 				var columnV Column

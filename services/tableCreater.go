@@ -32,6 +32,7 @@ func strDelimit(str string, sepstr string, sepcount int) string {
 
 type Column struct {
 	Name  string
+	Alias string
 	Order int
 	Size  int
 }
@@ -69,7 +70,7 @@ func TableMeasurment(pdf *gofpdf.Fpdf, table entities.Table, table_data string) 
 	table.Columns = append(table.Columns, entities.Column{Name: "Count", Order: len(table.Columns) + 1})
 
 	for i := range table.Columns {
-		colWidths[i] = 200.0 / float64(len(table.Columns)) // 您可以根據需要調整每列的初始寬度
+		colWidths[i] = 200.0 / float64(len(table.Columns)) // 根據需要調整每列的初始寬度
 	}
 
 	// 計算總寬度和左邊距
@@ -233,10 +234,12 @@ func TableCreater(table entities.Table, table_data string, EndY float64) {
 		var column Column
 		if data.Name == "Count" {
 			column.Name = data.Name
+			column.Alias = "資料筆數"
 			column.Order = data.Order
 			Columns = append(Columns, column)
 		} else {
 			column.Name = data.Name[:len(data.Name)-8]
+			column.Alias = data.Alias
 			column.Order = data.Order
 			Columns = append(Columns, column)
 		}

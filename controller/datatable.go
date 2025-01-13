@@ -69,6 +69,7 @@ func CreateTable(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, "error to Create DataTable")
 		return
 	}
 
@@ -96,6 +97,7 @@ func UpdateTable(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, "error to Update DataTable")
 		return
 	}
 
@@ -121,6 +123,7 @@ func DeleteTable(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, "error to Delete DataTable")
 		return
 	}
 	res := services.DeleteTable(id)
@@ -145,14 +148,14 @@ func GetTableByReportID(c *gin.Context) {
 	ReportID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "Report ID should be int")
-		// handler.WriteErrorLog(c, "instance ID should be integer")
+		handler.WriteErrorLog(c, "Report ID should be in")
 		return
 	}
 
 	inventory, err := services.GetTableByReportID(ReportID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error to get inventory details")
-		// handler.WriteErrorLog(c, "error to get inventory details")
+		handler.WriteErrorLog(c, "error to get inventory details")
 		return
 	}
 	c.JSON(http.StatusOK, inventory)

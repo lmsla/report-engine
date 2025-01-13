@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"report-backend-golang/clients"
 	"report-backend-golang/entities"
 	"report-backend-golang/global"
 	"report-backend-golang/models"
@@ -23,8 +24,6 @@ func GetAllInstances() models.Response {
 	res.Msg = "Get All Instance Success"
 	return res
 }
-
-
 
 // 新增instance
 func CreateInstance(instance entities.Instance) models.Response {
@@ -51,7 +50,6 @@ func CreateInstance(instance entities.Instance) models.Response {
 
 	return res
 }
-
 
 // 查單一Instance
 func GetInstanceByID(instanceID int) (models.Instance, error) {
@@ -91,7 +89,6 @@ func UpdateInstance(instance models.Instance) models.Response {
 
 }
 
-
 func DeleteInstance(id int) models.Response {
 
 	res := models.Response{}
@@ -124,4 +121,37 @@ func DeleteInstance(id int) models.Response {
 
 }
 
+// 檢查 Instance 連線狀態
+func CheckInstanceByID(instanceID int) models.Response {
 
+	var instance models.Instance
+
+	res := models.Response{}
+	res.Success = false
+	res.Body = nil
+
+	instance.ID = instanceID
+	err := global.Mysql.First(&instance).Error
+	if err != nil {
+		res.Msg = fmt.Sprintf("Error when getting instance data, err: %s", err)
+		return res
+	}
+
+	_, es_res := clients.TestElasticsearch(instance)
+	_, kibana_res := clients.TestKibana(instance)
+
+	if !es_res.Success && !kibana_res.Success {
+		res.Msg = fmt.Sprintf("%s And %s",es_res.Msg,kibana_res.Msg)
+	} else if !es_res.Success {
+		res.Msg = fmt.Sprintf("%s , But %s",es_res.Msg,kibana_res.Msg)
+	} else if !kibana_res.Success{
+		res.Msg = fmt.Sprintf("%s , But %s",es_res.Msg,kibana_res.Msg)
+	}else {
+		// res.Msg = fmt.Sprintf("%s , And %s",re_res.Msg,kibana_res.Msg)
+		res.Msg = "Elasticsearch And Kibana is reachable!"
+		res.Success = true
+	}
+
+	return res
+
+}

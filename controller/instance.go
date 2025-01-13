@@ -110,6 +110,33 @@ func DeleteInstance(c *gin.Context) {
 }
 
 
+// @Summary Get Instance by Instance ID
+// @Tags Instance
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Instance
+// @Router /Instance/GetInstance/{id} [get]
+// @Security ApiKeyAuth
+func GetInstanceByInstanceID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	inventory, err := services.GetInstanceByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error to get instance details")
+		handler.WriteErrorLog(c, "error to get instance details")
+		return
+	}
+	c.JSON(http.StatusOK, inventory)
+}
+
 // @Summary Get Dashboard of server by Instance ID
 // @Tags Instance
 // @Accept  json
@@ -202,4 +229,28 @@ func GetDBVisualizationByInstanceID(c *gin.Context) {
 	default:
 		c.JSON(http.StatusBadRequest, "instance type unknown")
 	}
+}
+
+
+
+// @Summary check Instance by Instance ID
+// @Tags Instance
+// @Accept  json
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {object} entities.Instance
+// @Router /Instance/CheckInstance/{id} [get]
+// @Security ApiKeyAuth
+func CheckInstanceByInstanceID(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		handler.WriteErrorLog(c, err.Error())
+		return
+	}
+
+	// inventory, err := screenshot.GetInstanceByID(id)
+	res := services.CheckInstanceByID(id)
+	c.JSON(http.StatusOK, res)
 }

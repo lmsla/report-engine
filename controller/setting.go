@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"report-backend-golang/services"
+		"report-backend-golang/handler"
 )
 
 // @Summary Get Server Module
@@ -17,6 +18,7 @@ func GetServerModule(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, res)
@@ -44,6 +46,7 @@ func GetServerMenu(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
+		handler.WriteErrorLog(c, err.Error())
 		return
 	}
 

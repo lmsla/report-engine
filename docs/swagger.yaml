@@ -594,6 +594,28 @@ paths:
       summary: Html
       tags:
       - Html
+  /Instance/CheckInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: check Instance by Instance ID
+      tags:
+      - Instance
   /Instance/Create:
     post:
       consumes:
@@ -675,6 +697,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get Dashboard of server by Instance ID
+      tags:
+      - Instance
+  /Instance/GetInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Instance by Instance ID
       tags:
       - Instance
   /Instance/GetVisualizations/{id}:
@@ -846,7 +890,7 @@ paths:
             $ref: '#/definitions/entities.Report'
       security:
       - ApiKeyAuth: []
-      summary: Get report by Report ID
+      summary: Get Report by Report ID
       tags:
       - Report
   /Report/GetReportByScheduleID/{id}:
