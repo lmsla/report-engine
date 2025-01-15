@@ -208,6 +208,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 		emulation.SetDeviceMetricsOverride(1920, 1080, 1.0, false),
 		chromedp.Click(`.euiButton`, chromedp.NodeVisible),
 		chromedp.WaitVisible(sel, chromedp.ByQuery), // 等待選定的儀表板元素可見
+		chromedp.WaitVisible(`div.DashboardViewport`),
 		chromedp.Sleep(3 * time.Second),
 		// chromedp.ActionFunc(func(ctx context.Context) error {
 		// 	for i := 0; i < 10; i++ { // 自動滾動頁面，確保動態加載完成
