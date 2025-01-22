@@ -11,7 +11,7 @@ import (
 	// "report-backend-golang/log"
 	// "report-backend-golang/tools"
 	// "report-backend-golang/models"
-	"report-backend-golang/services"
+	// "report-backend-golang/services"
 
 )
 
@@ -33,18 +33,15 @@ import (
 func main() {
 
 	utils.LoadEnvironment()    
-	// es.LoadElasticsearch()
+	
 	clients.LoadDatabase()
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	// if global.EnvConfig.Database.Migration {
-	// 	entities.InitTable()
-	// }
 	migrate.Run()
 
 	utils.LoadCrontab()
-	// // authorize.LoadCasbin()
+
 	clients.LoadKeycloak()
 
 	r := router.LoadRouter()
@@ -73,9 +70,7 @@ func main1() {
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
 
-	// services.DataDealing()
-	// services.Testgy()
-	services.Test1()
+	// services.TestScreenShot("https://10.99.1.120:5601/app/dashboards#/view/5edcf158-4359-45bd-aef5-f93dbd976d78?_g=(refreshInterval:(pause:!t,value:60000),time:(from:now-1y%2Fd,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:f5fa3ff1-e2ef-4d3d-8a00-7b53e9612dc9,key:responseCodeDesc,negate:!f,params:(query:'Not%20Found'),type:phrase),query:(match_phrase:(responseCodeDesc:'Not%20Found')))))","elastic","12345678")
 	// services.ExampleFpdf_CellFormat_tables1()
 	// services.TableCreate()
 	// dateString := "2024-09-25"

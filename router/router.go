@@ -35,6 +35,8 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("/get-sso-url", controller.GetSsoURL)
 		apiv1.GET("/user/get-server-menu", controller.GetServerMenu)
 		apiv1.GET("/get-server-module", controller.GetServerModule)
+		apiv1.POST("/ScreenShotbyUrl",controller.ScreenShotByUrl)
+		apiv1.POST("/EncodeUrl",controller.EncodeUrl)
 		// apiv1.GET("/Instance/GetAll", controller.GetAllInstances)
 	}
 

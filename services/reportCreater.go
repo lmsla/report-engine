@@ -53,7 +53,7 @@ func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 	scheduleData, err := GetReportByScheduleID(ScheduleID)
 	if err != nil {
 		fmt.Println(err)
-		log.Logrecord("ERROR ", "Get Report by Schedule ID error"+err.Error())
+		log.Logrecord("ERROR", "Get Report by Schedule ID error"+err.Error())
 	}
 	for _, reports := range scheduleData {
 		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
@@ -83,12 +83,14 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 	//	用 ReportID 取出 Report 的相關資料
 	report_data, err := GetReportByReportID(ReportId)
 	if err != nil {
+		log.Logrecord("ERROR", "Get Report By ReportID error at CreateHtml stage: "+ err.Error())
 		fmt.Println(err)
 	}
 	fmt.Println(report_data.Name)
 
 	element_data, err := GetElementsByReportID(ReportId)
 	if err != nil {
+		log.Logrecord("ERROR", "Get Elements By ReportID error at CreateHtml stage: "+ err.Error())
 		fmt.Println(err)
 	}
 	t := time.Unix(nowtime, 0)

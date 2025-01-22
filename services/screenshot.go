@@ -126,7 +126,7 @@ func Screenshot_element1(nowtime int64, element_type string, url string, space s
 		}
 	case "dashboard":
 		url1 = fmt.Sprintf("%s/s/%s/app/dashboards#/view/%s?_g=(time:(from:'%s',to:'%s'))&_a=(fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),tags:!(),timeRestore:!t,viewMode:view)", url, space, uid, timefrom, new_ExecuteTime_str)
-		fmt.Println("url1", url1)
+		// fmt.Println("url1", url1)
 		err := kibanaElementScreenshotWithAuth_timeout(url1, user, password, `div.dashboardViewport`, &buf)
 		if err != nil {
 			fmt.Println("Screenshot_element - line 135", err)
@@ -162,6 +162,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	defer cancel()
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.ExecPath(global.EnvConfig.Files.ChromePath),
 		chromedp.Flag("headless", true),
 		chromedp.Flag("disable-gpu", true),
 		chromedp.Flag("hide-scrollbars", true),           // 隱藏滾動條
@@ -199,9 +200,9 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	// 登錄並等待儀表板加載
 	err = chromedp.Run(ctx, chromedp.Tasks{
 		// chromedp.Navigate(loginUrl),
-		chromedp.Sleep(10 * time.Second),
+		chromedp.Sleep(time.Duration(global.EnvConfig.Env.WaitSecond) * time.Second),
 		chromedp.WaitVisible(`input[name="username"]`, chromedp.ByQuery),
-		chromedp.Sleep(3 * time.Second),
+		chromedp.Sleep(5 * time.Second),
 		chromedp.SendKeys(`input[name="username"]`, username, chromedp.NodeVisible),
 		chromedp.SendKeys(`input[name="password"]`, password, chromedp.NodeVisible),
 		// chromedp.EmulateViewport(1920, 1080),
@@ -209,7 +210,8 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 		chromedp.Click(`.euiButton`, chromedp.NodeVisible),
 		chromedp.WaitVisible(sel, chromedp.ByQuery), // 等待選定的儀表板元素可見
 		chromedp.WaitVisible(`div.dashboardViewport`),
-		chromedp.Sleep(3 * time.Second),
+		// chromedp.Sleep(10 * time.Second),
+		chromedp.Sleep(time.Duration(global.EnvConfig.Env.WaitSecond) * time.Second),
 		// chromedp.ActionFunc(func(ctx context.Context) error {
 		// 	for i := 0; i < 10; i++ { // 自動滾動頁面，確保動態加載完成
 		// 		err := chromedp.ScrollIntoView(sel).Do(ctx)
@@ -220,7 +222,7 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 		// 	}
 		// 	return nil
 		// }),
-		chromedp.Sleep(3 * time.Second), // 最後等待資源完全加載
+		chromedp.Sleep(time.Duration(global.EnvConfig.Env.WaitSecond) * time.Second), // 最後等待資源完全加載
 	})
 
 	if err != nil {
@@ -236,6 +238,22 @@ func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel s
 	return nil
 }
 
+func ScreenShotByUrl(url, user, password, dashboard_name string) (err error){
+	var buf []byte
+
+	err = kibanaElementScreenshotWithAuth_timeout(url, user, password, `div.dashboardViewport`, &buf)
+	if err != nil {
+		log.Logrecord("ERROR", "Dashboard Screenshot by URL error "+err.Error())
+
+	}
+	// file := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, uid, timefrom, new_ExecuteTime_str)
+	file := fmt.Sprintf("%s/%s.png", global.EnvConfig.Files.ScreenshotFile,dashboard_name)
+	if err := os.WriteFile(file, buf, 0o644); err != nil {
+
+		log.Logrecord("ERROR", "Write Dashboard Screenshot by URL file error"+ err.Error())
+	}
+	return err
+}
 // gpt 修改前
 // func kibanaElementScreenshotWithAuth_timeout(loginUrl, username, password, sel string, res *[]byte) (err error) {
 

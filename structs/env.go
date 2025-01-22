@@ -3,12 +3,16 @@ package structs
 type EnviromentModel struct {
 	Database database
 	Server   server
-	Redis    redisModel
 	Cors     corsModel
 	Email    email
 	Other    other
 	Files    files
 	SSO      sso
+	Env      env
+}
+
+type env struct {
+	WaitSecond int
 }
 
 type files struct {
@@ -38,10 +42,10 @@ type email struct {
 }
 
 type sso struct {
-	Url         string
-	Realm       string
-	User        string
-	Password    string
+	Url        string
+	Realm      string
+	User       string
+	Password   string
 	LicenseKey string
 	ClientID   string
 	AdminRole  string
@@ -74,13 +78,4 @@ type database struct {
 	Port        string
 	LogEnable   int
 	Migration   bool
-}
-
-type redisModel struct {
-	Url      string
-	Password string
-	Database int
-	Idle     int
-	Active   int
-	Protocol string
 }

@@ -53,10 +53,15 @@ type Column struct {
 	Size    int    `gorm:"type:int" json:"size" form:"size"`
 }
 
-
-
 type ReportsTables struct {
 	Common
-	ReportID   int `gorm:"primaryKey" form:"report_id"`
-	TableID int `gorm:"primaryKey" form:"table_id"`
+	ReportID int `gorm:"primaryKey" form:"report_id"`
+	TableID  int `gorm:"primaryKey" form:"table_id"`
+}
+
+type ScreenshotUrl struct {
+	User     string `json:"user" form:"user"`
+	Password string `json:"password" form:"password"`
+	Url      string `json:"url" form:"url"`
+	Name     string `json:"name" form:"name"`
 }

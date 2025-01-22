@@ -49,12 +49,7 @@ func viperConfigToModel() {
 	config.Server.Mode = viper.GetString("server.mode")
 	config.Server.Port = viper.GetString("server.port")
 
-	config.Redis.Url = viper.GetString("redis.url")
-	config.Redis.Password = viper.GetString("redis.password")
-	config.Redis.Database = viper.GetInt("redis.database")
-	config.Redis.Idle = viper.GetInt("redis.idle")
-	config.Redis.Active = viper.GetInt("redis.active")
-	config.Redis.Protocol = viper.GetString("redis.protocol")
+	config.Env.WaitSecond = viper.GetInt("env.wait_second")
 
 	config.Cors.Allow.Headers = viper.GetStringSlice("cors.allow.headers")
 

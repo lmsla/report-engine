@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"report-backend-golang/entities"
+	"report-backend-golang/log"
 	"sort"
 	"time"
 )
@@ -172,7 +173,6 @@ func EsTableQuery(table_columns []entities.Column, instance entities.Instance, d
 	// nowStr:= "2024-05-13T15:30:00.000+08:00"
 	// timefromStr := "2024-05-13T15:40:00.000+08:00"
 
-
 	//// 動態指定一或多個欄位作為 aggregation 的 terms
 	//// create request body
 	//// fields sample := []string{"sourceAddress.keyword", "Method.keyword", "App.keyword", "User.keyword"}
@@ -181,7 +181,7 @@ func EsTableQuery(table_columns []entities.Column, instance entities.Instance, d
 	//// reqbody to JSON
 	jsonData, err := json.Marshal(reqBody)
 	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
+		log.Logrecord("ERROR", "Error marshaling JSON: "+ err.Error())
 		return
 	}
 
@@ -190,7 +190,7 @@ func EsTableQuery(table_columns []entities.Column, instance entities.Instance, d
 	// url := "https://10.99.1.93:9200/logstash-l7_network*/_async_search" // change to your Elasticsearch URL
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		log.Logrecord("ERROR", "Creating request error at EsTableQuery stage: "+ err.Error())
 		return
 	}
 
@@ -210,7 +210,7 @@ func EsTableQuery(table_columns []entities.Column, instance entities.Instance, d
 	// 發送 request
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
+		log.Logrecord("ERROR", "Sending request error at EsTableQuery stage: "+ err.Error())
 		return
 	}
 	defer resp.Body.Close()
@@ -218,7 +218,7 @@ func EsTableQuery(table_columns []entities.Column, instance entities.Instance, d
 	// read & print resp.Body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		log.Logrecord("ERROR", "Reading response body error at EsTableQuery stage: "+ err.Error())
 		return
 	}
 
@@ -235,7 +235,7 @@ func DataDealing(table entities.Table, timefrom, now string) (json_data string, 
 	var result map[string]interface{}
 	err := json.Unmarshal([]byte(jsonData), &result)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		log.Logrecord("ERROR", "Parsing JSON error at DataDealing stage: "+ err.Error())
 		return
 	}
 
@@ -256,7 +256,7 @@ func DataDealing(table entities.Table, timefrom, now string) (json_data string, 
 	// 將最終結果轉換為 JSON 格式
 	jsonOutput, err := json.MarshalIndent(finalResults, "", "  ")
 	if err != nil {
-		fmt.Println("Error converting to JSON:", err)
+		log.Logrecord("ERROR", "Converting to JSON error at DataDealing stage: "+ err.Error())
 		// os.Exit(1)
 	}
 

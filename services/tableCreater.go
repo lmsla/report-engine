@@ -128,6 +128,7 @@ func TableMeasurment(pdf *gofpdf.Fpdf, table entities.Table, table_data string) 
 	// 將JSON解碼為Go的map類型
 	err := json.Unmarshal([]byte(table_data), &result)
 	if err != nil {
+		
 		fmt.Println("Error parsing JSON:", err)
 		return
 	}

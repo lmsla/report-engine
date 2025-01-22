@@ -24,8 +24,8 @@ func ExecuteShedulePDF(scheduleID int) {
 	// inventory.CronID
 	EntryID, err := global.Crontab.AddFunc(inventory.CronTime, func() {
 		fmt.Println("執行排程")
-
-		FuncAddToCron(scheduleID)
+		test := false
+		FuncAddToCron(test, scheduleID)
 	})
 	fmt.Println("entryID: ")
 	fmt.Println(EntryID, err)
@@ -60,10 +60,10 @@ func ExecuteShedulePDF(scheduleID int) {
 
 }
 
-func FuncAddToCron(scheduleID int) {
+func FuncAddToCron(test bool, scheduleID int) {
 	inventory, err := GetScheduleBySheduleID(scheduleID)
 	if err != nil {
-		log.Logrecord("ERROR ", "Get Schedule by Schedule Id error"+err.Error())
+		log.Logrecord("ERROR", "Get Schedule by Schedule Id error"+err.Error())
 		fmt.Println(err)
 
 	}
@@ -76,7 +76,11 @@ func FuncAddToCron(scheduleID int) {
 	history.CC = inventory.CC
 	history.ScheduleName = inventory.Name
 	history.ExecuteTime = time_execute
-
+	if test {
+		history.Success = "試寄成功"
+	} else {
+		history.Success = "成功"
+	}
 	log.Logrecord("排程", "schedule name: "+inventory.Name)
 	history.Success = "成功"
 	// 移除掉 CreateHtmlbySchedule(time_execute, scheduleID)
@@ -110,6 +114,10 @@ func FuncAddToCron(scheduleID int) {
 		msg := fmt.Sprintf("create history error: %s", err.Error())
 		log.Logrecord("ERROR", msg)
 	}
+	if test {
+		log.Logrecord("排程", fmt.Sprintf("報表試寄完成, Schedule ID : %d", scheduleID))
+	}
+	
 
 	DeleteOldHistory()
 }
@@ -119,15 +127,14 @@ func CreateHistoryReport(historyID int) {
 
 	historydata, err := GetHistoryByHistoryID(historyID)
 	if err != nil {
-		log.Logrecord("ERROR ", "Get History by History Id error"+err.Error())
-		fmt.Println(err)
-
+		log.Logrecord("ERROR", "Get History by History Id error"+err.Error())
+		// fmt.Println(err)
 	}
 
 	inventory, err := GetScheduleBySheduleID(historydata.ScheduleID)
 	if err != nil {
-		log.Logrecord("ERROR ", "Get Schedule by Schedule Id error"+err.Error())
-		fmt.Println(err)
+		log.Logrecord("ERROR", "Get Schedule by Schedule Id error"+err.Error())
+		// fmt.Println(err)
 
 	}
 
