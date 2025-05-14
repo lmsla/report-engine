@@ -3,7 +3,8 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	// "os"
 	"net/http"
 	"net/url"
 	"report-backend-golang/entities"
@@ -30,7 +31,7 @@ func VerifyGrafanaInstance(instance *entities.Instance) (models.Response) {
 	// invalid username or password
 	var load_json map[string]interface{}
 	if resq.StatusCode != 200 {
-		byte_json, _ := ioutil.ReadAll(resq.Body)
+		byte_json, _ := io.ReadAll(resq.Body)
 		json.Unmarshal(byte_json, &load_json)
 		message := load_json["message"].(string)
 		res.Msg = message

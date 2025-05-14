@@ -60,6 +60,8 @@ func viperConfigToModel() {
 	config.Email.Port = viper.GetString("email.port")
 	config.Email.Sender = viper.GetString("email.sender")
 	config.Email.Auth = viper.GetBool("email.auth")
+	config.Email.AuthType = viper.GetString("email.auth_type")
+	config.Email.DisableTLS = viper.GetBool("email.disable_tls")
 
 	config.Other.Backend = viper.GetString("other.backend")
 

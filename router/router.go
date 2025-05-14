@@ -83,6 +83,7 @@ func LoadRouter() *gin.Engine {
 		apiv1_auth.PUT("/Schedule/Update", controller.UpdateSchedule)
 
 		apiv1_auth.POST("/Html/Create/:id", controller.CreateHtml)
+		// 報表試寄 PDF
 		apiv1_auth.POST("/PDF/Create/:id", controller.CreatePDF)
 
 		apiv1_auth.POST("/Mail/Send/:id", controller.SendEmailBySchedule)

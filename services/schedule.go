@@ -187,7 +187,6 @@ func UpdateSchedule(schedule entities.Schedule) models.Response {
 
 func GetEntryByScheduleID(scheduleID int) (entities.CronList, error) {
 	cronlist := entities.CronList{}
-	// err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
 
 	err := global.Mysql.Debug().Where("schedule_id = ?", scheduleID).Find(&cronlist).Error
 	if err != nil {
@@ -196,16 +195,3 @@ func GetEntryByScheduleID(scheduleID int) (entities.CronList, error) {
 	return cronlist, nil
 
 }
-
-// // 查單一 report by ReportID
-// func GetReportByReportID(reportID int) (entities.Report,error) {
-
-// 	var instance entities.Report
-// 	instance.ID = reportID
-// 	err := global.Mysql.Debug().Where("id = ?",reportID).Preload("Elements").Preload("Elements.Instance").Find(&instance).Error
-// 	if err != nil {
-// 		return instance, err
-// 	}
-// 	return instance, nil
-
-// }

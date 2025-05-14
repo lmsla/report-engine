@@ -40,9 +40,6 @@ func ExecuteShedulePDF(scheduleID int) {
 		// return res)
 	}
 
-	// res.Success = true
-	// res.Msg = "Create Success"
-
 	//fmt.Print(global.EnvConfig.CRONTAB.Period,global.EnvConfig.INFLUX.URL)
 	if err != nil {
 		fmt.Println("crontab PDF 初始化失敗")
@@ -53,7 +50,6 @@ func ExecuteShedulePDF(scheduleID int) {
 
 		fmt.Println("crontab PDF 初始化成功")
 		log.Logrecord("排程", "PDF排程 初始化成功")
-		// c.Start()
 		global.Crontab.Start()
 
 	}

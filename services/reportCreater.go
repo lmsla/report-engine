@@ -40,158 +40,6 @@ type Element struct {
 	Period string
 }
 
-func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
-
-	defer func() {
-		if err != nil {
-			// Error handling
-			log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
-			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
-		}
-	}()
-
-	scheduleData, err := GetReportByScheduleID(ScheduleID)
-	if err != nil {
-		fmt.Println(err)
-		log.Logrecord("ERROR", "Get Report by Schedule ID error"+err.Error())
-	}
-	for _, reports := range scheduleData {
-		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
-		// CreateHtml(reports.ID)
-		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
-		err := CreateHtml(nowtime, reports.ID)
-		if err != nil {
-			fmt.Println("CreateHtml - line 78", err)
-			log.Logrecord("ERROR", "CreateHtml error "+err.Error())
-			return err
-		}
-
-	}
-	return err
-}
-
-func CreateHtml(nowtime int64, ReportId int) (err error) {
-
-	defer func() {
-		if err != nil {
-			// Error handling
-			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
-			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
-		}
-	}()
-
-	//	用 ReportID 取出 Report 的相關資料
-	report_data, err := GetReportByReportID(ReportId)
-	if err != nil {
-		log.Logrecord("ERROR", "Get Report By ReportID error at CreateHtml stage: "+ err.Error())
-		fmt.Println(err)
-	}
-	fmt.Println(report_data.Name)
-
-	element_data, err := GetElementsByReportID(ReportId)
-	if err != nil {
-		log.Logrecord("ERROR", "Get Elements By ReportID error at CreateHtml stage: "+ err.Error())
-		fmt.Println(err)
-	}
-	t := time.Unix(nowtime, 0)
-	now := t.Format("2006-01-02")
-	timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
-
-	data1 := Report{}
-	uu := new(Report)
-	gg := new(Element)
-	uu.Name = fmt.Sprintf("%s", report_data.Name)
-	for _, elements := range element_data {
-		// uu := new(Report)
-		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
-		gg.Name = fmt.Sprintf("%s", elements.Name)
-		gg.Period = fmt.Sprintf("%s", timefrom + "~" + now)
-		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
-		data1.Elements = append(data1.Elements, *gg)
-	}
-
-	data1 = Report{
-		Name:     uu.Name,
-		Elements: data1.Elements,
-	}
-
-	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
-
-	var allPaths []string
-	for _, tmpl := range allFiles {
-		allPaths = append(allPaths, global.EnvConfig.Files.TemplateFile+"/"+tmpl)
-	}
-
-	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))
-
-	var processed bytes.Buffer
-	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
-		fmt.Println(err.Error())
-	}
-	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
-	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, report_data.Name, timefrom, now)
-
-	f, _ := os.Create(outputPath)
-	w := bufio.NewWriter(f)
-	// 1.18 時的舊寫法
-	// w.WriteString(string(processed.Bytes()))
-	w.WriteString(processed.String())
-	w.Flush()
-
-	return err
-}
-
-func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
-	// nowtime = time_execute
-	defer func() {
-		if err != nil {
-			// Error handling
-			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
-
-		}
-	}()
-	scheduleData, err := GetReportByScheduleID(ScheduleID)
-	if err != nil {
-		fmt.Println(err)
-	}
-	time.Sleep(10 * time.Second)
-
-	for _, reports := range scheduleData {
-		// defer pdf.Destroy()
-		fmt.Println(reports.Name)
-		// timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
-		t := time.Unix(nowtime, 0)
-		now := t.Format("2006-01-02")
-
-		// outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
-
-		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
-
-		//	用 ReportID 取出 Report 的相關資料
-		report_data, err := GetReportByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(report_data.Name)
-		element_data, err := GetElementsByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		table_data, err := GetTableByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
-
-		GeneratePDF_by_gofpdf_No_seprate(element_data, table_data, reports.Name, timefrom, now)
-
-		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
-	}
-
-	return err
-}
 
 // 不分頁
 func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData []entities.Table, report_name string, timefrom string, now string) {
@@ -204,7 +52,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 	pdf := gofpdf.New("L", "mm", "A4", "")
 	// add page
 	var width1, total_height float64
-	fmt.Println("len",len(elementData))
+	fmt.Println("len", len(elementData))
 	if len(elementData) != 0 {
 		for _, element := range elementData {
 			image_name := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
@@ -369,10 +217,10 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		for i, data := range Columns {
 			if data.Alias != "" {
 				pdf.CellFormat(colWidths[i], 7, data.Alias, "1", 0, "C", true, 0, "")
-			}else {
+			} else {
 				pdf.CellFormat(colWidths[i], 7, data.Name, "1", 0, "C", true, 0, "")
 			}
-			
+
 		}
 		pdf.Ln(-1)
 
@@ -485,6 +333,164 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 	fmt.Println("PDF generated successfully.")
 
 }
+
+///////////////-------------棄用--------------///////////////
+
+
+
+func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
+
+	defer func() {
+		if err != nil {
+			// Error handling
+			log.Logrecord("ERROR", "func CreateHtmlbySchedule error")
+			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
+		}
+	}()
+
+	scheduleData, err := GetReportByScheduleID(ScheduleID)
+	if err != nil {
+		fmt.Println(err)
+		log.Logrecord("ERROR", "Get Report by Schedule ID error"+err.Error())
+	}
+	for _, reports := range scheduleData {
+		// log.Logrecord("排程","report name: "+reports.Name+" 開始產出")
+		// CreateHtml(reports.ID)
+		// log.Logrecord("排程","report name: "+reports.Name+" 完成產出")
+		err := CreateHtml(nowtime, reports.ID)
+		if err != nil {
+			fmt.Println("CreateHtml - line 78", err)
+			log.Logrecord("ERROR", "CreateHtml error "+err.Error())
+			return err
+		}
+
+	}
+	return err
+}
+
+func CreateHtml(nowtime int64, ReportId int) (err error) {
+
+	defer func() {
+		if err != nil {
+			// Error handling
+			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+			// fmt.Println("func CreateHtmlbySchedule  發生錯誤：", err)
+		}
+	}()
+
+	//	用 ReportID 取出 Report 的相關資料
+	report_data, err := GetReportByReportID(ReportId)
+	if err != nil {
+		log.Logrecord("ERROR", "Get Report By ReportID error at CreateHtml stage: "+err.Error())
+		fmt.Println(err)
+	}
+	fmt.Println(report_data.Name)
+
+	element_data, err := GetElementsByReportID(ReportId)
+	if err != nil {
+		log.Logrecord("ERROR", "Get Elements By ReportID error at CreateHtml stage: "+err.Error())
+		fmt.Println(err)
+	}
+	t := time.Unix(nowtime, 0)
+	now := t.Format("2006-01-02")
+	timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
+
+	data1 := Report{}
+	uu := new(Report)
+	gg := new(Element)
+	uu.Name = report_data.Name
+	for _, elements := range element_data {
+		// uu := new(Report)
+		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
+		gg.Name = elements.Name
+		gg.Period = timefrom+"~"+now
+		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
+		data1.Elements = append(data1.Elements, *gg)
+	}
+
+	data1 = Report{
+		Name:     uu.Name,
+		Elements: data1.Elements,
+	}
+
+	allFiles := []string{"content.tmpl", "footer.tmpl", "header.tmpl", "page.tmpl"}
+
+	var allPaths []string
+	for _, tmpl := range allFiles {
+		allPaths = append(allPaths, global.EnvConfig.Files.TemplateFile+"/"+tmpl)
+	}
+
+	templates := template.Must(template.New("").Funcs(template.FuncMap{"subtr": subtr, "list": list}).ParseFiles(allPaths...))
+
+	var processed bytes.Buffer
+	if err := templates.ExecuteTemplate(&processed, "page", data1); err != nil {
+		fmt.Println(err.Error())
+	}
+	// outputPath := fmt.Sprintf("%s/%s_%s~%s.html", global.EnvConfig.Files.HtmlFile, inventory.Name, str1, str2)
+	outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, report_data.Name, timefrom, now)
+
+	f, _ := os.Create(outputPath)
+	w := bufio.NewWriter(f)
+	// 1.18 時的舊寫法
+	// w.WriteString(string(processed.Bytes()))
+	w.WriteString(processed.String())
+	w.Flush()
+
+	return err
+}
+
+func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
+	// nowtime = time_execute
+	defer func() {
+		if err != nil {
+			// Error handling
+			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+
+		}
+	}()
+	scheduleData, err := GetReportByScheduleID(ScheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	time.Sleep(10 * time.Second)
+
+	for _, reports := range scheduleData {
+		// defer pdf.Destroy()
+		fmt.Println(reports.Name)
+		// timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
+		t := time.Unix(nowtime, 0)
+		now := t.Format("2006-01-02")
+
+		// outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
+
+		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
+
+		//	用 ReportID 取出 Report 的相關資料
+		report_data, err := GetReportByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(report_data.Name)
+		element_data, err := GetElementsByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		table_data, err := GetTableByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
+
+		GeneratePDF_by_gofpdf_No_seprate(element_data, table_data, reports.Name, timefrom, now)
+
+		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
+	}
+
+	return err
+}
+
 
 // 分頁
 func GeneratePDF_by_gofpdf() {
@@ -602,31 +608,4 @@ func GeneratePDF_by_gofpdf() {
 
 }
 
-func Test1() {
 
-	t := time.Unix(1726715740, 0)
-	now := t.Format("2006-01-02")
-
-	//	用 ReportID 取出 Report 的相關資料
-	report_data, err := GetReportByReportID(22)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(report_data.Name)
-	element_data, err := GetElementsByReportID(22)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	table_data, err := GetTableByReportID(22)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	timefrom := tools.Timeconverter(1726715740, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
-
-	GeneratePDF_by_gofpdf_No_seprate(element_data, table_data, "TestReport", timefrom, now)
-
-	log.Logrecord("排程", "report name: TestReport 完成產出")
-
-}

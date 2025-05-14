@@ -139,39 +139,9 @@ func DeleteReport(id int) models.Response {
 }
 
 
-// // 查 Reports by ScheduleID
-// func GetReportByScheduleID(scheduleID int) (models.Response) {
-
-// 	// many2many檢索
-// 	res := models.Response{}
-// 	res.Success = false
-// 	var schedule entities.Schedule
-// 	// var body = []entities.Schedule{}
-
-// 	err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
-
-// 	// err := global.Mysql.Debug().Where("schedule_id = ?",scheduleID).Preload("Report").Find(&body).Error
-// 	if err != nil {
-// 		res.Msg = err.Error()
-// 		return res
-// 	}
-
-// 	res.Body = schedule.Reports
-// 	res.Success = true
-// 	res.Msg = "Get Selected Report Success"
-// 	return res
-
-
-// }
-
 
 func GetReportByScheduleID(scheduleID int) ([]entities.Report,error) {
 
-	// // many2many檢索
-	// res := models.Response{}
-	// res.Success = false
-	// var schedule entities.Schedule
-	// var body = []entities.Schedule{}
 	schedule := entities.Schedule{}
 	// err := global.Mysql.Debug().Where("id = ?",scheduleID).Preload("Reports").Find(&schedule).Error
 

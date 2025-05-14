@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
+	"os"
 	log1 "log"
 	"mime"
 	"net/smtp"
@@ -13,6 +13,7 @@ import (
 	"report-backend-golang/tools"
 	"strings"
 	"time"
+	"errors"
 )
 
 type Mail interface {
@@ -163,7 +164,14 @@ func (mail *SendMail) Auth() {
 }
 
 func (mail SendMail) Send(message Message) error {
-	mail.Auth()
+	// mail.Auth()
+
+	// to_address := MergeSlice(message.to, message.cc)
+	// to_address = MergeSlice(to_address, message.bcc)
+
+	toAddress := MergeSlice(message.to, message.cc)
+	toAddress = MergeSlice(toAddress, message.bcc)
+
 	buffer := bytes.NewBuffer(nil)
 	boundary := "GoBoundary"
 	Header := make(map[string]string)
@@ -176,11 +184,12 @@ func (mail SendMail) Send(message Message) error {
 	Header["Mime-Version"] = "1.0"
 	Header["Date"] = time.Now().String()
 	mail.writeHeader(buffer, Header)
-
+	// 寫入 HTML 內容
 	body := "\r\n--" + boundary + "\r\n"
 	body += "Content-Type:" + message.contentType + "\r\n"
 	body += "\r\n" + message.body + "\r\n"
 	buffer.WriteString(body)
+
 	for _, name := range message.attachment.name {
 		if message.attachment.withFile {
 			attachment := "\r\n--" + boundary + "\r\n"
@@ -199,12 +208,69 @@ func (mail SendMail) Send(message Message) error {
 		}
 	}
 
-	to_address := MergeSlice(message.to, message.cc)
-	to_address = MergeSlice(to_address, message.bcc)
+	// 決定發信方式
+	addr := fmt.Sprintf("%s:%s", mail.host, mail.port)
+	from := message.from
+	msg := buffer.Bytes()
 
-	buffer.WriteString("\r\n--" + boundary + "--")
-	err := smtp.SendMail(mail.host+":"+mail.port, mail.auth, message.from, to_address, buffer.Bytes())
-	return err
+	// 分支邏輯來自原 SendEmailNotify
+	switch {
+	case global.EnvConfig.Email.Auth:
+		var auth smtp.Auth
+		if global.EnvConfig.Email.AuthType == "LoginAuth" {
+			auth = LoginAuth(mail.user, mail.password)
+		} else {
+			auth = smtp.PlainAuth("", mail.user, mail.password, mail.host)
+		}
+		if err := smtp.SendMail(addr, auth, from, toAddress, msg); err != nil {
+			return fmt.Errorf("SendMail with Auth failed: %w", err)
+		}
+		return nil
+
+	case !global.EnvConfig.Email.DisableTLS:
+		if err := smtp.SendMail(addr, nil, from, toAddress, msg); err != nil {
+			return fmt.Errorf("SendMail with TLS but no Auth failed: %w", err)
+		}
+		return nil
+
+	case global.EnvConfig.Email.DisableTLS:
+		// 模擬 NoAuth + NoTLS
+		c, err := smtp.Dial(addr)
+		if err != nil {
+			return fmt.Errorf("dial failed: %w", err)
+		}
+		defer c.Quit()
+
+		if err = c.Mail(from); err != nil {
+			return fmt.Errorf("MAIL FROM failed: %w", err)
+		}
+		for _, rcpt := range toAddress {
+			if err = c.Rcpt(rcpt); err != nil {
+				return fmt.Errorf("RCPT TO failed (%s): %w", rcpt, err)
+			}
+		}
+
+		wc, err := c.Data()
+		if err != nil {
+			return fmt.Errorf("DATA failed: %w", err)
+		}
+		defer wc.Close()
+
+		if _, err = wc.Write(msg); err != nil {
+			return fmt.Errorf("write message failed: %w", err)
+		}
+		return nil
+
+	default:
+		return errors.New("no valid SMTP auth/TLS configuration found")
+	}
+
+	// to_address := MergeSlice(message.to, message.cc)
+	// to_address = MergeSlice(to_address, message.bcc)
+
+	// buffer.WriteString("\r\n--" + boundary + "--")
+	// err := smtp.SendMail(mail.host+":"+mail.port, mail.auth, message.from, to_address, buffer.Bytes())
+	// return err
 }
 
 func MergeSlice(s1 []string, s2 []string) []string {
@@ -226,7 +292,7 @@ func (mail SendMail) writeHeader(buffer *bytes.Buffer, Header map[string]string)
 
 // read and write the file to buffer
 func (mail SendMail) writeFile(buffer *bytes.Buffer, fileName string) {
-	file, err := ioutil.ReadFile(fileName)
+	file, err := os.ReadFile(fileName)
 	if err != nil {
 		panic(err.Error())
 	}

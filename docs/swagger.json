@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8005",
+    "host": "10.99.1.213:8005",
     "basePath": "/api/v1",
     "paths": {
         "/Dropdown": {
