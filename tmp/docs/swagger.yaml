@@ -1,0 +1,1298 @@
+basePath: /api/v1
+definitions:
+  entities.Column:
+    properties:
+      alias:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      order:
+        type: integer
+      size:
+        type: integer
+      table_id:
+        type: integer
+      updated_at:
+        type: integer
+    type: object
+  entities.Dropdown:
+    properties:
+      text:
+        type: string
+      value:
+        type: string
+    type: object
+  entities.Element:
+    properties:
+      column_type:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/entities.Instance'
+      instance_id:
+        type: integer
+      name:
+        type: string
+      report_id:
+        type: integer
+      row_num:
+        type: integer
+      space_name:
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.History:
+    properties:
+      bcc:
+        items:
+          type: string
+        type: array
+      cc:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      emailTime:
+        type: integer
+      executeTime:
+        type: integer
+      id:
+        type: integer
+      schedule:
+        allOf:
+        - $ref: '#/definitions/entities.Schedule'
+        description: Schedule     Schedule `gorm:"foreignKey:ScheduleID;constraint:OnUpdate:CASCADE,OnDelete:SET
+          NULL;"`
+      scheduleID:
+        type: integer
+      scheduleName:
+        type: string
+      success:
+        type: string
+      to:
+        description: |-
+          ReportID     int      `gorm:"type:int"`
+          Report       Report   `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+        items:
+          type: string
+        type: array
+      updated_at:
+        type: integer
+    type: object
+  entities.Instance:
+    properties:
+      auth:
+        type: integer
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      es_url:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: integer
+      url:
+        type: string
+      user:
+        type: string
+    type: object
+  entities.MainMenu:
+    properties:
+      icon:
+        type: string
+      id:
+        type: integer
+      module:
+        type: string
+      router_path:
+        type: string
+      sort:
+        type: integer
+      title:
+        type: string
+    type: object
+  entities.Module:
+    properties:
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      disabled:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: integer
+      url:
+        type: string
+    type: object
+  entities.Report:
+    properties:
+      alias:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      elements:
+        items:
+          $ref: '#/definitions/entities.Element'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      schedules:
+        items:
+          $ref: '#/definitions/entities.Schedule'
+        type: array
+      tables:
+        description: DataTables []DataTable `gorm:"foreignKey:ReportID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+        items:
+          $ref: '#/definitions/entities.Table'
+        type: array
+      time_period:
+        type: integer
+      time_unit:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  entities.Schedule:
+    properties:
+      bcc:
+        items:
+          type: string
+        type: array
+      body:
+        type: string
+      cc:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: integer
+      cron_id:
+        type: integer
+      cron_time:
+        type: string
+      deleted_at:
+        type: integer
+      enable:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      reports:
+        items:
+          $ref: '#/definitions/entities.Report'
+        type: array
+      subject:
+        type: string
+      to:
+        items:
+          type: string
+        type: array
+      updated_at:
+        type: integer
+    type: object
+  entities.Table:
+    properties:
+      columns:
+        items:
+          $ref: '#/definitions/entities.Column'
+        type: array
+      created_at:
+        type: integer
+      data_view:
+        type: string
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/entities.Instance'
+      instance_id:
+        type: integer
+      name:
+        type: string
+      reports:
+        items:
+          $ref: '#/definitions/entities.Report'
+        type: array
+      row_num:
+        type: integer
+      space_name:
+        type: string
+      type:
+        description: ReportID   int      `gorm:"index" json:"report_id" form:"report_id"`
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  models.Element:
+    properties:
+      column_type:
+        type: string
+      created_at:
+        type: integer
+      deleted_at:
+        type: integer
+      id:
+        type: integer
+      instance:
+        $ref: '#/definitions/models.Instance'
+      instance_id:
+        type: integer
+      name:
+        type: string
+      report_id:
+        type: integer
+      row_num:
+        type: integer
+      space_name:
+        type: string
+      type:
+        type: string
+      uid:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  models.Instance:
+    properties:
+      auth:
+        type: integer
+      es_url:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      type:
+        type: string
+      url:
+        type: string
+      user:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      body: {}
+      msg:
+        type: string
+      success:
+        type: boolean
+    type: object
+host: 10.99.1.133:8005
+info:
+  contact:
+    email: support@swagger.io
+    name: Russell
+  description: Golang API 專案描述
+  termsOfService: http://swagger.io/terms/
+  title: Report Engine Golang API
+  version: "1.0"
+paths:
+  /Dropdown:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: space,dashboard,visualization,data_view,table
+        in: query
+        name: source_type
+        required: true
+        type: string
+      - description: space_name
+        in: query
+        name: space_name
+        type: string
+      - description: instance_id
+        in: query
+        name: instance_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Dropdown'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Source of Instance by Instance ID
+      tags:
+      - Dropdown
+  /DropdownFields:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: space_name
+        in: query
+        name: space_name
+        type: string
+      - description: data_view_id
+        in: query
+        name: data_view_id
+        required: true
+        type: string
+      - description: instance_id
+        in: query
+        name: instance_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Dropdown'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Fields of DataView by DataView ID
+      tags:
+      - Dropdown
+  /Element/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: element
+        in: body
+        name: Element
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Element'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Element
+      tags:
+      - Element
+  /Element/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Element
+      tags:
+      - Element
+  /Element/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Element
+      tags:
+      - Element
+  /Element/GetElementByReportID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Element by Report ID
+      tags:
+      - Element
+  /Element/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: Instacne
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Element'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Element
+      tags:
+      - Element
+  /EncodeUrl:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user
+        in: query
+        name: user
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: url
+        in: query
+        name: url
+        required: true
+        type: string
+      - description: name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Encode Url
+      tags:
+      - Screenshot
+  /History/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get history
+      tags:
+      - History
+  /History/GetHistory/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.History'
+      security:
+      - ApiKeyAuth: []
+      summary: Get History by History ID
+      tags:
+      - History
+  /History/GetOldHistory:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Old history
+      tags:
+      - History
+  /History/HistoryReport/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create History Report by History ID
+      tags:
+      - History
+  /Html/Create/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Html
+      tags:
+      - Html
+  /Instance/CheckInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: check Instance by Instance ID
+      tags:
+      - Instance
+  /Instance/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: Instance
+        required: true
+        schema:
+          $ref: '#/definitions/models.Instance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Instance
+      tags:
+      - Instance
+  /Instance/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Instance
+      tags:
+      - Instance
+  /Instance/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Instance
+      tags:
+      - Instance
+  /Instance/GetDashboards/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Dashboard of server by Instance ID
+      tags:
+      - Instance
+  /Instance/GetInstance/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Instance'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Instance by Instance ID
+      tags:
+      - Instance
+  /Instance/GetVisualizations/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Element'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Visualization of server by Instance ID
+      tags:
+      - Instance
+  /Instance/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: instance
+        in: body
+        name: Instacne
+        required: true
+        schema:
+          $ref: '#/definitions/models.Instance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Instance
+      tags:
+      - Instance
+  /Mail/Send/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Mail
+      tags:
+      - Mail
+  /PDF/Create/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: PDF
+      tags:
+      - PDF
+  /Report/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: report
+        in: body
+        name: Report
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Report
+      tags:
+      - Report
+  /Report/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Report
+      tags:
+      - Report
+  /Report/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Report
+      tags:
+      - Report
+  /Report/GetReport/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Report'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Report by Report ID
+      tags:
+      - Report
+  /Report/GetReportByScheduleID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Schedule'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Report by Schedule ID
+      tags:
+      - Report
+  /Report/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: report
+        in: body
+        name: Report
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Report
+      tags:
+      - Report
+  /Schedule/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule
+        in: body
+        name: Schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Schedule
+      tags:
+      - Schedule
+  /Schedule/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Schedule
+      tags:
+      - Schedule
+  /Schedule/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Schedule
+      tags:
+      - Schedule
+  /Schedule/GetSchedule/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Schedule by Schedule ID
+      tags:
+      - Schedule
+  /Schedule/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: schedule
+        in: body
+        name: Schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Schedule
+      tags:
+      - Schedule
+  /ScreenShotbyUrl:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user
+        in: query
+        name: user
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: url
+        in: query
+        name: url
+        required: true
+        type: string
+      - description: name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Screenshot by Url
+      tags:
+      - Screenshot
+  /Table/Create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Table
+        in: body
+        name: Table
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Table'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create DataTable
+      tags:
+      - DataTable
+  /Table/Delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete DataTable
+      tags:
+      - DataTable
+  /Table/GetAll:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get DataTable
+      tags:
+      - DataTable
+  /Table/GetTable/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Table'
+      security:
+      - ApiKeyAuth: []
+      summary: Get table by DataTable ID
+      tags:
+      - DataTable
+  /Table/GetTableByReportID/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Table'
+      security:
+      - ApiKeyAuth: []
+      summary: Get DataTable by Report ID
+      tags:
+      - DataTable
+  /Table/Update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Table
+        in: body
+        name: Table
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Table'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update DataTable
+      tags:
+      - DataTable
+  /get-server-module:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Module'
+            type: array
+      summary: Get Server Module
+      tags:
+      - Env
+  /get-sso-url:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get SSOUrl
+      tags:
+      - SSO
+  /user/get-server-menu:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.MainMenu'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Server Menu
+      tags:
+      - Env
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

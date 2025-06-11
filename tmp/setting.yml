@@ -1,0 +1,32 @@
+es:
+  url: https://10.99.1.93:9200
+  sourceAccount: "elastic"
+  sourcePassword: "12345678"
+  # url: https://10.99.1.64:9200
+  # sourceAccount: "elastic"
+  # sourcePassword: "a12345678"
+
+information:
+  logdir: "/Users/chen/Downloads/01BiMap/02gitlab/bimap-product/log-detect/sourceCode/log/custom.log"
+  
+  # execute_cron : false
+  # period: "59 11 * * *"
+
+# email:
+#   user: "rabot6201@gmail.com"
+#   password: "fuhbrbezkwpcuzsv"
+#   sender: "rabot6201@gmail.com"
+#   host: "smtp.gmail.com"
+#   port: "587"
+#   smtp: ["smtp.gmail.com:587"]
+
+email:
+  user: "rabot6201@gmail.com"
+  password: "fuhbrbezkwpcuzsv"
+  smtp: "smtp.gmail.com:587"
+  host: "smtp.gmail.com"
+  port: "587"
+  sender: "log-detect"
+  auth: true
+  auth_type: "LoginAuth"
+  disable_tls: false

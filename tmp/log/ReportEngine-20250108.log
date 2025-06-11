@@ -1,0 +1,218 @@
+排程 2025/01/08 11:21:27 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:21:27 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:21:27 schedule name: 每日報表
+截圖 2025/01/08 11:21:28 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:22:30 element name: Auth-login完成截圖
+截圖 2025/01/08 11:22:30 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:23:19 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 11:23:29 report name: russell_test 開始產出
+排程 2025/01/08 11:23:30 report name: russell_test 完成產出
+排程 2025/01/08 11:23:32 信件送出失敗
+ERROR 2025/01/08 11:23:32 func SendEmailBySchedule error
+排程 2025/01/08 11:26:03 信件送出失敗
+ERROR 2025/01/08 11:26:03 func SendEmailBySchedule error
+排程 2025/01/08 11:27:02 信件送出成功
+排程 2025/01/08 11:31:59 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:31:59 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:32:00 schedule name: 每日報表
+截圖 2025/01/08 11:32:00 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:32:50 element name: Auth-login完成截圖
+截圖 2025/01/08 11:32:50 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:33:35 element name: LogonPage-Auth完成截圖
+截圖 2025/01/08 11:33:35 element name: IIS_來源IP分析開始執行截圖
+ERROR 2025/01/08 11:33:39 Dashboard Screenshot error page load error net::ERR_CERT_AUTHORITY_INVALID
+ERROR 2025/01/08 11:33:39 ScreenshotbyReport error page load error net::ERR_CERT_AUTHORITY_INVALID
+截圖 2025/01/08 11:33:42 element name: IIS_來源IP分析完成截圖
+ERROR 2025/01/08 11:33:42 ScreenshotbyReport errorpage load error net::ERR_CERT_AUTHORITY_INVALID
+排程 2025/01/08 11:35:40 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:35:40 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:35:40 schedule name: 每日報表
+截圖 2025/01/08 11:35:40 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:36:28 element name: Auth-login完成截圖
+截圖 2025/01/08 11:36:28 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:37:12 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 11:37:22 report name: russell_test 開始產出
+排程 2025/01/08 11:37:23 report name: russell_test 完成產出
+排程 2025/01/08 11:37:29 信件送出成功
+排程 2025/01/08 11:48:41 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:48:41 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:48:41 schedule name: 每日報表
+截圖 2025/01/08 11:48:41 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:49:15 element name: Auth-login完成截圖
+截圖 2025/01/08 11:49:15 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:49:45 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 11:49:55 report name: russell_test 開始產出
+排程 2025/01/08 11:49:55 report name: russell_test 完成產出
+排程 2025/01/08 11:50:01 信件送出成功
+排程 2025/01/08 11:51:29 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:51:29 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:51:29 schedule name: 每日報表
+截圖 2025/01/08 11:51:30 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:51:54 element name: Auth-login完成截圖
+截圖 2025/01/08 11:51:54 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:52:25 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 11:52:35 report name: russell_test 開始產出
+排程 2025/01/08 11:52:36 report name: russell_test 完成產出
+排程 2025/01/08 11:52:41 信件送出成功
+排程 2025/01/08 11:55:50 信件送出成功
+排程 2025/01/08 11:56:35 信件送出成功
+排程 2025/01/08 11:57:42 報表試寄, Schedule ID : 1
+排程 2025/01/08 11:57:42 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 11:57:42 schedule name: 每日報表
+截圖 2025/01/08 11:57:42 element name: Auth-login開始執行截圖
+截圖 2025/01/08 11:58:21 element name: Auth-login完成截圖
+截圖 2025/01/08 11:58:21 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 11:59:08 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 11:59:18 report name: russell_test 開始產出
+排程 2025/01/08 11:59:19 report name: russell_test 完成產出
+排程 2025/01/08 11:59:25 信件送出成功
+排程 2025/01/08 12:00:29 報表試寄, Schedule ID : 1
+排程 2025/01/08 12:00:29 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 12:00:30 schedule name: 每日報表
+截圖 2025/01/08 12:00:30 element name: Auth-login開始執行截圖
+截圖 2025/01/08 12:01:12 element name: Auth-login完成截圖
+截圖 2025/01/08 12:01:12 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 12:01:45 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 12:01:55 report name: russell_test 開始產出
+排程 2025/01/08 12:01:56 report name: russell_test 完成產出
+排程 2025/01/08 12:02:03 信件送出成功
+排程 2025/01/08 12:05:19 報表試寄, Schedule ID : 1
+排程 2025/01/08 12:05:19 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 12:05:19 schedule name: 每日報表
+截圖 2025/01/08 12:05:20 element name: Auth-login開始執行截圖
+截圖 2025/01/08 12:06:03 element name: Auth-login完成截圖
+截圖 2025/01/08 12:06:03 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 12:07:00 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 12:07:10 report name: russell_test 開始產出
+排程 2025/01/08 12:07:11 report name: russell_test 完成產出
+排程 2025/01/08 12:07:19 信件送出成功
+排程 2025/01/08 12:10:21 報表試寄, Schedule ID : 1
+排程 2025/01/08 12:10:21 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 12:10:21 schedule name: 每日報表
+截圖 2025/01/08 12:10:21 element name: Auth-login開始執行截圖
+截圖 2025/01/08 12:11:13 element name: Auth-login完成截圖
+截圖 2025/01/08 12:11:13 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 12:12:12 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 12:12:22 report name: russell_test 開始產出
+排程 2025/01/08 12:12:23 report name: russell_test 完成產出
+排程 2025/01/08 12:12:30 信件送出成功
+排程 2025/01/08 12:14:08 報表試寄, Schedule ID : 1
+排程 2025/01/08 12:14:08 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 12:14:08 schedule name: 每日報表
+截圖 2025/01/08 12:14:08 element name: Auth-login開始執行截圖
+截圖 2025/01/08 12:15:09 element name: Auth-login完成截圖
+截圖 2025/01/08 12:15:09 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 12:16:10 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 12:16:20 report name: russell_test 開始產出
+排程 2025/01/08 12:16:22 report name: russell_test 完成產出
+排程 2025/01/08 12:16:27 信件送出成功
+排程 2025/01/08 13:57:56 報表試寄, Schedule ID : 1
+排程 2025/01/08 13:57:56 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 13:57:56 schedule name: 每日報表
+截圖 2025/01/08 13:57:56 element name: Auth-login開始執行截圖
+截圖 2025/01/08 13:58:55 element name: Auth-login完成截圖
+截圖 2025/01/08 13:58:55 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 13:59:56 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:00:06 report name: russell_test 開始產出
+排程 2025/01/08 14:00:07 report name: russell_test 完成產出
+排程 2025/01/08 14:00:12 信件送出成功
+排程 2025/01/08 14:04:44 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:04:44 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:04:44 schedule name: 每日報表
+截圖 2025/01/08 14:04:44 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:05:47 element name: Auth-login完成截圖
+截圖 2025/01/08 14:05:47 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:06:46 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:06:56 report name: russell_test 開始產出
+排程 2025/01/08 14:06:57 report name: russell_test 完成產出
+排程 2025/01/08 14:07:03 信件送出成功
+排程 2025/01/08 14:14:55 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:14:55 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:14:55 schedule name: 每日報表
+截圖 2025/01/08 14:14:55 element name: Auth-login開始執行截圖
+排程 2025/01/08 14:15:51 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:15:51 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:15:51 schedule name: 每日報表
+截圖 2025/01/08 14:15:52 element name: Auth-login開始執行截圖
+ERROR 2025/01/08 14:15:57 Dashboard Screenshot error context deadline exceeded
+ERROR 2025/01/08 14:15:57 ScreenshotbyReport error context deadline exceeded
+截圖 2025/01/08 14:16:00 element name: Auth-login完成截圖
+ERROR 2025/01/08 14:16:00 ScreenshotbyReport errorcontext deadline exceeded
+ERROR 2025/01/08 14:16:52 Dashboard Screenshot error context deadline exceeded
+ERROR 2025/01/08 14:16:52 ScreenshotbyReport error context deadline exceeded
+截圖 2025/01/08 14:16:55 element name: Auth-login完成截圖
+ERROR 2025/01/08 14:16:55 ScreenshotbyReport errorcontext deadline exceeded
+排程 2025/01/08 14:18:28 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:18:28 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:18:28 schedule name: 每日報表
+截圖 2025/01/08 14:18:28 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:19:26 element name: Auth-login完成截圖
+截圖 2025/01/08 14:19:26 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:20:23 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:20:33 report name: russell_test 開始產出
+排程 2025/01/08 14:20:34 report name: russell_test 完成產出
+排程 2025/01/08 14:20:39 信件送出成功
+排程 2025/01/08 14:22:57 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:22:57 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:22:57 schedule name: 每日報表
+截圖 2025/01/08 14:22:57 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:23:43 element name: Auth-login完成截圖
+截圖 2025/01/08 14:23:43 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:24:28 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:24:38 report name: russell_test 開始產出
+排程 2025/01/08 14:24:39 report name: russell_test 完成產出
+排程 2025/01/08 14:24:46 信件送出成功
+排程 2025/01/08 14:36:30 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:36:30 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:36:31 schedule name: 每日報表
+截圖 2025/01/08 14:36:31 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:37:20 element name: Auth-login完成截圖
+截圖 2025/01/08 14:37:20 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:38:08 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:38:18 report name: russell_test 開始產出
+排程 2025/01/08 14:38:19 report name: russell_test 完成產出
+排程 2025/01/08 14:38:26 信件送出成功
+排程 2025/01/08 14:42:21 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:42:21 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:42:21 schedule name: 每日報表
+截圖 2025/01/08 14:42:21 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:42:58 element name: Auth-login完成截圖
+截圖 2025/01/08 14:42:58 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:43:38 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:43:48 report name: russell_test 開始產出
+排程 2025/01/08 14:43:49 report name: russell_test 完成產出
+排程 2025/01/08 14:43:56 信件送出成功
+排程 2025/01/08 14:44:59 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:44:59 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:44:59 schedule name: 每日報表
+截圖 2025/01/08 14:44:59 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:45:38 element name: Auth-login完成截圖
+截圖 2025/01/08 14:45:38 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:46:13 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:46:23 report name: russell_test 開始產出
+排程 2025/01/08 14:46:25 report name: russell_test 完成產出
+排程 2025/01/08 14:46:30 信件送出成功
+排程 2025/01/08 14:48:24 報表試寄, Schedule ID : 1
+排程 2025/01/08 14:48:24 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 14:48:24 schedule name: 每日報表
+截圖 2025/01/08 14:48:24 element name: Auth-login開始執行截圖
+截圖 2025/01/08 14:49:04 element name: Auth-login完成截圖
+截圖 2025/01/08 14:49:04 element name: LogonPage-Auth開始執行截圖
+截圖 2025/01/08 14:49:48 element name: LogonPage-Auth完成截圖
+排程 2025/01/08 14:49:58 report name: russell_test 開始產出
+排程 2025/01/08 14:49:59 report name: russell_test 完成產出
+排程 2025/01/08 14:50:04 信件送出成功
+排程 2025/01/08 15:29:19 報表試寄, Schedule ID : 1
+排程 2025/01/08 15:29:19 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 15:29:20 schedule name: 每日報表
+排程 2025/01/08 15:29:30 report name: russell_test測試 開始產出
+排程 2025/01/08 15:29:30 report name: russell_test測試 完成產出
+排程 2025/01/08 15:29:34 信件送出成功
+排程 2025/01/08 15:35:43 報表試寄, Schedule ID : 1
+排程 2025/01/08 15:35:43 報表試寄完成, Schedule ID : 1
+排程 2025/01/08 15:35:43 schedule name: 每日報表
+截圖 2025/01/08 15:35:43 element name: ESinsight_Nodes開始執行截圖
+ERROR 2025/01/08 15:37:13 Dashboard Screenshot error 登錄或加載儀表板失敗: context deadline exceeded
+ERROR 2025/01/08 15:37:13 ScreenshotbyReport error 登錄或加載儀表板失敗: context deadline exceeded
+截圖 2025/01/08 15:37:16 element name: ESinsight_Nodes完成截圖
+ERROR 2025/01/08 15:37:16 ScreenshotbyReport error登錄或加載儀表板失敗: context deadline exceeded

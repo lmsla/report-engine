@@ -5,6 +5,7 @@ import (
 	"report-backend-golang/global"
 	"report-backend-golang/structs"
 	"strings"
+
 	// "report-backend-golang/log"
 	"github.com/spf13/viper"
 )
@@ -84,6 +85,15 @@ func viperConfigToModel() {
 	config.SSO.UserRole = viper.GetString("sso.user_role")
 	config.SSO.ClientID = viper.GetString("sso.client_id")
 
+	config.Auth.Type = viper.GetString("auth.type")
+	config.Auth.Keycloak.Url = viper.GetString("auth.keycloak.url")
+	config.Auth.Keycloak.Realm = viper.GetString("auth.keycloak.realm")
+	config.Auth.Keycloak.User = viper.GetString("auth.keycloak.user")
+	config.Auth.Keycloak.Secret = viper.GetString("auth.keycloak.secret")
+	config.Auth.Radius.Server = viper.GetString("auth.radius.server")
+	config.Auth.Radius.Secret = viper.GetString("auth.radius.secret")
+	config.Auth.Radius.NasPort = viper.GetString("auth.radius.nas_port")
+	config.Auth.Radius.TimeoutSeconds = viper.GetInt("auth.radius.timeout_seconds")
 
 	global.EnvConfig = &config
 }

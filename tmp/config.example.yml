@@ -1,0 +1,52 @@
+database:
+  client: "mysql"
+  max_idle: 10
+  max_life_time: "1h"
+  max_open_conn: 100
+  user: "runner"
+  password: "1qaz2wsx"
+  host: "10.99.1.133"
+  name: "report"
+  port: "3306"
+  params: "charset=utf8mb4&parseTime=True&loc=Asia%2fTaipei"
+  log_enable: 0
+  migration: false
+
+
+server: 
+  mode: debug
+  port: :8005
+
+other:
+  backend: "localhost:3002"
+  migration: true
+
+cors:
+  allow:
+    headers: "Content-type Access-Control-Allow-Origin Authorization Refresh-token"
+  default_allow_url: "http://localhost:8080"
+
+email:
+  user: "rabot6201@gmail.com"
+  password: "aybypatnlgfxvfrj"
+  sender: "rabot6201@gmail.com"
+  host: "smtp.gmail.com"
+  port: "587"
+
+files:
+  migrations_file: "./db/migrations"
+  template_file: "./files/template"
+  screenshot_file: "./files/screenshot_files"
+  html_file: "./files/html_files"
+  report_file: "./files/report_files"
+  log_path: "./log"
+  logo_file: "./files/logo/bimap.png"
+  font_file: "."
+
+sso:
+  url: "https://10.99.1.133:8443"
+  realm: "master"
+  user: "admin"
+  password: "1qaz2wsx"
+  server_license_key: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkxJQyJ9.eyJwcm9kdWN0cyI6W3sidHJpY"
+ 

@@ -1,0 +1,5 @@
+pdf
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+config.yml
+.DS_Store

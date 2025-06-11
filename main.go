@@ -3,6 +3,7 @@ package main
 import (
 	// "fmt"
 	"report-backend-golang/clients"
+	"report-backend-golang/controller"
 	"report-backend-golang/global"
 	"report-backend-golang/migrate"
 	"report-backend-golang/router"
@@ -12,7 +13,6 @@ import (
 	// "report-backend-golang/tools"
 	// "report-backend-golang/models"
 	// "report-backend-golang/services"
-
 )
 
 // @title Report Engine Golang API
@@ -31,8 +31,8 @@ import (
 // @schemes http
 func main() {
 
-	utils.LoadEnvironment()    
-	
+	utils.LoadEnvironment()
+
 	clients.LoadDatabase()
 	mysql, _ := global.Mysql.DB()
 	defer mysql.Close()
@@ -43,6 +43,9 @@ func main() {
 
 	clients.LoadKeycloak()
 
+	// 初始化認證提供者
+	controller.InitAuthProvider()
+
 	r := router.LoadRouter()
 	r.Run(global.EnvConfig.Server.Port)
 
@@ -50,7 +53,3 @@ func main() {
 	// log.Logrecord("環境參數", "Html檔案位置 : "+global.EnvConfig.Files.HtmlFile)
 	// log.Logrecord("環境參數", "PDF報表檔案位置 : "+global.EnvConfig.Files.ReportFile)
 }
-
-
-
-

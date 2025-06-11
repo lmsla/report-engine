@@ -35,23 +35,28 @@ func LoadRouter() *gin.Engine {
 		apiv1.GET("/get-sso-url", controller.GetSsoURL)
 		apiv1.GET("/user/get-server-menu", controller.GetServerMenu)
 		apiv1.GET("/get-server-module", controller.GetServerModule)
-		apiv1.POST("/ScreenShotbyUrl",controller.ScreenShotByUrl)
-		apiv1.POST("/EncodeUrl",controller.EncodeUrl)
+		apiv1.POST("/ScreenShotbyUrl", controller.ScreenShotByUrl)
+		apiv1.POST("/EncodeUrl", controller.EncodeUrl)
+		// 新增登入端點
+		apiv1.POST("/login", controller.Login)
 		// apiv1.GET("/Instance/GetAll", controller.GetAllInstances)
 	}
 
 	//*** 驗證 Token 跟 SSO 取 UserInfo AccessHosts ***//
 	apiv1_auth := router.Group("api/v1")
-	apiv1_auth.Use(controller.GetUserInfo)
+	apiv1_auth.Use(controller.AuthMiddleware()) // 使用統一的認證中間件
 	{
+		// 新增用戶資訊端點
+		apiv1_auth.GET("/userinfo", controller.UserInfo)
+
 		apiv1_auth.GET("/Instance/GetAll", controller.GetAllInstances)
-		apiv1_auth.GET("/Instance/GetInstance/:id",controller.GetInstanceByInstanceID)
+		apiv1_auth.GET("/Instance/GetInstance/:id", controller.GetInstanceByInstanceID)
 		apiv1_auth.POST("/Instance/Create", controller.CreateInstance)
 		apiv1_auth.PUT("/Instance/Update", controller.UpdateInstance)
 		apiv1_auth.DELETE("/Instance/Delete/:id", controller.DeleteInstance)
 		apiv1_auth.GET("/Instance/GetDashboards/:id", controller.GetDBDashboardByInstanceID)
 		apiv1_auth.GET("/Instance/GetVisualizations/:id", controller.GetDBVisualizationByInstanceID)
-		apiv1_auth.GET("/Instance/CheckInstance/:id",controller.CheckInstanceByInstanceID)
+		apiv1_auth.GET("/Instance/CheckInstance/:id", controller.CheckInstanceByInstanceID)
 
 		apiv1_auth.GET("/Dropdown", controller.GetDropdownSource)
 		apiv1_auth.GET("/DropdownFields", controller.DropdownFields)

@@ -6,6 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/Nerzal/gocloak/v13 v13.9.0
+	github.com/bronze1man/radius v0.0.0-20190516032554-afd8baec892d
 	github.com/chromedp/cdproto v0.0.0-20250109193942-1ec2f6cf5d86
 	github.com/chromedp/chromedp v0.11.2
 	github.com/elastic/go-elasticsearch/v8 v8.17.0

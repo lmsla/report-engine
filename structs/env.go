@@ -8,6 +8,7 @@ type EnviromentModel struct {
 	Other    other
 	Files    files
 	SSO      sso
+	Auth     auth
 	Env      env
 }
 
@@ -32,14 +33,14 @@ type other struct {
 }
 
 type email struct {
-	User     string
-	Password string
-	Host     string
-	Port     string
-	Sender   string
-	Auth     bool
-	SMTP     []string
-	AuthType string
+	User       string
+	Password   string
+	Host       string
+	Port       string
+	Sender     string
+	Auth       bool
+	SMTP       []string
+	AuthType   string
 	DisableTLS bool
 }
 
@@ -80,4 +81,24 @@ type database struct {
 	Port        string
 	LogEnable   int
 	Migration   bool
+}
+
+type auth struct {
+	Type     string       `mapstructure:"type"`
+	Keycloak authKeycloak `mapstructure:"keycloak"`
+	Radius   authRadius   `mapstructure:"radius"`
+}
+
+type authKeycloak struct {
+	Url    string `mapstructure:"url"`
+	Realm  string `mapstructure:"realm"`
+	User   string `mapstructure:"user"`
+	Secret string `mapstructure:"secret"`
+}
+
+type authRadius struct {
+	Server         string `mapstructure:"server"`
+	Secret         string `mapstructure:"secret"`
+	NasPort        string `mapstructure:"nas_port"`
+	TimeoutSeconds int    `mapstructure:"timeout_seconds"`
 }

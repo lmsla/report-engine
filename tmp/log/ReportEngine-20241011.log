@@ -1,0 +1,44 @@
+排程 2024/10/11 11:15:30 報表試寄, Schedule ID : 1
+排程 2024/10/11 11:15:30 報表試寄完成, Schedule ID : 1
+排程 2024/10/11 11:15:30 schedule name: 每日報表
+Dubug 2024/10/11 11:15:30 截圖:
+Dubug 2024/10/11 11:15:30 ScreenshotbySchedule:
+排程 2024/10/11 11:15:40 report name: test_report 開始產出
+排程 2024/10/11 11:15:40 report name: test_report 完成產出
+排程 2024/10/11 11:15:44 信件送出成功
+排程 2024/10/11 11:19:26 報表試寄, Schedule ID : 1
+排程 2024/10/11 11:19:26 報表試寄完成, Schedule ID : 1
+排程 2024/10/11 11:19:26 schedule name: 每日報表
+Dubug 2024/10/11 11:19:26 截圖:
+Dubug 2024/10/11 11:19:26 ScreenshotbySchedule:
+排程 2024/10/11 11:19:37 report name: test_report 開始產出
+排程 2024/10/11 11:19:37 report name: test_report 完成產出
+排程 2024/10/11 11:19:41 信件送出成功
+排程 2024/10/11 14:36:45 重新寄送歷史報表, History ID : 1997
+排程 2024/10/11 14:36:45 schedule name: 每日報表
+Dubug 2024/10/11 14:36:45 ScreenshotbySchedule:
+排程 2024/10/11 14:36:55 report name: test_report 開始產出
+排程 2024/10/11 14:36:56 report name: test_report 完成產出
+排程 2024/10/11 14:37:01 信件送出成功
+排程 2024/10/11 14:37:01 歷史報表寄送完成, History ID : 1997
+排程 2024/10/11 14:43:47 報表試寄, Schedule ID : 2
+排程 2024/10/11 14:43:47 報表試寄完成, Schedule ID : 2
+ERROR  2024/10/11 14:43:47 Get Schedule by Schedule Id errorrecord not found
+排程 2024/10/11 14:43:47 schedule name: 
+Dubug 2024/10/11 14:43:47 ScreenshotbySchedule:
+排程 2024/10/11 14:43:59 信件送出失敗
+ERROR 2024/10/11 14:43:59 func SendEmailBySchedule error
+ERROR 2024/10/11 14:43:59 create history error: Error 1452: Cannot add or update a child row: a foreign key constraint fails (`report`.`histories`, CONSTRAINT `fk_histories_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE)
+排程 2024/10/11 14:44:00 報表試寄, Schedule ID : 13
+排程 2024/10/11 14:44:00 報表試寄完成, Schedule ID : 13
+排程 2024/10/11 14:44:00 schedule name: 每週報表
+Dubug 2024/10/11 14:44:00 ScreenshotbySchedule:
+截圖 2024/10/11 14:44:00 element name: ESinsight_Nodes開始執行截圖
+Dubug 2024/10/11 14:44:00 kibanaElementScreenshotWithAuth_timeout:
+截圖 2024/10/11 14:44:48 element name: ESinsight_Nodes完成截圖
+截圖 2024/10/11 14:44:48 element name: ESinsight_Pending_Tasks開始執行截圖
+Dubug 2024/10/11 14:44:48 kibanaElementScreenshotWithAuth_timeout:
+截圖 2024/10/11 14:45:31 element name: ESinsight_Pending_Tasks完成截圖
+排程 2024/10/11 14:45:41 report name: esinsight_report_part3 開始產出
+排程 2024/10/11 14:45:42 report name: esinsight_report_part3 完成產出
+排程 2024/10/11 14:45:53 信件送出成功

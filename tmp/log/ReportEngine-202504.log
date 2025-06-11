@@ -1,0 +1,115 @@
+排程 2025/04/23 15:44:03 重新寄送歷史報表, History ID : 2437
+排程 2025/04/23 15:44:03 schedule name: 每日報表
+截圖 2025/04/23 15:44:03 element name: 總統教育獎AP_登錄成功開始執行截圖
+ERROR 2025/04/23 15:46:03 Dashboard Screenshot error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 15:46:03 ScreenshotbyReport error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 15:46:06 ScreenshotbyReport error截圖失敗: context deadline exceeded
+排程 2025/04/23 15:46:06 歷史報表寄送完成, History ID : 2437
+排程 2025/04/23 16:23:37 重新寄送歷史報表, History ID : 2437
+排程 2025/04/23 16:23:37 schedule name: 每日報表
+截圖 2025/04/23 16:23:37 element name: 總統教育獎AP_登錄成功開始執行截圖
+ERROR 2025/04/23 16:25:37 Dashboard Screenshot error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 16:25:37 ScreenshotbyReport error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 16:25:41 ScreenshotbyReport error截圖失敗: context deadline exceeded
+排程 2025/04/23 16:25:41 歷史報表寄送完成, History ID : 2437
+排程 2025/04/23 16:47:47 重新寄送歷史報表, History ID : 2437
+排程 2025/04/23 16:47:47 schedule name: 每日報表
+截圖 2025/04/23 16:47:47 element name: 總統教育獎AP_登錄成功開始執行截圖
+ERROR 2025/04/23 16:49:47 Dashboard Screenshot error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 16:49:47 ScreenshotbyReport error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 16:49:50 ScreenshotbyReport error截圖失敗: context deadline exceeded
+排程 2025/04/23 16:49:51 歷史報表寄送完成, History ID : 2437
+排程 2025/04/23 17:11:17 重新寄送歷史報表, History ID : 2347
+ERROR 2025/04/23 17:11:17 Get History by History Id errorrecord not found
+排程 2025/04/23 17:11:17 schedule name: 每日報表
+排程 2025/04/23 17:11:30 信件送出成功
+ERROR 2025/04/23 17:11:30 create history error: Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`report`.`histories`, CONSTRAINT `fk_histories_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE)
+排程 2025/04/23 17:11:30 歷史報表寄送完成, History ID : 2347
+排程 2025/04/23 17:13:37 重新寄送歷史報表, History ID : 2437
+排程 2025/04/23 17:13:37 schedule name: 每日報表
+截圖 2025/04/23 17:13:37 element name: 總統教育獎AP_登錄成功開始執行截圖
+ERROR 2025/04/23 17:15:38 Dashboard Screenshot error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 17:15:38 ScreenshotbyReport error 截圖失敗: context deadline exceeded
+ERROR 2025/04/23 17:15:41 ScreenshotbyReport error截圖失敗: context deadline exceeded
+排程 2025/04/23 17:15:41 歷史報表寄送完成, History ID : 2437
+ERROR 2025/04/23 17:23:35 Dashboard Screenshot by URL error 多次重試仍然失敗: Cannot navigate to invalid URL (-32000)
+ERROR 2025/04/23 17:24:16 Dashboard Screenshot by URL error 多次重試仍然失敗: Cannot navigate to invalid URL (-32000)
+排程 2025/04/23 17:31:38 重新寄送歷史報表, History ID : 2437
+排程 2025/04/23 17:31:38 schedule name: 每日報表
+截圖 2025/04/23 17:31:38 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/23 17:33:58 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/23 17:34:01 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/23 17:36:45 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/23 17:36:58 report name: table測試 開始產出
+排程 2025/04/23 17:36:59 report name: table測試 完成產出
+排程 2025/04/23 17:36:59 report name: forti 週報 開始產出
+排程 2025/04/23 17:36:59 report name: forti 週報 完成產出
+排程 2025/04/23 17:37:09 信件送出成功
+排程 2025/04/23 17:37:09 歷史報表寄送完成, History ID : 2437
+排程 2025/04/24 13:55:44 報表試寄, Schedule ID : 1
+排程 2025/04/24 13:55:44 schedule name: 每日報表
+截圖 2025/04/24 13:55:44 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/24 13:58:06 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/24 13:58:09 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/24 14:00:52 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/24 14:01:05 report name: table測試 開始產出
+排程 2025/04/24 14:01:05 report name: table測試 完成產出
+排程 2025/04/24 14:01:05 report name: forti 週報 開始產出
+排程 2025/04/24 14:01:06 report name: forti 週報 完成產出
+排程 2025/04/24 14:01:17 信件送出成功
+排程 2025/04/24 14:01:17 報表試寄完成, Schedule ID : 1
+排程 2025/04/24 14:13:31 報表試寄, Schedule ID : 1
+排程 2025/04/24 14:13:31 schedule name: 每日報表
+截圖 2025/04/24 14:13:31 element name: 總統教育獎AP_登錄成功開始執行截圖
+ERROR 2025/04/24 14:15:31 Dashboard Screenshot error 截圖失敗: context deadline exceeded
+ERROR 2025/04/24 14:15:31 ScreenshotbyReport error 截圖失敗: context deadline exceeded
+ERROR 2025/04/24 14:15:34 ScreenshotbyReport error截圖失敗: context deadline exceeded
+排程 2025/04/24 14:15:34 報表試寄完成, Schedule ID : 1
+排程 2025/04/24 14:16:30 報表試寄, Schedule ID : 1
+排程 2025/04/24 14:16:30 schedule name: 每日報表
+截圖 2025/04/24 14:16:30 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/24 14:18:35 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/24 14:18:38 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/24 14:21:35 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/24 14:21:48 report name: table測試 開始產出
+排程 2025/04/24 14:21:49 report name: table測試 完成產出
+排程 2025/04/24 14:21:49 report name: forti 週報 開始產出
+排程 2025/04/24 14:21:49 report name: forti 週報 完成產出
+排程 2025/04/24 14:22:00 信件送出成功
+排程 2025/04/24 14:22:00 報表試寄完成, Schedule ID : 1
+排程 2025/04/24 14:31:30 報表試寄, Schedule ID : 1
+排程 2025/04/24 14:31:31 schedule name: 每日報表
+截圖 2025/04/24 14:31:31 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/24 14:34:00 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/24 14:34:03 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/24 14:37:05 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/24 14:37:18 report name: table測試 開始產出
+排程 2025/04/24 14:37:19 report name: table測試 完成產出
+排程 2025/04/24 14:37:19 report name: forti 週報 開始產出
+排程 2025/04/24 14:37:19 report name: forti 週報 完成產出
+排程 2025/04/24 14:37:30 信件送出成功
+排程 2025/04/24 14:37:30 報表試寄完成, Schedule ID : 1
+排程 2025/04/24 14:50:12 報表試寄, Schedule ID : 1
+排程 2025/04/24 14:50:12 schedule name: 每日報表
+截圖 2025/04/24 14:50:12 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/24 14:52:38 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/24 14:52:41 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/24 14:55:41 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/24 14:55:54 report name: table測試 開始產出
+排程 2025/04/24 14:55:54 report name: table測試 完成產出
+排程 2025/04/24 14:55:54 report name: forti 週報 開始產出
+排程 2025/04/24 14:55:55 report name: forti 週報 完成產出
+排程 2025/04/24 14:56:06 信件送出成功
+排程 2025/04/24 14:56:06 報表試寄完成, Schedule ID : 1
+排程 2025/04/24 15:09:54 報表試寄, Schedule ID : 1
+排程 2025/04/24 15:09:54 schedule name: 每日報表
+截圖 2025/04/24 15:09:54 element name: 總統教育獎AP_登錄成功開始執行截圖
+截圖 2025/04/24 15:12:29 element name: 總統教育獎AP_登錄成功完成截圖
+截圖 2025/04/24 15:12:32 element name: 總統教育獎AP_登錄記錄開始執行截圖
+截圖 2025/04/24 15:15:29 element name: 總統教育獎AP_登錄記錄完成截圖
+排程 2025/04/24 15:15:42 report name: table測試 開始產出
+排程 2025/04/24 15:15:43 report name: table測試 完成產出
+排程 2025/04/24 15:15:43 report name: forti 週報 開始產出
+排程 2025/04/24 15:15:43 report name: forti 週報 完成產出
+排程 2025/04/24 15:15:53 信件送出成功
+排程 2025/04/24 15:15:53 報表試寄完成, Schedule ID : 1
