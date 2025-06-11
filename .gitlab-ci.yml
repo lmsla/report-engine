@@ -1,0 +1,61 @@
+variables:
+  REGISTRY_DEPLOY_TOKEN: "hVJM_WBYPokoRY_CQX3c"
+  REGISTRY_USERNAME: "report"
+  CI_IMAGE: $CI_REGISTRY_IMAGE:v1.0.0
+  CI_IMAGE_DEV: $CI_REGISTRY_IMAGE/develop:v1.0.0
+  CONTAINER_NAME: "report-backend"
+  CONTAINER_PORT: "8005:8005"
+
+build-master-job:
+  tags:
+    - "master"
+  only:
+    - "master"
+  stage: "build"
+  before_script:
+    - sudo docker login $CI_REGISTRY -u $REGISTRY_USERNAME -p $REGISTRY_DEPLOY_TOKEN
+  script:
+    - sudo docker build -t $CI_IMAGE .
+    - sudo docker push $CI_IMAGE
+
+deploy-master-job:
+  tags:
+    - "master"
+  only:
+    - "master"
+  stage: "deploy"
+  before_script:
+    - sudo docker login $CI_REGISTRY -u $REGISTRY_USERNAME -p $REGISTRY_DEPLOY_TOKEN
+  script:
+    - cp $PROD_ENV_FILE env.list
+    - sudo docker ps -q --filter "name=$CONTAINER_NAME" | grep -q . && sudo docker stop $CONTAINER_NAME && sudo docker rm -fv $CONTAINER_NAME
+    - sudo docker pull $CI_IMAGE
+    - sudo docker run -p $CONTAINER_PORT --env-file ./env.list --name $CONTAINER_NAME --restart=always -d $CI_IMAGE
+
+build-develop-job:
+  tags:
+    - "docker"
+  only:
+    - "develop"
+  stage: "build"
+  before_script:
+    - sudo docker login $CI_REGISTRY -u $REGISTRY_USERNAME -p $REGISTRY_DEPLOY_TOKEN
+  script:
+    - sudo docker build -t $CI_IMAGE_DEV .
+    - sudo docker push $CI_IMAGE_DEV
+
+deploy-develop-job:
+  tags:
+    - "docker"
+  only:
+    - "develop"
+  stage: "deploy"
+  before_script:
+    - sudo docker login $CI_REGISTRY -u $REGISTRY_USERNAME -p $REGISTRY_DEPLOY_TOKEN
+  script:
+    - cp $DEV_ENV_FILE env.list
+    - sudo docker ps -q --filter "name=$CONTAINER_NAME" | grep -q . && sudo docker stop $CONTAINER_NAME && sudo docker rm -fv $CONTAINER_NAME
+    - sudo docker pull $CI_IMAGE_DEV
+    - sudo docker run -p $CONTAINER_PORT --env-file ./env.list -v /home/bimap/report-engine/files:/app/files -v /var/log/report-engine/:/app/log_record  --name $CONTAINER_NAME --restart=always -d $CI_IMAGE_DEV
+
+
