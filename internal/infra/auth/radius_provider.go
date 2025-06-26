@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"report-backend-golang/global"
+	"report-backend-golang/services"
 )
 
 type RadiusProvider struct {
@@ -51,22 +52,13 @@ func (r *RadiusProvider) Authenticate(ctx context.Context, creds map[string]stri
 		return nil, fmt.Errorf("password is required")
 	}
 
-	// 簡化版本：先跳過真正的 RADIUS 連接，用於測試流程
-	// TODO: 實作真正的 RADIUS 認證
-	fmt.Printf("RADIUS 認證測試 - 用戶: %s, 密碼: %s, 伺服器: %s\n", username, password, r.addr)
-
-	// 模擬認證成功
-	if username != "" && password != "" {
-		// 建立認證結果
-		result := map[string]interface{}{
-			"username": username,
-			"source":   "radius",
-			"server":   r.addr,
-		}
-		return result, nil
+	// 使用整合的 RADIUS 認證服務
+	result, err := services.RadiusAuthenticate(username, password)
+	if err != nil {
+		return nil, fmt.Errorf("radius authentication failed: %v", err)
 	}
 
-	return nil, fmt.Errorf("radius authentication failed: invalid credentials")
+	return result, nil
 }
 
 // Profile 從認證結果建立用戶資料
@@ -76,11 +68,13 @@ func (r *RadiusProvider) Profile(raw map[string]interface{}) (*SSOUser, error) {
 		return nil, fmt.Errorf("invalid username")
 	}
 
+	role, _ := raw["role"].(string)
+
 	user := &SSOUser{
 		ID:     username, // RADIUS 通常以用戶名作為 ID
 		Name:   username,
 		Domain: "radius",
-		Roles:  []string{}, // RADIUS 本身不提供角色資訊，可根據需要擴展
+		Roles:  []string{role}, // 使用從 RADIUS 取得的角色
 	}
 
 	return user, nil

@@ -98,3 +98,4 @@ func (p *KeycloakProvider) Profile(raw map[string]interface{}) (*SSOUser, error)
 
 	return user, nil
 }
+ 

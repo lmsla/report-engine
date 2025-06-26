@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/Nerzal/gocloak/v13 v13.9.0
-	github.com/bronze1man/radius v0.0.0-20190516032554-afd8baec892d
+	// github.com/bronze1man/radius v0.0.0-20190516032554-afd8baec892d
 	github.com/chromedp/cdproto v0.0.0-20250109193942-1ec2f6cf5d86
 	github.com/chromedp/chromedp v0.11.2
 	github.com/elastic/go-elasticsearch/v8 v8.17.0
@@ -55,6 +55,7 @@ require (
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.4.0 // indirect
 	github.com/goccy/go-json v0.10.4 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect

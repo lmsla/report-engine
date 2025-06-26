@@ -94,6 +94,10 @@ func viperConfigToModel() {
 	config.Auth.Radius.Secret = viper.GetString("auth.radius.secret")
 	config.Auth.Radius.NasPort = viper.GetString("auth.radius.nas_port")
 	config.Auth.Radius.TimeoutSeconds = viper.GetInt("auth.radius.timeout_seconds")
+	config.Auth.Radius.TokenLifespan = viper.GetString("auth.radius.token_lifespan")
+	config.Auth.Radius.AdminVcRole = viper.GetStringSlice("auth.radius.admin_vc_role")
+	config.Auth.Radius.GroupKey = viper.GetString("auth.radius.group_key")
+	config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.allowed_group_values")
 
 	global.EnvConfig = &config
 }

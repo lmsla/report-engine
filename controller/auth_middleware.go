@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"strings"
 
+	"report-backend-golang/global"
 	"report-backend-golang/internal/infra/auth"
+	"report-backend-golang/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,10 +61,36 @@ func AuthMiddleware() gin.HandlerFunc {
 				"password": parts[1],
 			}
 		} else if strings.HasPrefix(authHeader, "Bearer ") {
-			// Bearer Token for Keycloak
+			// Bearer Token for Keycloak or RADIUS JWT
 			token := strings.TrimPrefix(authHeader, "Bearer ")
-			creds = map[string]string{
-				"token": token,
+
+			// 檢查是否為 RADIUS 認證類型
+			if global.EnvConfig.Auth.Type == "radius" {
+				// 使用 JWT Token 驗證
+				userInfo, err := services.ValidateTokenAndGetUserInfo(token)
+				if err != nil {
+					c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+						"error": "invalid token: " + err.Error(),
+					})
+					return
+				}
+
+				// 建立用戶資料
+				user := &auth.SSOUser{
+					ID:     userInfo.UserName,
+					Name:   userInfo.UserName,
+					Domain: "radius",
+					Group:  userInfo.UserGroup,
+				}
+
+				c.Set("user", user)
+				c.Next()
+				return
+			} else {
+				// Keycloak Token 驗證
+				creds = map[string]string{
+					"token": token,
+				}
 			}
 		} else {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{

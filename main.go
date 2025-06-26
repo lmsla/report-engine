@@ -21,8 +21,8 @@ import (
 // @termsOfService http://swagger.io/terms/
 // @contact.name Russell
 // @contact.email support@swagger.io
-// @host 10.99.1.133:8005
-//// @host localhost:8005
+//// @host 10.99.1.133:8005
+// @host localhost:8005
 // @BasePath  /api/v1
 // @query.collection.format multi
 // @securityDefinitions.apikey ApiKeyAuth

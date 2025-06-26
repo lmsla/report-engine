@@ -1,6 +1,7 @@
 package structs
 
 type EnviromentModel struct {
+	DevMode  devMode
 	Database database
 	Server   server
 	Cors     corsModel
@@ -10,6 +11,11 @@ type EnviromentModel struct {
 	SSO      sso
 	Auth     auth
 	Env      env
+}
+
+type devMode struct {
+	TestDocker     bool   `mapstructure:"test_docker"`
+	TestRadiusRole string `mapstructure:"test_radius_role"`
 }
 
 type env struct {
@@ -97,8 +103,12 @@ type authKeycloak struct {
 }
 
 type authRadius struct {
-	Server         string `mapstructure:"server"`
-	Secret         string `mapstructure:"secret"`
-	NasPort        string `mapstructure:"nas_port"`
-	TimeoutSeconds int    `mapstructure:"timeout_seconds"`
+	Server         string   `mapstructure:"server"`
+	Secret         string   `mapstructure:"secret"`
+	NasPort        string   `mapstructure:"nas_port"`
+	TimeoutSeconds int      `mapstructure:"timeout_seconds"`
+	TokenLifespan  string   `mapstructure:"token_lifespan"`
+	AdminVcRole    []string `mapstructure:"admin_vc_role"`
+	GroupKey       string   `mapstructure:"group_key"`
+	AllowedGroupValues []string `mapstructure:"allowed_group_values"`
 }

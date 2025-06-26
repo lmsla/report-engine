@@ -5,10 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
+	"report-backend-golang/services"
+
 	"github.com/gin-gonic/gin"
 )
 
 // Login 統一登入端點 (適用於 RADIUS)
+// @Summary 統一登入端點
+// @Description 支援 RADIUS 和 Keycloak 認證的統一登入端點
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param login body models.LoginRequest true "登入資訊"
+// @Success 200 {object} models.LoginResponse "登入成功"
+// @Failure 400 {object} models.ErrorResponse "請求格式錯誤"
+// @Failure 401 {object} models.ErrorResponse "認證失敗"
+// @Failure 500 {object} models.ErrorResponse "內部錯誤"
+// @Router /login [post]
 func Login(c *gin.Context) {
 	fmt.Println("Login function called")
 
@@ -78,6 +91,94 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+// GetAccessToken RADIUS 登入取得 Token
+// @Summary RADIUS 登入取得 Token
+// @Description 使用 RADIUS 認證取得 JWT Token
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param account body models.RadiusLoginRequest true "RADIUS 帳戶資訊"
+// @Success 200 {object} models.RadiusLoginResponse "認證成功"
+// @Failure 400 {object} models.ErrorResponse "請求格式錯誤"
+// @Failure 401 {object} models.ErrorResponse "認證失敗"
+// @Router /token [post]
+func GetAccessToken(c *gin.Context) {
+	var loginReq struct {
+		UserName     string `json:"user_name" binding:"required"`
+		UserPassword string `json:"user_password" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&loginReq); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid request: " + err.Error(),
+		})
+		return
+	}
+
+	// 使用 RADIUS 認證服務
+	result, err := services.RadiusAuthenticate(loginReq.UserName, loginReq.UserPassword)
+	if err != nil {
+		// 認證失敗，返回統一格式但保持 401 status
+		response := gin.H{
+			"access_accept": false,
+			"access_token":  "",
+			"user_domain":   "",
+			"user_role":     "",
+		}
+		c.JSON(http.StatusUnauthorized, response) // 保持 401
+		return
+	}
+	fmt.Println("result", result)
+	// 準備回應
+	response := gin.H{
+		"access_accept": true,
+		"access_token":  result["token"],
+		"user_domain":   "OPERATOR",
+		"user_role":     result["role"],
+		"user_group":    result["group"],
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// TokenLogout RADIUS Token 登出
+// @Summary RADIUS Token 登出
+// @Description 登出並使 Token 失效
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param token body models.LogoutRequest true "Token 資訊"
+// @Success 200 {object} models.LogoutResponse "登出成功"
+// @Failure 400 {object} models.ErrorResponse "請求格式錯誤"
+// @Failure 500 {object} models.ErrorResponse "登出失敗"
+// @Router /logout [post]
+func TokenLogout(c *gin.Context) {
+	var logoutReq struct {
+		AccessToken string `json:"access_token" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&logoutReq); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid request: " + err.Error(),
+		})
+		return
+	}
+
+	// 執行登出
+	err := services.TokenLogout(logoutReq.AccessToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "logout failed: " + err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"msg":     "user logout success",
+	})
 }
 
 // UserInfo 取得當前用戶資訊

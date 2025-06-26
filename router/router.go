@@ -39,6 +39,10 @@ func LoadRouter() *gin.Engine {
 		apiv1.POST("/EncodeUrl", controller.EncodeUrl)
 		// 新增登入端點
 		apiv1.POST("/login", controller.Login)
+		// 新增 RADIUS 認證端點
+		apiv1.POST("/token", controller.GetAccessToken)
+		apiv1.POST("/logout", controller.TokenLogout)
+		apiv1.GET("/write-frontend-log", controller.WriteFrontendLog)
 		// apiv1.GET("/Instance/GetAll", controller.GetAllInstances)
 	}
 

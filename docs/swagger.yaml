@@ -291,6 +291,12 @@ definitions:
       updated_at:
         type: integer
     type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        example: error message
+        type: string
+    type: object
   models.Instance:
     properties:
       auth:
@@ -310,6 +316,73 @@ definitions:
       user:
         type: string
     type: object
+  models.LoginRequest:
+    properties:
+      nas_port:
+        example: "0"
+        type: string
+      password:
+        example: password
+        type: string
+      username:
+        example: admin
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/models.UserInfo'
+    type: object
+  models.LogoutRequest:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    required:
+    - access_token
+    type: object
+  models.LogoutResponse:
+    properties:
+      msg:
+        example: user logout success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.RadiusLoginRequest:
+    properties:
+      user_name:
+        example: admin
+        type: string
+      user_password:
+        example: password
+        type: string
+    required:
+    - user_name
+    - user_password
+    type: object
+  models.RadiusLoginResponse:
+    properties:
+      access_accept:
+        example: true
+        type: boolean
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user_domain:
+        example: OPERATOR
+        type: string
+      user_role:
+        example: VC_SUPER_USER
+        type: string
+    type: object
   models.Response:
     properties:
       body: {}
@@ -318,7 +391,25 @@ definitions:
       success:
         type: boolean
     type: object
-host: 10.99.1.133:8005
+  models.UserInfo:
+    properties:
+      domain:
+        example: radius
+        type: string
+      id:
+        example: admin
+        type: string
+      name:
+        example: admin
+        type: string
+      roles:
+        example:
+        - VC_SUPER_USER
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:8005
 info:
   contact:
     email: support@swagger.io
@@ -1272,6 +1363,100 @@ paths:
       summary: Get SSOUrl
       tags:
       - SSO
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 支援 RADIUS 和 Keycloak 認證的統一登入端點
+      parameters:
+      - description: 登入資訊
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登入成功
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: 請求格式錯誤
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: 認證失敗
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: 統一登入端點
+      tags:
+      - Authentication
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: 登出並使 Token 失效
+      parameters:
+      - description: Token 資訊
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/models.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登出成功
+          schema:
+            $ref: '#/definitions/models.LogoutResponse'
+        "400":
+          description: 請求格式錯誤
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: 登出失敗
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: RADIUS Token 登出
+      tags:
+      - Authentication
+  /token:
+    post:
+      consumes:
+      - application/json
+      description: 使用 RADIUS 認證取得 JWT Token
+      parameters:
+      - description: RADIUS 帳戶資訊
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/models.RadiusLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 認證成功
+          schema:
+            $ref: '#/definitions/models.RadiusLoginResponse'
+        "400":
+          description: 請求格式錯誤
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: 認證失敗
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: RADIUS 登入取得 Token
+      tags:
+      - Authentication
   /user/get-server-menu:
     get:
       consumes:
@@ -1290,6 +1475,36 @@ paths:
       summary: Get Server Menu
       tags:
       - Env
+  /write-frontend-log:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: type
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: usr
+        in: query
+        name: usr
+        required: true
+        type: string
+      - description: msg
+        in: query
+        name: msg
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Write Frontend Log
+      tags:
+      - Frontend
 securityDefinitions:
   ApiKeyAuth:
     in: header

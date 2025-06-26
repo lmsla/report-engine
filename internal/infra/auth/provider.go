@@ -4,9 +4,10 @@ import "context"
 
 // SSOUser 統一的用戶結構
 type SSOUser struct {
-	ID     string   `json:"id"`
-	Name   string   `json:"name"`
-	Domain string   `json:"domain"`
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Domain string `json:"domain"`
+	Group  string `json:"group"`
 	Roles  []string `json:"roles"`
 }
 
