@@ -98,6 +98,7 @@ func viperConfigToModel() {
 	config.Auth.Radius.AdminVcRole = viper.GetStringSlice("auth.radius.admin_vc_role")
 	config.Auth.Radius.GroupKey = viper.GetString("auth.radius.group_key")
 	config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.allowed_group_values")
+	config.Auth.Radius.RadtestPath = viper.GetString("auth.radius.radtest_path")
 
 	global.EnvConfig = &config
 }

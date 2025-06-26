@@ -141,6 +141,7 @@ func RadiusAuthenticate(username, password string) (map[string]interface{}, erro
 	server := global.EnvConfig.Auth.Radius.Server
 	nasPort := global.EnvConfig.Auth.Radius.NasPort
 	secret := global.EnvConfig.Auth.Radius.Secret
+	radtestPath := global.EnvConfig.Auth.Radius.RadtestPath
 
 	if server == "" || nasPort == "" || secret == "" {
 		return nil, fmt.Errorf("radius configuration incomplete")
@@ -148,8 +149,13 @@ func RadiusAuthenticate(username, password string) (map[string]interface{}, erro
 
 	fmt.Printf("RADIUS 真實認證 - 用戶: %s, 伺服器: %s:%s\n", username, server, nasPort)
 
+	// 檢查 radtest 路徑
+	if radtestPath == "" {
+		radtestPath = "radtest" // 預設值，依賴 PATH
+	}
+
 	// 執行 radtest 命令
-	cmd := exec.Command("radtest", username, password, server, nasPort, secret)
+	cmd := exec.Command(radtestPath, username, password, server, nasPort, secret)
 
 	var out, stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -277,65 +283,64 @@ func IsBlacklisted(token string) bool {
 
 // validateRadiusGroups 驗證 RADIUS 返回的 group 資訊並回傳 group value
 func validateRadiusGroups(radiusOutput string) (string, error) {
-    // 配置部分（根據你的實際配置結構調整）
-    groupKey := global.EnvConfig.Auth.Radius.GroupKey
-    allowedValues := global.EnvConfig.Auth.Radius.AllowedGroupValues 
-    
-    fmt.Printf("🔍 開始解析 RADIUS 輸出，尋找 group key: %s\n", groupKey)
-    
-    lines := strings.Split(radiusOutput, "\n")
-    receivedSection := false
-    
-    for i, line := range lines {
-        fmt.Printf("📝 處理第 %d 行: '%s'\n", i+1, line)
-        
-        // 找到 Received Access-Accept 開始
-        if strings.Contains(line, "Received Access-Accept") {
-            receivedSection = true
-            fmt.Printf("✅ 找到 Received Access-Accept 區段\n")
-            continue
-        }
-        // 如果還沒進入 received section，跳過
-        if !receivedSection {
-            continue
-        }
-        // 移除行首空白
-        trimmedLine := strings.TrimSpace(line)
-        // 跳過空行
-        if trimmedLine == "" {
-            continue
-        }
-        // 檢查是否為屬性行（包含 = ）
-        if strings.Contains(trimmedLine, "=") {
-            parts := strings.SplitN(trimmedLine, "=", 2)
-            if len(parts) == 2 {
-                key := strings.TrimSpace(parts[0])
-                value := strings.TrimSpace(parts[1])
-                
-                // 移除引號
-                value = strings.Trim(value, `"`)
-                
-                fmt.Printf("🔑 解析到屬性: %s = %s\n", key, value)
-                
-                // 檢查是否是目標 key
-                if key == groupKey {
-                    fmt.Printf("🎯 找到目標 group: %s\n", value)
-                    
-                    // 檢查 value 是否在允許列表中
-                    if slices.Contains(allowedValues, value) {
-                        fmt.Printf("✅ Group 驗證成功，返回值: %s\n", value)
-                        return value, nil // 驗證成功並回傳 group value
-                    } else {
-                        return "", fmt.Errorf("group value '%s' is not in allowed list %v", value, allowedValues)
-                    }
-                }
-            }
-        }
-    }
-    
-    return "", fmt.Errorf("required group key '%s' not found in radius response", groupKey)
-}
+	// 配置部分（根據你的實際配置結構調整）
+	groupKey := global.EnvConfig.Auth.Radius.GroupKey
+	allowedValues := global.EnvConfig.Auth.Radius.AllowedGroupValues
 
+	fmt.Printf("🔍 開始解析 RADIUS 輸出，尋找 group key: %s\n", groupKey)
+
+	lines := strings.Split(radiusOutput, "\n")
+	receivedSection := false
+
+	for i, line := range lines {
+		fmt.Printf("📝 處理第 %d 行: '%s'\n", i+1, line)
+
+		// 找到 Received Access-Accept 開始
+		if strings.Contains(line, "Received Access-Accept") {
+			receivedSection = true
+			fmt.Printf("✅ 找到 Received Access-Accept 區段\n")
+			continue
+		}
+		// 如果還沒進入 received section，跳過
+		if !receivedSection {
+			continue
+		}
+		// 移除行首空白
+		trimmedLine := strings.TrimSpace(line)
+		// 跳過空行
+		if trimmedLine == "" {
+			continue
+		}
+		// 檢查是否為屬性行（包含 = ）
+		if strings.Contains(trimmedLine, "=") {
+			parts := strings.SplitN(trimmedLine, "=", 2)
+			if len(parts) == 2 {
+				key := strings.TrimSpace(parts[0])
+				value := strings.TrimSpace(parts[1])
+
+				// 移除引號
+				value = strings.Trim(value, `"`)
+
+				fmt.Printf("🔑 解析到屬性: %s = %s\n", key, value)
+
+				// 檢查是否是目標 key
+				if key == groupKey {
+					fmt.Printf("🎯 找到目標 group: %s\n", value)
+
+					// 檢查 value 是否在允許列表中
+					if slices.Contains(allowedValues, value) {
+						fmt.Printf("✅ Group 驗證成功，返回值: %s\n", value)
+						return value, nil // 驗證成功並回傳 group value
+					} else {
+						return "", fmt.Errorf("group value '%s' is not in allowed list %v", value, allowedValues)
+					}
+				}
+			}
+		}
+	}
+
+	return "", fmt.Errorf("required group key '%s' not found in radius response", groupKey)
+}
 
 // // hexToString 將 hex 字串轉換為普通字串
 // func hexToString(hexStr string) string {
