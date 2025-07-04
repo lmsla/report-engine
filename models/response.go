@@ -28,6 +28,7 @@ type RadiusLoginResponse struct {
 // LogoutRequest 登出請求
 type LogoutRequest struct {
 	AccessToken string `json:"access_token" binding:"required" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	AccessAccept bool   `json:"access_accept" binding:"required" example:"true"`
 }
 
 // LogoutResponse 登出回應

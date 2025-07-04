@@ -157,6 +157,9 @@ func RadiusAuthenticate(username, password string) (map[string]interface{}, erro
 	// 執行 radtest 命令
 	cmd := exec.Command(radtestPath, username, password, server, nasPort, secret)
 
+	// 執行 radtest 命令
+	// cmd := exec.Command("radtest", username, password, server, nasPort, secret)
+
 	var out, stderr bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &stderr

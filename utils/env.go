@@ -96,8 +96,10 @@ func viperConfigToModel() {
 	config.Auth.Radius.TimeoutSeconds = viper.GetInt("auth.radius.timeout_seconds")
 	config.Auth.Radius.TokenLifespan = viper.GetString("auth.radius.token_lifespan")
 	config.Auth.Radius.AdminVcRole = viper.GetStringSlice("auth.radius.admin_vc_role")
-	config.Auth.Radius.GroupKey = viper.GetString("auth.radius.group_key")
-	config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.allowed_group_values")
+	// config.Auth.Radius.GroupKey = viper.GetString("auth.radius.group_key")
+	// config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.allowed_group_values")
+	config.Auth.Radius.GroupKey = viper.GetString("auth.radius.role_attr_name")
+	config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.admin_role")
 	config.Auth.Radius.RadtestPath = viper.GetString("auth.radius.radtest_path")
 
 	global.EnvConfig = &config

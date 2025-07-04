@@ -111,5 +111,5 @@ type authRadius struct {
 	AdminVcRole    []string `mapstructure:"admin_vc_role"`
 	GroupKey       string   `mapstructure:"group_key"`
 	AllowedGroupValues []string `mapstructure:"allowed_group_values"`
-	RadtestPath        string   `mapstructure:"radtest_path"`
+	RadtestPath      string   `mapstructure:"radtest_path"`
 }

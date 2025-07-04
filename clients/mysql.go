@@ -33,6 +33,11 @@ func LoadDatabase() {
 	// }
 
 	sqlDB, err := global.Mysql.DB()
+	if err != nil {
+		fmt.Printf("[ERROR] Database connection failed: %v\n", err)
+		panic(err)
+	}
+
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 	sqlDB.SetMaxIdleConns(int(global.EnvConfig.Database.MaxIdle))
 
@@ -42,5 +47,5 @@ func LoadDatabase() {
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 	lifeTime, _ := time.ParseDuration(global.EnvConfig.Database.MaxLifeTime)
 	sqlDB.SetConnMaxLifetime(lifeTime)
-	fmt.Println("Database 連線成功")
+	fmt.Println("[SUCCESS] Database 連線成功")
 }

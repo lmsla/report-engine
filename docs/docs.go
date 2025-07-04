@@ -2294,9 +2294,14 @@ const docTemplate = `{
         "models.LogoutRequest": {
             "type": "object",
             "required": [
+                "access_accept",
                 "access_token"
             ],
             "properties": {
+                "access_accept": {
+                    "type": "boolean",
+                    "example": true
+                },
                 "access_token": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

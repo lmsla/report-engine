@@ -15,8 +15,8 @@ func InitAuthProvider() AuthProvider {
 	}
 
 	// Debug 輸出
-	fmt.Printf("Auth Type: %s\n", authType)
-	fmt.Printf("Radius Server: %s\n", global.EnvConfig.Auth.Radius.Server)
+	fmt.Printf("[INFO] Auth Type: %s\n", authType)
+	fmt.Printf("[INFO] Radius Server: %s\n", global.EnvConfig.Auth.Radius.Server)
 
 	switch authType {
 	case "radius":
