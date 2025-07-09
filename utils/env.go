@@ -100,7 +100,13 @@ func viperConfigToModel() {
 	// config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.allowed_group_values")
 	config.Auth.Radius.GroupKey = viper.GetString("auth.radius.role_attr_name")
 	config.Auth.Radius.AllowedGroupValues = viper.GetStringSlice("auth.radius.admin_role")
-	config.Auth.Radius.RadtestPath = viper.GetString("auth.radius.radtest_path")
+	config.Auth.Radius.RadtestPath = viper.GetString("auth.radius.radtest_path")	
+	config.Auth.Radius.AuthMethod = viper.GetString("auth.radius.auth_method")
+	config.Auth.Radius.MockMode = viper.GetBool("auth.radius.mock_mode")
+	config.Auth.Radius.Layeh.Timeout = viper.GetString("auth.radius.layeh.timeout")
+	config.Auth.Radius.Layeh.Retries = viper.GetInt("auth.radius.layeh.retries")
+	config.Auth.Radius.Layeh.NasIdentifier = viper.GetString("auth.radius.layeh.nas_identifier")
+	config.Auth.Radius.Layeh.NasIPAddress = viper.GetString("auth.radius.layeh.nas_ip_address")
 
 	global.EnvConfig = &config
 }

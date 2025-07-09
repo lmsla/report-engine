@@ -112,4 +112,27 @@ type authRadius struct {
 	GroupKey       string   `mapstructure:"group_key"`
 	AllowedGroupValues []string `mapstructure:"allowed_group_values"`
 	RadtestPath      string   `mapstructure:"radtest_path"`
+	AuthMethod       string   `mapstructure:"auth_method"`
+	MockMode         bool     `mapstructure:"mock_mode"`
+	Layeh            RadiusLayehConfig `mapstructure:"layeh"`
+}
+
+type RadiusLayehConfig struct {
+    Timeout        string `yaml:"timeout"`
+    Retries        int    `yaml:"retries"`
+    NasIdentifier  string `yaml:"nas_identifier"`
+    NasIPAddress   string `yaml:"nas_ip_address"`
+}
+
+type RadiusConfig struct {
+    Server              string            `yaml:"server"`
+    NasPort            string            `yaml:"nas_port"`
+    Secret             string            `yaml:"secret"`
+    TokenLifespan      string            `yaml:"token_lifespan"`
+    AuthMethod         string            `yaml:"auth_method"`      // 新增
+    RadtestPath        string            `yaml:"radtest_path"`
+    MockMode           bool              `yaml:"mock_mode"`
+    GroupKey           string            `yaml:"group_key"`
+    AllowedGroupValues []string          `yaml:"allowed_group_values"`
+    Layeh              RadiusLayehConfig `yaml:"layeh"`            // 新增
 }

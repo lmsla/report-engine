@@ -2,11 +2,12 @@ package services
 
 import (
 	"bytes"
-	// "encoding/hex"
+	"context"
+	"encoding/binary"
+	"encoding/hex"
 	"fmt"
+	"net"
 	"os/exec"
-
-	// "regexp"
 	"report-backend-golang/global"
 	"slices"
 	"strconv"
@@ -15,6 +16,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"layeh.com/radius"
+	"layeh.com/radius/rfc2865"
 )
 
 var jwtSecret = []byte("your-secret-key") // 用於簽名 JWT 的密鑰
@@ -135,30 +138,76 @@ func ValidateTokenAndGetUserInfo(tokenStr string) (*UserInfo, error) {
 	}, nil
 }
 
-// RadiusAuthenticate 真實的 RADIUS 認證函數
 func RadiusAuthenticate(username, password string) (map[string]interface{}, error) {
 	// 取得 RADIUS 配置
 	server := global.EnvConfig.Auth.Radius.Server
 	nasPort := global.EnvConfig.Auth.Radius.NasPort
 	secret := global.EnvConfig.Auth.Radius.Secret
-	radtestPath := global.EnvConfig.Auth.Radius.RadtestPath
+	authMethod := global.EnvConfig.Auth.Radius.AuthMethod
 
 	if server == "" || nasPort == "" || secret == "" {
 		return nil, fmt.Errorf("radius configuration incomplete")
 	}
 
-	fmt.Printf("RADIUS 真實認證 - 用戶: %s, 伺服器: %s:%s\n", username, server, nasPort)
-
-	// 檢查 radtest 路徑
-	if radtestPath == "" {
-		radtestPath = "radtest" // 預設值，依賴 PATH
+	// 設定預設認證方式
+	if authMethod == "" {
+		authMethod = "radtest"
 	}
+
+	fmt.Printf("RADIUS 認證 - 用戶: %s, 伺服器: %s:%s, 方式: %s\n", username, server, nasPort, authMethod)
+
+	var radiusOutput string
+	var err error
+
+	// 根據配置選擇認證方式
+	switch authMethod {
+	case "radtest":
+		radiusOutput, err = authenticateWithRadtest(username, password, server, nasPort, secret)
+	case "layeh":
+		radiusOutput, err = authenticateWithLayeh(username, password, server, nasPort, secret)
+	default:
+		return nil, fmt.Errorf("unknown auth method: %s", authMethod)
+	}
+	fmt.Println("radiusOutput:", radiusOutput)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// 統一的 group 驗證
+	groupValue, err := validateRadiusGroups(radiusOutput)
+	if err != nil {
+		return nil, fmt.Errorf("radius group validation failed: %v", err)
+	}
+
+	// 產生 JWT token
+	token, err := GenerateToken(username, password, groupValue)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate token: %v", err)
+	}
+
+	// 回傳結果
+	result := map[string]interface{}{
+		"username": username,
+		"source":   fmt.Sprintf("radius-%s", authMethod),
+		"server":   server,
+		"group":    groupValue,
+		"token":    token,
+	}
+
+	return result, nil
+}
+
+func authenticateWithRadtest(username, password, server, nasPort, secret string) (string, error) {
+	radtestPath := global.EnvConfig.Auth.Radius.RadtestPath
+	if radtestPath == "" {
+		radtestPath = "radtest"
+	}
+
+	fmt.Printf("使用 radtest 執行認證\n")
 
 	// 執行 radtest 命令
 	cmd := exec.Command(radtestPath, username, password, server, nasPort, secret)
-
-	// 執行 radtest 命令
-	// cmd := exec.Command("radtest", username, password, server, nasPort, secret)
 
 	var out, stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -166,106 +215,324 @@ func RadiusAuthenticate(username, password string) (map[string]interface{}, erro
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("RADIUS 認證失敗: %v\nStderr: %s\n", err, stderr.String())
-		return nil, fmt.Errorf("radius authentication failed: invalid credentials")
+		fmt.Printf("radtest 執行失敗: %v\nStderr: %s\n", err, stderr.String())
+
+		if strings.Contains(err.Error(), "executable file not found") {
+			return "", fmt.Errorf("radtest not found at path '%s'. Please install freeradius-utils or update radtest_path in config", radtestPath)
+		}
+
+		return "", fmt.Errorf("radius authentication failed: invalid credentials")
 	}
 
 	output := out.String()
-	fmt.Printf("RADIUS 回應: %s\n", output)
+	fmt.Printf("radtest 回應: %s\n", output)
 
 	// 檢查是否認證成功
 	if !strings.Contains(output, "Access-Accept") {
-		return nil, fmt.Errorf("radius authentication failed: access denied")
+		return "", fmt.Errorf("radius authentication failed: access denied")
 	}
 
-	// var userDomain, userRole string
-
-	// // 方法1：嘗試文字格式解析（rule-engine 相容格式）
-	// fmt.Println("嘗試文字格式解析...")
-	// reDomainText := regexp.MustCompile(`VC_USER_DOMAIN\s*=\s*"([^"]+)"`)
-	// reRoleText := regexp.MustCompile(`VC_USER_ROLE\s*=\s*([^\s]+)`)
-	// domainTextMatch := reDomainText.FindStringSubmatch(output)
-	// roleTextMatch := reRoleText.FindStringSubmatch(output)
-
-	// if len(domainTextMatch) >= 2 && len(roleTextMatch) >= 2 {
-	// 	// 找到文字格式，使用它
-	// 	userDomain = domainTextMatch[1]
-	// 	userRole = roleTextMatch[1]
-	// 	fmt.Printf("✅ 使用文字格式解析 - Domain: %s, Role: %s\n", userDomain, userRole)
-	// } else {
-	// 	// 方法2：嘗試 VSA 數字格式解析
-	// 	fmt.Println("文字格式未找到，嘗試 VSA 格式解析...")
-	// 	reVSA1 := regexp.MustCompile(`Attr-26\.45346\.1\s*=\s*0x([0-9a-fA-F]+)`) // Domain
-	// 	reVSA2 := regexp.MustCompile(`Attr-26\.45346\.2\s*=\s*0x([0-9a-fA-F]+)`) // Role
-	// 	vsa1Match := reVSA1.FindStringSubmatch(output)
-	// 	vsa2Match := reVSA2.FindStringSubmatch(output)
-
-	// 	// 解析 Domain (VSA1)
-	// 	if len(vsa1Match) >= 2 {
-	// 		userDomain = hexToString(vsa1Match[1])
-	// 		fmt.Printf("✅ VSA Domain 解析: %s (來自 hex: %s)\n", userDomain, vsa1Match[1])
-	// 	} else {
-	// 		fmt.Println("⚠️  未找到 VSA Domain 屬性，使用預設值")
-	// 		userDomain = "OPERATOR"
-	// 	}
-
-	// 	// 解析 Role (VSA2)
-	// 	if len(vsa2Match) >= 2 {
-	// 		userRole = hexToRole(vsa2Match[1])
-	// 		fmt.Printf("✅ VSA Role 解析: %s (來自 hex: %s)\n", userRole, vsa2Match[1])
-	// 	} else {
-	// 		fmt.Println("⚠️  未找到 VSA Role 屬性，使用預設值")
-	// 		userRole = "VC_USER"
-	// 	}
-
-	// 	if len(vsa1Match) >= 2 || len(vsa2Match) >= 2 {
-	// 		fmt.Println("✅ 使用 VSA 格式解析")
-	// 	} else {
-	// 		fmt.Println("⚠️  兩種格式都未找到，使用預設值")
-	// 	}
-	// }
-
-	// // 確保有預設值
-	// if userDomain == "" {
-	// 	userDomain = "OPERATOR"
-	// 	fmt.Println("🔧 Domain 為空，使用預設值: OPERATOR")
-	// }
-	// if userRole == "" {
-	// 	userRole = "VC_USER"
-	// 	fmt.Println("🔧 Role 為空，使用預設值: VC_USER")
-	// }
-
-	// fmt.Printf("📋 最終解析結果 - Domain: %s, Role: %s\n", userDomain, userRole)
-
-	// // 檢查角色權限
-	// if len(global.EnvConfig.Auth.Radius.AdminVcRole) > 0 {
-	// 	if !slices.Contains(global.EnvConfig.Auth.Radius.AdminVcRole, userRole) {
-	// 		return nil, fmt.Errorf("user role not authorized: %s", userRole)
-	// 	}
-	// }
-
-	// 新增 group 驗證
-	var groupValue string
-
-	groupValue, err = validateRadiusGroups(output)
-	if err != nil {
-		return nil, fmt.Errorf("radius group validation failed: %v", err)
-	}
-	// 產生 JWT token
-	token, err := GenerateToken(username, password, groupValue)
-	if err != nil {
-		return nil, fmt.Errorf("failed to generate token: %v", err)
-	}
-	// 回傳結果
-	result := map[string]interface{}{
-		"username": username,
-		"source":   "radius",
-		"server":   server,
-		"group":    groupValue,
-		"token":    token,
-	}
-	return result, nil
+	return output, nil
 }
+
+func authenticateWithLayeh(username, password, server, nasPort, secret string) (string, error) {
+	fmt.Printf("=== layeh/radius 認證開始 ===\n")
+	fmt.Printf("Server: %s\n", server)
+	fmt.Printf("Username: %s\n", username)
+	fmt.Printf("NAS Port: %s\n", nasPort)
+
+	// ... 設定邏輯 ...
+
+	// 解析配置
+	timeout, err := time.ParseDuration(global.EnvConfig.Auth.Radius.Layeh.Timeout)
+	if err != nil {
+		timeout = 5 * time.Second // 預設 5 秒
+	}
+
+	// 使用 127.0.0.1 作為 NAS-IP-Address (與 radtest 一致)
+	nasIPAddress := "127.0.0.1"
+
+	// 可選：允許從配置覆蓋
+	if global.EnvConfig.Auth.Radius.Layeh.NasIPAddress != "" {
+		nasIPAddress = global.EnvConfig.Auth.Radius.Layeh.NasIPAddress
+	}
+
+	fmt.Printf("NAS IP Address: %s\n", nasIPAddress)
+	fmt.Printf("Timeout: %v\n", timeout)
+
+	// 建立 RADIUS 封包
+	packet := radius.New(radius.CodeAccessRequest, []byte(secret))
+
+	// 添加屬性並記錄 - 按照 radtest 的順序和方式
+	if err := rfc2865.UserName_AddString(packet, username); err != nil {
+		return "", fmt.Errorf("failed to add username: %v", err)
+	}
+	fmt.Printf("✓ Username 屬性已添加\n")
+
+	if err := rfc2865.UserPassword_AddString(packet, password); err != nil {
+		return "", fmt.Errorf("failed to add password: %v", err)
+	}
+	fmt.Printf("✓ User-Password 屬性已添加\n")
+
+	if err := rfc2865.NASIPAddress_Add(packet, net.ParseIP(nasIPAddress)); err != nil {
+		return "", fmt.Errorf("failed to add NAS IP: %v", err)
+	}
+	fmt.Printf("✓ NAS-IP-Address 屬性已添加: %s\n", nasIPAddress)
+
+	// NAS-Port
+	if nasPortNum, err := strconv.ParseUint(nasPort, 10, 32); err == nil {
+		if err := rfc2865.NASPort_Add(packet, rfc2865.NASPort(nasPortNum)); err != nil {
+			fmt.Printf("⚠️  NAS-Port 添加失敗: %v\n", err)
+		} else {
+			fmt.Printf("✓ NAS-Port 屬性已添加: %s\n", nasPort)
+		}
+	}
+
+	// Message-Authenticator 會由 layeh/radius 自動處理
+	fmt.Printf("✓ 所有基本屬性已添加，準備發送請求\n")
+
+	// 調試：打印即將發送的請求屬性
+	fmt.Printf("🔍 layeh/radius 發送的請求屬性:\n")
+	for i, attr := range packet.Attributes {
+		fmt.Printf("  請求屬性 %d: Type=%d, Data=%s\n",
+			i+1, attr.Type, hex.EncodeToString(attr.Attribute))
+	}
+
+	// 發送請求 - 檢查 server 是否已包含端口號
+	radiusAddr := server
+	if !strings.Contains(server, ":") {
+		radiusAddr = server + ":1812"
+	}
+	fmt.Printf("發送 RADIUS 請求到: %s\n", radiusAddr)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	response, err := radius.Exchange(ctx, packet, radiusAddr)
+	if err != nil {
+		fmt.Printf("❌ RADIUS 請求失敗: %v\n", err)
+		return "", fmt.Errorf("radius exchange failed: %v", err)
+	}
+
+	fmt.Printf("✓ 收到 RADIUS 回應\n")
+	fmt.Printf("Response Code: %d\n", response.Code)
+	fmt.Printf("Response Identifier: %d\n", response.Identifier)
+
+	// 檢查回應代碼
+	if response.Code == radius.CodeAccessReject {
+		fmt.Printf("❌ 認證被拒絕 (Access-Reject)\n")
+		return "", fmt.Errorf("radius authentication failed: access rejected")
+	} else if response.Code != radius.CodeAccessAccept {
+		fmt.Printf("❌ 未預期的回應代碼: %d\n", response.Code)
+		return "", fmt.Errorf("radius authentication failed: unexpected response code %d", response.Code)
+	}
+
+	fmt.Printf("✅ layeh/radius 認證成功 (Access-Accept)\n")
+	fmt.Printf("=== layeh/radius 認證結束 ===\n")
+	fmt.Println("response:", response)
+	// 將 layeh 的回應轉換成與 radtest 相同的格式
+	return convertLayehToRadtestFormat(response, server, nasIPAddress), nil
+}
+
+// func authenticateWithLayeh(username, password, server, nasPort, secret string) (string, error) {
+// 	fmt.Printf("使用 layeh/radius 執行認證\n")
+
+// 	// 解析配置
+// 	timeout, err := time.ParseDuration(global.EnvConfig.Auth.Radius.Layeh.Timeout)
+// 	if err != nil {
+// 		timeout = 5 * time.Second // 預設 5 秒
+// 	}
+
+// 	nasIPAddress := global.EnvConfig.Auth.Radius.Layeh.NasIPAddress
+// 	if nasIPAddress == "" {
+// 		nasIPAddress = "127.0.0.1" // 預設值
+// 	}
+
+// 	nasIdentifier := global.EnvConfig.Auth.Radius.Layeh.NasIdentifier
+// 	if nasIdentifier == "" {
+// 		nasIdentifier = "report-backend" // 預設值
+// 	}
+
+// 	// 建立 RADIUS 封包
+// 	packet := radius.New(radius.CodeAccessRequest, []byte(secret))
+
+// 	// 添加基本屬性
+// 	if err := rfc2865.UserName_AddString(packet, username); err != nil {
+// 		return "", fmt.Errorf("failed to add username: %v", err)
+// 	}
+
+// 	if err := rfc2865.UserPassword_AddString(packet, password); err != nil {
+// 		return "", fmt.Errorf("failed to add password: %v", err)
+// 	}
+
+// 	if err := rfc2865.NASIPAddress_Add(packet, net.ParseIP(nasIPAddress)); err != nil {
+// 		return "", fmt.Errorf("failed to add NAS IP: %v", err)
+// 	}
+
+// 	if err := rfc2865.NASIdentifier_AddString(packet, nasIdentifier); err != nil {
+// 		return "", fmt.Errorf("failed to add NAS identifier: %v", err)
+// 	}
+
+// 	// NAS-Port (將字串轉為數字)
+// 	if nasPortNum, err := strconv.ParseUint(nasPort, 10, 32); err == nil {
+// 		if err := rfc2865.NASPort_Add(packet, rfc2865.NASPort(nasPortNum)); err != nil {
+// 			return "", fmt.Errorf("failed to add NAS port: %v", err)
+// 		}
+// 	}
+
+// 	// 建立客戶端並發送請求
+// 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+// 	defer cancel()
+
+// 	response, err := radius.Exchange(ctx, packet, server+":1812")
+// 	if err != nil {
+// 		return "", fmt.Errorf("radius exchange failed: %v", err)
+// 	}
+
+// 	// 檢查回應代碼
+// 	if response.Code != radius.CodeAccessAccept {
+// 		return "", fmt.Errorf("radius authentication failed: access denied (code: %d)", response.Code)
+// 	}
+
+// 	fmt.Printf("layeh/radius 認證成功\n")
+
+// 	// 將 layeh 的回應轉換成與 radtest 相同的格式
+// 	return convertLayehToRadtestFormat(response, server, nasIPAddress), nil
+// }
+
+func convertLayehToRadtestFormat(response *radius.Packet, server, nasIP string) string {
+	var output strings.Builder
+
+	// 處理 server 地址，避免重複端口號
+	serverAddr := server
+	if strings.Contains(server, ":") {
+		// 已包含端口號，提取 IP 部分
+		parts := strings.Split(server, ":")
+		serverAddr = parts[0]
+	}
+
+	// 模擬 radtest 的輸出格式
+	output.WriteString(fmt.Sprintf("Received Access-Accept Id %d from %s:1812 to %s:33859\n",
+		response.Identifier, serverAddr, nasIP))
+
+	// 調試：打印所有接收到的屬性
+	fmt.Printf("🔍 layeh/radius 收到的所有屬性:\n")
+	for i, avp := range response.Attributes {
+		fmt.Printf("  屬性 %d: Type=%d, Length=%d, Data=%s\n",
+			i+1, avp.Type, len(avp.Attribute), hex.EncodeToString(avp.Attribute))
+	}
+
+	// 解析並格式化屬性
+	for _, avp := range response.Attributes {
+		switch avp.Type {
+		case 80: // Message-Authenticator
+			output.WriteString(fmt.Sprintf("        Message-Authenticator = 0x%s\n", hex.EncodeToString(avp.Attribute)))
+		case 26: // VSA (Vendor-Specific Attributes)
+			fmt.Printf("🔍 發現 VSA 屬性 (Type 26), 長度: %d\n", len(avp.Attribute))
+			if len(avp.Attribute) >= 6 {
+				vendorID := binary.BigEndian.Uint32(avp.Attribute[0:4])
+				vsaType := avp.Attribute[4]
+				vsaLength := avp.Attribute[5]
+
+				fmt.Printf("  Vendor ID: %d, VSA Type: %d, VSA Length: %d\n", vendorID, vsaType, vsaLength)
+
+				if int(vsaLength) <= len(avp.Attribute)-4 && vsaLength >= 2 {
+					vsaData := avp.Attribute[6 : 4+int(vsaLength)]
+					fmt.Printf("  VSA Data: %s (hex: %s)\n", string(vsaData), hex.EncodeToString(vsaData))
+
+					// 檢查 Fortinet VSA
+					if vendorID == 12356 { // Fortinet vendor ID
+						fmt.Printf("✅ 發現 Fortinet VSA\n")
+						if vsaType == 35 { // Policy group type (實際是 35，不是 1)
+							policyGroup := string(vsaData)
+							fmt.Println("policyGroup:", policyGroup)
+							output.WriteString(fmt.Sprintf("        Fortinet-FDD-SPP-Policy-Group = \"%s\"\n", policyGroup))
+							fmt.Printf("✅ 解析出 Policy Group: %s\n", policyGroup)
+						} else {
+							fmt.Printf("⚠️  未知的 Fortinet VSA Type: %d\n", vsaType)
+						}
+					} else {
+						fmt.Printf("⚠️  非 Fortinet VSA (Vendor ID: %d)\n", vendorID)
+					}
+				} else {
+					fmt.Printf("❌ VSA 長度異常: declared=%d, available=%d\n", vsaLength, len(avp.Attribute)-4)
+				}
+			} else {
+				fmt.Printf("❌ VSA 屬性太短: %d bytes\n", len(avp.Attribute))
+			}
+		default:
+			// 其他未知屬性
+			fmt.Printf("🔍 未知屬性 Type %d: %s\n", avp.Type, hex.EncodeToString(avp.Attribute))
+		}
+	}
+	return output.String()
+}
+
+// RadiusAuthenticate 真實的 RADIUS 認證函數
+// func RadiusAuthenticate(username, password string) (map[string]interface{}, error) {
+// 	// 取得 RADIUS 配置
+// 	server := global.EnvConfig.Auth.Radius.Server
+// 	nasPort := global.EnvConfig.Auth.Radius.NasPort
+// 	secret := global.EnvConfig.Auth.Radius.Secret
+// 	authMethod := global.EnvConfig.Auth.Radius.AuthMethod
+// 	radtestPath := global.EnvConfig.Auth.Radius.RadtestPath
+
+// 	if server == "" || nasPort == "" || secret == "" {
+// 		return nil, fmt.Errorf("radius configuration incomplete")
+// 	}
+
+// 	fmt.Printf("RADIUS 真實認證 - 用戶: %s, 伺服器: %s:%s\n", username, server, nasPort)
+
+// 	// 檢查 radtest 路徑
+// 	if radtestPath == "" {
+// 		radtestPath = "radtest" // 預設值，依賴 PATH
+// 	}
+
+// 	// 執行 radtest 命令
+// 	cmd := exec.Command(radtestPath, username, password, server, nasPort, secret)
+
+// 	// 執行 radtest 命令
+// 	// cmd := exec.Command("radtest", username, password, server, nasPort, secret)
+
+// 	var out, stderr bytes.Buffer
+// 	cmd.Stdout = &out
+// 	cmd.Stderr = &stderr
+
+// 	err := cmd.Run()
+// 	if err != nil {
+// 		fmt.Printf("RADIUS 認證失敗: %v\nStderr: %s\n", err, stderr.String())
+// 		return nil, fmt.Errorf("radius authentication failed: invalid credentials")
+// 	}
+
+// 	output := out.String()
+// 	fmt.Printf("RADIUS 回應: %s\n", output)
+
+// 	// 檢查是否認證成功
+// 	if !strings.Contains(output, "Access-Accept") {
+// 		return nil, fmt.Errorf("radius authentication failed: access denied")
+// 	}
+
+// 	// 新增 group 驗證
+// 	var groupValue string
+
+// 	groupValue, err = validateRadiusGroups(output)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("radius group validation failed: %v", err)
+// 	}
+// 	// 產生 JWT token
+// 	token, err := GenerateToken(username, password, groupValue)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("failed to generate token: %v", err)
+// 	}
+// 	// 回傳結果
+// 	result := map[string]interface{}{
+// 		"username": username,
+// 		"source":   "radius",
+// 		"server":   server,
+// 		"group":    groupValue,
+// 		"token":    token,
+// 	}
+// 	return result, nil
+// }
 
 func TokenLogout(token string) error {
 	duration, err := parseDuration(global.EnvConfig.Auth.Radius.TokenLifespan)

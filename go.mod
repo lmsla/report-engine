@@ -104,3 +104,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+require layeh.com/radius v0.0.0-20231213012653-1006025d24f8
