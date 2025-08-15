@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"report-backend-golang/global"
 	"report-backend-golang/models"
+	"fmt"
 )
 
 // @Summary Get SSOUrl
@@ -29,9 +30,10 @@ func GetSsoURL(c *gin.Context) {
 func GetSsoUrl() models.Response {
 	res := models.Response{}
 	res.Success = false
-	res.Body = global.EnvConfig.SSO.Url
-	// fmt.Println(global.EnvConfig.SSO.SsoUrl)
-	// fmt.Println(res)
+	res.Body = global.EnvConfig.Auth.Keycloak.Url
+	fmt.Println(global.EnvConfig.Auth.Keycloak.Url)
+	// fmt.Println(global.EnvConfig.SSO.Url)
+	fmt.Println(res)
 	res.Success = true
 	res.Msg = "Get All SSO URL Success"
 	return res

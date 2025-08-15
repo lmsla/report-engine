@@ -40,19 +40,18 @@ type Element struct {
 	Period string
 }
 
-
 // 不分頁
 func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData []entities.Table, report_name string, timefrom string, now string) {
 	pdfname := fmt.Sprintf("%s/%s_%s_%s.pdf", global.EnvConfig.Files.ReportFile, report_name, timefrom, now)
 
 	fontSize := float64(14)
-	//// time 格式為 2024-10-09
+	// time 格式為 2024-10-09
 
-	//// 創建 PDF 文件
+	// 創建 PDF 文件
 	pdf := gofpdf.New("L", "mm", "A4", "")
 	// add page
 	var width1, total_height float64
-	fmt.Println("len", len(elementData))
+	// fmt.Println("len", len(elementData))
 	if len(elementData) != 0 {
 		for _, element := range elementData {
 			image_name := fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, element.UID, timefrom, now)
@@ -65,7 +64,7 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		total_height = 27
 		width1 = 210
 	}
-	fmt.Println("total_height 219", total_height)
+	// fmt.Println("total_height 219", total_height)
 	var total_table_height float64
 
 	for _, table := range tableData {
@@ -75,9 +74,9 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 		total_table_height += table_height + 70
 
 	}
-	fmt.Println("total_table_height", total_table_height)
+	// fmt.Println("total_table_height", total_table_height)
 	total_height = total_height + total_table_height
-	fmt.Println("pdf_height", total_height)
+	// fmt.Println("pdf_height", total_height)
 
 	pdf.AddPageFormat("P", gofpdf.SizeType{Wd: width1, Ht: total_height})
 
@@ -90,15 +89,17 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 	pdf.CellFormat(0, 0, report_name, "", 0, "C", false, 0, "")
 
 	// set logo
-	pdf.Image(global.EnvConfig.Files.LogoFile, 5, 5, 20, 20, false, "", 0, "")
-
+	if global.EnvConfig.Files.LogoFile != "" {
+		pdf.Image(global.EnvConfig.Files.LogoFile, 5, 5, 20, 20, false, "", 0, "")
+	}
 	//// 给個空字符串就会去替换默认的 "{nb}"。
 	//// 如果这里指定了特别的字符串，那么SetFooterFunc() 中的 "nb" 也必须换成这个特别的字符串
 	// pdf.AliasNbPages("")
 	pdf.SetTopMargin(25)
-	// Page properties
-	pageWidth, pageHeight := pdf.GetPageSize()
-	fmt.Println("pageWidth: ", pageWidth, "pageHeight: ", pageHeight)
+
+	// Page properties 測量頁面大小
+	// pageWidth, pageHeight := pdf.GetPageSize()
+	// fmt.Println("pageWidth: ", pageWidth, "pageHeight: ", pageHeight)
 
 	_, topMargin, _, _ := pdf.GetMargins()
 
@@ -334,9 +335,57 @@ func GeneratePDF_by_gofpdf_No_seprate(elementData []entities.Element, tableData 
 
 }
 
+func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
+	// nowtime = time_execute
+	defer func() {
+		if err != nil {
+			// Error handling
+			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
+
+		}
+	}()
+	scheduleData, err := GetReportByScheduleID(ScheduleID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	time.Sleep(10 * time.Second)
+
+	for _, reports := range scheduleData {
+		// defer pdf.Destroy()
+		fmt.Println(reports.Name)
+		// timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
+		t := time.Unix(nowtime, 0)
+		now := t.Format("2006-01-02")
+
+		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
+
+		//	用 ReportID 取出 Report 的相關資料
+		report_data, err := GetReportByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+		// fmt.Println(report_data.Name)
+		element_data, err := GetElementsByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		table_data, err := GetTableByReportID(reports.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
+
+		GeneratePDF_by_gofpdf_No_seprate(element_data, table_data, reports.Name, timefrom, now)
+
+		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
+	}
+
+	return err
+}
+
 ///////////////-------------棄用--------------///////////////
-
-
 
 func CreateHtmlbySchedule(nowtime int64, ScheduleID int) (err error) {
 
@@ -403,7 +452,7 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 		// uu := new(Report)
 		gg.Img = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID, timefrom, now)
 		gg.Name = elements.Name
-		gg.Period = timefrom+"~"+now
+		gg.Period = timefrom + "~" + now
 		// uu.Elements = fmt.Sprintf("%s/%s_%s_%s.png", global.EnvConfig.Files.ScreenshotFile, elements.UID,timefrom,now)
 		data1.Elements = append(data1.Elements, *gg)
 	}
@@ -438,59 +487,6 @@ func CreateHtml(nowtime int64, ReportId int) (err error) {
 
 	return err
 }
-
-func CreatePDFbySchedule(nowtime int64, ScheduleID int) (err error) {
-	// nowtime = time_execute
-	defer func() {
-		if err != nil {
-			// Error handling
-			log.Logrecord("ERROR", "func CreatePDFbySchedule error")
-
-		}
-	}()
-	scheduleData, err := GetReportByScheduleID(ScheduleID)
-	if err != nil {
-		fmt.Println(err)
-	}
-	time.Sleep(10 * time.Second)
-
-	for _, reports := range scheduleData {
-		// defer pdf.Destroy()
-		fmt.Println(reports.Name)
-		// timefrom := tools.Timeconverter(nowtime, reports.TimeUnit, reports.TimePeriod, reports.Alias)
-		t := time.Unix(nowtime, 0)
-		now := t.Format("2006-01-02")
-
-		// outputPath := fmt.Sprintf("%s/%s_%s_%s.html", global.EnvConfig.Files.HtmlFile, reports.Name, timefrom, now)
-
-		log.Logrecord("排程", "report name: "+reports.Name+" 開始產出")
-
-		//	用 ReportID 取出 Report 的相關資料
-		report_data, err := GetReportByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(report_data.Name)
-		element_data, err := GetElementsByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		table_data, err := GetTableByReportID(reports.ID)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		timefrom := tools.Timeconverter(nowtime, report_data.TimeUnit, report_data.TimePeriod, report_data.Alias)
-
-		GeneratePDF_by_gofpdf_No_seprate(element_data, table_data, reports.Name, timefrom, now)
-
-		log.Logrecord("排程", "report name: "+reports.Name+" 完成產出")
-	}
-
-	return err
-}
-
 
 // 分頁
 func GeneratePDF_by_gofpdf() {
@@ -607,5 +603,3 @@ func GeneratePDF_by_gofpdf() {
 	fmt.Println("PDF generated successfully.")
 
 }
-
-

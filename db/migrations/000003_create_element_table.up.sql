@@ -16,4 +16,4 @@ CREATE TABLE `elements` (
   KEY `idx_elements_report_id` (`report_id`),
   KEY `fk_elements_instance` (`instance_id`),
   CONSTRAINT `fk_elements_instance` FOREIGN KEY (`instance_id`) REFERENCES `instances` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

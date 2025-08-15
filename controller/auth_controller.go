@@ -156,7 +156,7 @@ func GetAccessToken(c *gin.Context) {
 // @Router /logout [post]
 func TokenLogout(c *gin.Context) {
 	var logoutReq struct {
-		AccessAccept bool   `json:"access_accept" binding:"required"`
+		AccessAccept bool   `json:"access_accept"`
 		AccessToken string `json:"access_token" binding:"required"`
 	}
 

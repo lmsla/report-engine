@@ -14,4 +14,4 @@ CREATE TABLE `histories` (
   PRIMARY KEY (`id`),
   KEY `fk_histories_schedule` (`schedule_id`),
   CONSTRAINT `fk_histories_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1964 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=1964 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

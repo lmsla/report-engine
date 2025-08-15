@@ -3,17 +3,17 @@ package services
 import (
 	"bytes"
 	"encoding/base64"
+	"errors"
 	"fmt"
-	"os"
 	log1 "log"
 	"mime"
 	"net/smtp"
+	"os"
 	"report-backend-golang/global"
 	"report-backend-golang/log"
 	"report-backend-golang/tools"
 	"strings"
 	"time"
-	"errors"
 )
 
 type Mail interface {
@@ -106,7 +106,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 
 	}
 
-	for _, bcc := range schedule_data.CC {
+	for _, bcc := range schedule_data.BCC {
 		bcc_list = append(bcc_list, bcc)
 
 	}
@@ -124,7 +124,7 @@ func SendEmailBySchedule(nowtime int64, ScheduleID int) (err error) {
 		to:          reciver_list,
 		cc:          cc_list,
 		bcc:         bcc_list,
-		subject:     schedule_data.Name+"-"+ schedule_data.Subject,
+		subject:     schedule_data.Name + "-" + schedule_data.Subject,
 		body:        text + schedule_data.Body,
 		contentType: "text/plain;charset=utf-8",
 		// attachment: Attachment{
@@ -213,9 +213,10 @@ func (mail SendMail) Send(message Message) error {
 	from := message.from
 	msg := buffer.Bytes()
 
-	// 分支邏輯來自原 SendEmailNotify
+	// 完整的 SMTP 連線情境處理
 	switch {
-	case global.EnvConfig.Email.Auth:
+	case global.EnvConfig.Email.Auth && !global.EnvConfig.Email.DisableTLS:
+		// 有認證 + TLS (最常見)
 		var auth smtp.Auth
 		if global.EnvConfig.Email.AuthType == "LoginAuth" {
 			auth = LoginAuth(mail.user, mail.password)
@@ -223,18 +224,55 @@ func (mail SendMail) Send(message Message) error {
 			auth = smtp.PlainAuth("", mail.user, mail.password, mail.host)
 		}
 		if err := smtp.SendMail(addr, auth, from, toAddress, msg); err != nil {
-			return fmt.Errorf("SendMail with Auth failed: %w", err)
+			return fmt.Errorf("SendMail with Auth + TLS failed: %w", err)
 		}
 		return nil
 
-	case !global.EnvConfig.Email.DisableTLS:
+	case global.EnvConfig.Email.Auth && global.EnvConfig.Email.DisableTLS:
+		// 有認證 + 無 TLS (某些內部 SMTP 伺服器)
+		var auth smtp.Auth
+		if global.EnvConfig.Email.AuthType == "LoginAuth" {
+			auth = LoginAuth(mail.user, mail.password)
+		} else {
+			auth = smtp.PlainAuth("", mail.user, mail.password, mail.host)
+		}
+
+		c, err := smtp.Dial(addr)
+		if err != nil {
+			return fmt.Errorf("dial failed: %w", err)
+		}
+		defer c.Quit()
+
+		if err = c.Auth(auth); err != nil {
+			return fmt.Errorf("AUTH failed: %w", err)
+		}
+		if err = c.Mail(from); err != nil {
+			return fmt.Errorf("MAIL FROM failed: %w", err)
+		}
+		for _, rcpt := range toAddress {
+			if err = c.Rcpt(rcpt); err != nil {
+				return fmt.Errorf("RCPT TO failed (%s): %w", rcpt, err)
+			}
+		}
+		wc, err := c.Data()
+		if err != nil {
+			return fmt.Errorf("DATA failed: %w", err)
+		}
+		defer wc.Close()
+		if _, err = wc.Write(msg); err != nil {
+			return fmt.Errorf("write message failed: %w", err)
+		}
+		return nil
+
+	case !global.EnvConfig.Email.Auth && !global.EnvConfig.Email.DisableTLS:
+		// 無認證 + TLS
 		if err := smtp.SendMail(addr, nil, from, toAddress, msg); err != nil {
 			return fmt.Errorf("SendMail with TLS but no Auth failed: %w", err)
 		}
 		return nil
 
-	case global.EnvConfig.Email.DisableTLS:
-		// 模擬 NoAuth + NoTLS
+	case !global.EnvConfig.Email.Auth && global.EnvConfig.Email.DisableTLS:
+		// 無認證 + 無 TLS (最簡單)
 		c, err := smtp.Dial(addr)
 		if err != nil {
 			return fmt.Errorf("dial failed: %w", err)
@@ -249,13 +287,11 @@ func (mail SendMail) Send(message Message) error {
 				return fmt.Errorf("RCPT TO failed (%s): %w", rcpt, err)
 			}
 		}
-
 		wc, err := c.Data()
 		if err != nil {
 			return fmt.Errorf("DATA failed: %w", err)
 		}
 		defer wc.Close()
-
 		if _, err = wc.Write(msg); err != nil {
 			return fmt.Errorf("write message failed: %w", err)
 		}

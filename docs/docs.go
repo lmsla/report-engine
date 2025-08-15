@@ -1514,6 +1514,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/detect-smtp": {
+            "post": {
+                "description": "自動偵測 SMTP 伺服器的連線方式和認證類型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SMTP"
+                ],
+                "summary": "自動偵測 SMTP 配置",
+                "parameters": [
+                    {
+                        "description": "SMTP 偵測請求",
+                        "name": "smtp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.SMTPTestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "偵測成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.SMTPTestResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求格式錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "偵測失敗",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/get-server-module": {
             "get": {
                 "consumes": [
@@ -1659,6 +1705,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/test-smtp": {
+            "post": {
+                "description": "測試指定的 SMTP 伺服器連線並自動偵測配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SMTP"
+                ],
+                "summary": "測試 SMTP 連線",
+                "parameters": [
+                    {
+                        "description": "SMTP 測試請求",
+                        "name": "smtp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.SMTPTestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "測試成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.SMTPTestResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求格式錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "SMTP 連線失敗",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/token": {
             "post": {
                 "description": "使用 RADIUS 認證取得 JWT Token",
@@ -1782,6 +1874,49 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.SMTPTestRequest": {
+            "type": "object",
+            "required": [
+                "host",
+                "port"
+            ],
+            "properties": {
+                "host": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.SMTPTestResponse": {
+            "type": "object",
+            "properties": {
+                "host": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.Column": {
             "type": "object",
             "properties": {

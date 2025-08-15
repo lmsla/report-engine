@@ -43,6 +43,8 @@ func LoadRouter() *gin.Engine {
 		apiv1.POST("/token", controller.GetAccessToken)
 		apiv1.POST("/logout", controller.TokenLogout)
 		apiv1.GET("/write-frontend-log", controller.WriteFrontendLog)
+		apiv1.POST("/test-smtp", controller.TestSMTPConnection)
+		apiv1.POST("/detect-smtp", controller.DetectSMTPConfig)
 		// apiv1.GET("/Instance/GetAll", controller.GetAllInstances)
 	}
 

@@ -1,0 +1,1 @@
+TRUNCATE TABLE `main_menus`;

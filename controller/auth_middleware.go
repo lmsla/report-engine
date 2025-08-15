@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/base64"
+	// "fmt"
 	"net/http"
 	"strings"
 
@@ -93,10 +94,41 @@ func AuthMiddleware() gin.HandlerFunc {
 				}
 			}
 		} else {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"error": "unsupported authorization type",
-			})
-			return
+			// 處理沒有 Bearer 前綴的 token（非標準格式，僅為兼容性）
+			// 警告：這違反了 HTTP 標準，應該修改前端使用 Bearer 前綴
+			token := authHeader
+
+			// 記錄警告日誌
+			// fmt.Printf("WARNING: 收到非標準的 Authorization header，缺少 Bearer 前綴: %s\n", authHeader[:min(20, len(authHeader))])
+
+			// 檢查是否為 RADIUS 認證類型
+			if global.EnvConfig.Auth.Type == "radius" {
+				// 使用 JWT Token 驗證
+				userInfo, err := services.ValidateTokenAndGetUserInfo(token)
+				if err != nil {
+					c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+						"error": "invalid token: " + err.Error(),
+					})
+					return
+				}
+
+				// 建立用戶資料
+				user := &auth.SSOUser{
+					ID:     userInfo.UserName,
+					Name:   userInfo.UserName,
+					Domain: "radius",
+					Group:  userInfo.UserGroup,
+				}
+
+				c.Set("user", user)
+				c.Next()
+				return
+			} else {
+				// Keycloak Token 驗證
+				creds = map[string]string{
+					"token": token,
+				}
+			}
 		}
 
 		// 執行認證

@@ -1,4 +1,4 @@
-CREATE TABLE `instances` (
+CREATE TABLE IF NOT EXISTS `instances` (
   `created_at` bigint unsigned DEFAULT NULL,
   `updated_at` bigint unsigned DEFAULT NULL,
   `deleted_at` bigint DEFAULT NULL,
@@ -12,4 +12,4 @@ CREATE TABLE `instances` (
   `auth` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_instances_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

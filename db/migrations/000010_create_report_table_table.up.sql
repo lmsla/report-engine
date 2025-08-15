@@ -1,4 +1,4 @@
-CREATE TABLE `report_tables` (
+CREATE TABLE `reports_tables` (
   `report_id` bigint NOT NULL,
   `table_id` bigint NOT NULL,
   PRIMARY KEY (`report_id`,`table_id`),

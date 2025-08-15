@@ -17,20 +17,20 @@ type KeycloakProvider struct {
 
 // NewKeycloakProvider 建立 Keycloak 認證提供者
 func NewKeycloakProvider() *KeycloakProvider {
-	url := global.EnvConfig.SSO.Url
+	url := global.EnvConfig.Auth.Keycloak.Url
 	client := gocloak.NewClient(url)
 	restyClient := client.RestyClient()
 	restyClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 
 	return &KeycloakProvider{
 		client: client,
-		realm:  global.EnvConfig.SSO.Realm,
+		realm:  global.EnvConfig.Auth.Keycloak.Realm,
 	}
 }
 
 // Authenticate 驗證用戶憑證
 func (p *KeycloakProvider) Authenticate(ctx context.Context, creds map[string]string) (map[string]interface{}, error) {
-	fmt.Printf("Keycloak Authenticate called with creds: %+v\n", creds)
+	// fmt.Printf("Keycloak Authenticate called with creds: %+v\n", creds)
 
 	var token string
 	var err error
@@ -47,6 +47,7 @@ func (p *KeycloakProvider) Authenticate(ctx context.Context, creds map[string]st
 
 		// 嘗試用提供的用戶名密碼登入
 		userToken, err := p.client.Login(ctx, global.EnvConfig.SSO.ClientID, "", p.realm, username, password)
+
 		if err != nil {
 			return nil, fmt.Errorf("keycloak login failed: %w", err)
 		}
@@ -71,7 +72,7 @@ func (p *KeycloakProvider) Authenticate(ctx context.Context, creds map[string]st
 		"access_token":       token,
 	}
 
-	fmt.Printf("Keycloak result: %+v\n", result)
+	// fmt.Printf("Keycloak result: %+v\n", result)
 	return result, nil
 }
 

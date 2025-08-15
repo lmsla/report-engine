@@ -1,1 +1,1 @@
-DROP TABLE `report_tables`;
+DROP TABLE `reports_tables`;
