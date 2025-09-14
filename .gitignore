@@ -6,3 +6,6 @@ config.yml
 ./google-chrome-stable_current_amd64.deb
 ./main
 ./bimap-report-engine
+google-chrome-stable_current_amd64.deb
+main
+bimap-report-engine
