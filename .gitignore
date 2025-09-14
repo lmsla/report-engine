@@ -3,3 +3,6 @@ pdf
 # Output of the go coverage tool, specifically when used with LiteIDE
 config.yml
 .DS_Store
+./google-chrome-stable_current_amd64.deb
+./main
+./bimap-report-engine
